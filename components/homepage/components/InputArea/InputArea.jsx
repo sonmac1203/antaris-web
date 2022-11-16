@@ -20,7 +20,6 @@ export const InputArea = () => {
   };
 
   const handleParseFile = () => {
-    // read file
     const reader = new FileReader();
     const parser = new xml2js.Parser();
     setParsing(true);
@@ -29,7 +28,6 @@ export const InputArea = () => {
       parser.parseString(xmlText, (err, res) => {
         if (!err) {
           setParsedXml(res);
-          console.log(res);
         }
       });
     };
@@ -38,7 +36,7 @@ export const InputArea = () => {
   };
 
   const handleSave = async () => {
-    const response = await axios.post('/api/create-survey', {
+    const response = await axios.post('/api/create_survey', {
       researcherID: researcherID,
       participantID: participantID,
       studyData: parsedXml,
@@ -94,7 +92,11 @@ export const InputArea = () => {
         >
           {!parsedXml ? 'Parse' : 'Parsed'}
         </button>
-        <button className={styles.ParseButton} onClick={handleSave}>
+        <button
+          className={styles.ParseButton}
+          onClick={handleSave}
+          disabled={!parsedXml}
+        >
           Save
         </button>
       </div>

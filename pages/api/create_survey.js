@@ -11,9 +11,9 @@ const handler = async (req, res) => {
   try {
     mongoClient.db().collection('studies').insertOne({
       timestamp: new Date(),
-      createdBy: researcherID,
-      assignedTo: participantID,
-      study: studyData,
+      created_by: researcherID,
+      assigned_to: participantID,
+      study_data: studyData,
     });
     res.status(200).send({
       success: true,
