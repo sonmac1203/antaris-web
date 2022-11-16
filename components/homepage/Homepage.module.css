@@ -1,0 +1,16 @@
+.Container {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.Header {
+  text-align: center;
+}
+
+.InputAreaContainer {
+  width: 100%;
+  flex: 1 0 auto;
+  display: grid;
+  place-items: center;
+}
