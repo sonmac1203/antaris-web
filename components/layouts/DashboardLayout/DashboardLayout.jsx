@@ -1,13 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
 import { Footer, Header } from '../components';
-import styles from './HomeLayout.module.css';
+import styles from './DashboardLayout.module.css';
 
-export const HomeLayout = ({ children }) => {
+export const DashboardLayout = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Antaris | Home</title>
+        <title>Antaris | Dashboard</title>
       </Head>
       <main className={styles.Main}>
         <Header />
