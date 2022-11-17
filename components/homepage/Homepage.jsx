@@ -1,14 +1,11 @@
 import React from 'react';
-import { InputArea } from './components';
+import { SignInCard } from '../authorization';
 import styles from './Homepage.module.css';
 
 export const Homepage = () => {
   return (
-    <div className={styles.Container}>
-      <h1 className={styles.Header}>Hi dudes,</h1>
-      <div className={styles.InputAreaContainer}>
-        <InputArea />
-      </div>
+    <div>
+      <h1>Hi, we are Antaris.</h1>
     </div>
   );
 };
