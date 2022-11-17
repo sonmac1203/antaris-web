@@ -1,0 +1,17 @@
+.Container {
+  border: 1px solid black;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+
+
+.ButtonsContainer {
+  display: flex;
+  justify-content: space-evenly;
+}
