@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/core/*": ["core/*"],
+      "@/pages/*": ["pages/*"],
+      "@/api/*": ["pages/api/*"]
+    }
+  },
+  "include": ["/**/*.jsx", "/**/*.js", "/**/*.css", "."],
+  "exclude": [
+    ".git",
+    ".app-cache",
+    ".npm",
+    ".npm-tmp",
+    "dist",
+    "dist*",
+    "node_modules",
+    "subfolder/dist",
+    "subfolder/node_modules",
+    "**/dist/*",
+    "**/node_modules/*",
+    ".next",
+    "**/.next/*",
+  ]
+}
