@@ -1,0 +1,8 @@
+.Button {
+  align-self: center;
+  text-align: center;
+  width: 100px;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 10px;
+}
