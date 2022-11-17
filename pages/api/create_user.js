@@ -6,22 +6,24 @@ const handler = async (req, res) => {
     return;
   }
   const mongoClient = await mongoClientPromise;
-  const { researcherID, participantID, studyData } = req.body;
+  const { name, idNumber, role } = req.body;
+
+  const collection = role === 'researcher' ? 'researchers' : 'participants';
 
   try {
-    mongoClient.db().collection('studies').insertOne({
-      created_by: researcherID,
-      assigned_to: participantID,
-      study_data: studyData,
+    mongoClient.db().collection(collection).insertOne({
+      name: name,
+      antaris_id: idNumber,
+      role: role,
     });
     res.status(200).send({
       success: true,
-      message: 'The study has been saved!',
+      message: 'The user has been created!',
     });
   } catch (err) {
     res.status(400).send({
       success: false,
-      message: 'An error happened while saving the study. Please try again!',
+      message: 'An error happened while creating the user. Please try again!',
       error: err,
     });
   }
