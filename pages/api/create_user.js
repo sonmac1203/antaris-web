@@ -15,6 +15,7 @@ const handler = async (req, res) => {
       name: name,
       antaris_id: idNumber,
       role: role,
+      studies: [],
     });
     res.status(200).send({
       success: true,

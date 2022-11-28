@@ -6,14 +6,51 @@ const handler = async (req, res) => {
     return;
   }
   const mongoClient = await mongoClientPromise;
-  const { researcherID, participantID, studyData } = req.body;
+  const { researcherID, participantIDs, studyID, studyData } = req.body;
+  const splittedParticipantIDs = participantIDs.split(',');
 
   try {
-    mongoClient.db().collection('studies').insertOne({
-      created_by: researcherID,
-      assigned_to: participantID,
+    await mongoClient.db().collection('studies').insertOne({
+      antaris_id: studyID,
+      added_by: researcherID,
+      assigned_to: splittedParticipantIDs,
       study_data: studyData,
     });
+
+    await mongoClient
+      .db()
+      .collection('researchers')
+      .updateOne(
+        {
+          antaris_id: researcherID,
+        },
+        {
+          $push: {
+            studies: {
+              antaris_id: studyID,
+              assigned_to: splittedParticipantIDs,
+            },
+          },
+        }
+      );
+
+    mongoClient
+      .db()
+      .collection('participants')
+      .updateMany(
+        {
+          antaris_id: { $in: splittedParticipantIDs },
+        },
+        {
+          $push: {
+            studies: {
+              antaris_id: studyID,
+              added_by: researcherID,
+            },
+          },
+        }
+      );
+
     res.status(200).send({
       success: true,
       message: 'The study has been saved!',

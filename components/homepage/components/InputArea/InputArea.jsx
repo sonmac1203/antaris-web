@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import xml2js from 'xml2js';
 import axios from 'axios';
 import { InputField, SubmitButton } from '@/core/components/form';
@@ -7,33 +7,9 @@ import styles from './InputArea.module.css';
 
 // study name, study des, notes, questions
 
-function getRawText(text) {
-  const rawText = text.replace(/\r|\n/g, '');
-  return rawText;
-}
-
-function populateQuestions(studyData) {
-  const questionDefinitionArray =
-    studyData['ODM']['Study'][0]['MetaDataVersion'][0]['ItemDef'];
-  const questions = questionDefinitionArray.map(
-    ({ $: questionInfo, Question }) => {
-      const { OID, Name, DataType } = questionInfo;
-      const [question] = Question;
-      return {
-        name: Name,
-        questionID: OID,
-        dataType: DataType,
-        text: getRawText(question.TranslatedText[0]),
-      };
-    }
-  );
-
-  return questions;
-}
-
-export const InputArea = ({ researcherID }) => {
-  const [participantIDs, setParticipantIDs] = useState('');
-  const [studyID, setStudyID] = useState('');
+export const InputArea = () => {
+  const [researcherID, setResearcherID] = useState('');
+  const [participantID, setParticipantID] = useState('');
   const [xmlFile, setXmlFile] = useState();
   const [parsedXml, setParsedXml] = useState();
   const [parsing, setParsing] = useState(false);
@@ -63,9 +39,8 @@ export const InputArea = ({ researcherID }) => {
   const handleSave = async () => {
     const response = await axios.post('/api/create_survey', {
       researcherID: researcherID,
-      participantIDs: participantIDs,
-      studyID: studyID,
-      studyData: populateXml(parsedXml),
+      participantID: participantID,
+      studyData: parsedXml,
     });
 
     console.log(response.data);
@@ -73,20 +48,21 @@ export const InputArea = ({ researcherID }) => {
 
   const inputFields = [
     {
-      label: 'Participant IDs',
+      label: 'Researcher ID',
       type: 'text',
       accept: null,
-      name: 'participantIDs',
-      id: 'participantIDs',
-      callback: (e) => setParticipantIDs(e.target.value),
+      name: 'researcherID',
+      id: 'researcherID',
+      callback: (e) => setResearcherID(e.target.value),
     },
+
     {
-      label: 'Study ID',
+      label: 'Participant ID',
       type: 'text',
       accept: null,
-      name: 'studyID',
-      id: 'studyID',
-      callback: (e) => setStudyID(e.target.value),
+      name: 'participantID',
+      id: 'participantID',
+      callback: (e) => setParticipantID(e.target.value),
     },
 
     {
@@ -128,36 +104,4 @@ export const InputArea = ({ researcherID }) => {
       </div>
     </div>
   );
-};
-
-const populateXml = (parsedXml) => {
-  const study = parsedXml['ODM']['Study'][0];
-
-  const globalVariables = {
-    study_name: study['GlobalVariables'][0]['StudyName'][0],
-    study_description: study['GlobalVariables'][0]['StudyDescription'][0],
-    protocol_name: study['GlobalVariables'][0]['ProtocolName'][0],
-  };
-
-  const itemDef = study['MetaDataVersion'][0]['ItemDef'];
-
-  const questions = itemDef.map((item, key) => {
-    const { OID, Name, DataType } = item['$'];
-    const [question] = item['Question'];
-    return {
-      name: Name,
-      question_id: OID,
-      data_type: DataType,
-      text: getRawText(question.TranslatedText[0]),
-    };
-  });
-
-  const metaData = {
-    questions: questions,
-  };
-
-  return {
-    global_variables: globalVariables,
-    meta_data: metaData,
-  };
 };

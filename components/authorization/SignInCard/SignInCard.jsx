@@ -27,7 +27,7 @@ export const SignInCard = () => {
   const onSignIn = async () => {
     setSigningIn(true);
     try {
-      const response = await axios.post('/api/sign_in', {
+      const response = await axios.post('/api/auth/sign_in', {
         idNumber: idNumber,
         role: role,
       });

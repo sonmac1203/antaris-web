@@ -9,6 +9,10 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(false);
   const [researcherData, setResearcherData] = useState();
   useEffect(() => {
+    if (!localStorage.getItem('auth_token')) {
+      router.push('/');
+      return;
+    }
     (async () => {
       setLoading(true);
       try {
