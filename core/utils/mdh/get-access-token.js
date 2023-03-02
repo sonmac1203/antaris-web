@@ -1,54 +1,21 @@
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import jwt from 'jsonwebtoken';
-import querystring from 'querystring';
+import jwt from 'jwt-simple';
 
-const baseApiUri = process.env.BASE_MDH_API_URI;
+const secret = process.env.JWT_SECRET;
 
-export async function getAccessToken(rksServiceAccount, privateKey) {
-  const audienceString = `${baseApiUri}/identityserver/connect/token`;
-  const assertion = {
-    iss: rksServiceAccount,
-    sub: rksServiceAccount,
-    aud: audienceString,
-    exp: Math.floor(new Date().getTime() / 1000) + 200,
-    jti: uuidv4(),
-  };
-
-  var signedAssertion;
+export const getAccessToken = async (serviceAccountId, projectId) => {
   try {
-    signedAssertion = jwt.sign(assertion, privateKey, { algorithm: 'RS256' });
-  } catch (err) {
-    console.log(`Error signing JWT. Check your private key. Error: ${err}`);
-    return null;
-  }
-
-  const payload = {
-    scope: 'api',
-    grant_type: 'client_credentials',
-    client_assertion_type:
-      'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-    client_assertion: signedAssertion,
-  };
-
-  const tokenResponse = await makeAccessTokenRequest(payload);
-  if (!tokenResponse || !tokenResponse.access_token) {
-    return null;
-  }
-  return tokenResponse.access_token;
-}
-
-async function makeAccessTokenRequest(payload) {
-  await axios
-    .post(
-      `${baseApiUri}/identityserver/connect/token`,
-      querystring.stringify(payload)
-    )
-    .then(function (response) {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.log(error);
-      return null;
+    const { data } = await axios.get('/api/mdh/get_access_token', {
+      params: { serviceAccountId: serviceAccountId, projectId: projectId },
     });
-}
+
+    if (data.succcess) {
+      const token = jwt.encode({ mdh_id: serviceAccountId }, secret);
+      return { token, ...data };
+    }
+    return data;
+  } catch (error) {
+    console.log('error');
+    return error.response.data;
+  }
+};

@@ -2,18 +2,19 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from 'jsonwebtoken';
 import querystring from 'querystring';
-
+import mongoClientPromise from '@/core/db/mongoClient';
 const fs = require('fs');
 
 const baseApiUri = process.env.BASE_MDH_API_URI;
+const privateKeyPath = 'core/utils/mdh/private_key.pem';
 
 export default async function handler(req, res) {
   const audienceString = `${baseApiUri}/identityserver/connect/token`;
 
-  const { serviceAccountId } = req.query;
+  const { serviceAccountId, projectId } = req.query;
 
   // Read the private key from a file
-  const privateKey = fs.readFileSync('core/utils/mdh/private_key.pem');
+  const privateKey = fs.readFileSync(privateKeyPath);
 
   // Define the assertion object
   const assertion = {
@@ -24,13 +25,14 @@ export default async function handler(req, res) {
     jti: uuidv4(),
   };
 
+  // Sign the jwt
   var signedAssertion;
   try {
     signedAssertion = jwt.sign(assertion, privateKey, { algorithm: 'RS256' });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: `Error signing JWT. Check your private key. Error: ${err}`,
+      message: 'There has been an error. Please try again!',
     });
   }
 
@@ -47,15 +49,31 @@ export default async function handler(req, res) {
   if (!tokenResponse || !tokenResponse.access_token) {
     return res.status(500).json({
       success: false,
-      message: `There is no access token`,
+      message: 'There was an error. Please check your information again!',
     });
   }
 
-  return res.status(200).json({
-    success: true,
-    message: 'Access token has been retrieved.',
-    accessToken: tokenResponse.access_token,
-  });
+  try {
+    const mongoClient = await mongoClientPromise;
+    mongoClient.db().collection('ServiceAccounts').insertOne({
+      project_id: projectId,
+      mdh_id: serviceAccountId,
+      access_token: tokenResponse.access_token,
+      last_accessed: new Date(),
+      token_granted_at: new Date(),
+      token_expires_in: tokenResponse.expires_in,
+    });
+    return res.status(200).json({
+      success: true,
+      message: 'Access token has been retrieved and stored.',
+      token_data: tokenResponse,
+    });
+  } catch (err) {
+    return res.status(400).send({
+      success: false,
+      message: 'An error happened while saving the token. Please try again!',
+    });
+  }
 }
 
 const makeAccessTokenRequest = async (payload) => {
@@ -66,7 +84,6 @@ const makeAccessTokenRequest = async (payload) => {
     );
     return data;
   } catch (err) {
-    console.log(err);
     return null;
   }
 };
