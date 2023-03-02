@@ -135,7 +135,7 @@ const populateXml = (parsedXml) => {
 
   const globalVariables = {
     study_name: study['GlobalVariables'][0]['StudyName'][0],
-    study_description: study['GlobalVariables'][0]['StudyDescription'][0],
+    // study_description: study['GlobalVariables'][0]['StudyDescription'][0],
     protocol_name: study['GlobalVariables'][0]['ProtocolName'][0],
   };
 
