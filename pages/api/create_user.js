@@ -7,16 +7,18 @@ const handler = async (req, res) => {
   }
   const mongoClient = await mongoClientPromise;
   const { name, idNumber, role } = req.body;
-
   const collection = role === 'researcher' ? 'researchers' : 'participants';
-
   try {
-    mongoClient.db().collection(collection).insertOne({
-      name: name,
-      antaris_id: idNumber,
-      role: role,
-      studies: [],
-    });
+    mongoClient
+      .db()
+      .collection(collection)
+      .insertOne({
+        name: name,
+        antaris_id: idNumber,
+        role: role,
+        studies: [],
+        ...(collection === 'participants' && { responses: [] }),
+      });
     res.status(200).send({
       success: true,
       message: 'The user has been created!',
