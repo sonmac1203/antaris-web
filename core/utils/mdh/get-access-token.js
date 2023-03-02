@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt from 'jwt-simple';
 
-const secret = process.env.JWT_SECRET;
+const secret = 'antarissecret';
 
 export const getAccessToken = async (serviceAccountId, projectId) => {
   try {
@@ -9,13 +9,12 @@ export const getAccessToken = async (serviceAccountId, projectId) => {
       params: { serviceAccountId: serviceAccountId, projectId: projectId },
     });
 
-    if (data.succcess) {
-      const token = jwt.encode({ mdh_id: serviceAccountId }, secret);
-      return { token, ...data };
+    if (data.success) {
+      const auth_token = jwt.encode({ mdh_id: serviceAccountId }, secret);
+      return { ...data, auth_token };
     }
     return data;
   } catch (error) {
-    console.log('error');
     return error.response.data;
   }
 };

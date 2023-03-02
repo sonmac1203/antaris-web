@@ -15,7 +15,7 @@ export const Homepage = () => {
     const serviceAccountId = e.target[1].value;
     const apiResponse = await getAccessToken(serviceAccountId, projectId);
     if (apiResponse.success) {
-      localStorage.setItem('auth_token', apiResponse.token);
+      localStorage.setItem('auth_token', apiResponse.auth_token);
       router.push('/dash');
     } else {
       setAlertMessage(apiResponse.message);
