@@ -13,13 +13,8 @@ const handler = async (req, res) => {
     project_id,
     survey_id,
     participant_identifier,
-    secondary_identifier,
     survey_name,
     survey_display_name,
-    survey_description,
-    status,
-    due_date,
-    content,
   } = surveyData;
 
   const query = {
@@ -35,7 +30,14 @@ const handler = async (req, res) => {
       .findOne(query);
     if (existingSurvey) {
     } else {
-      await mongoClient.db().collection('Surveys').insertOne(surveyData);
+      await mongoClient
+        .db()
+        .collection('Surveys')
+        .insertOne({
+          ...surveyData,
+          assigned_at: new Date(),
+          alexa_status: 'incomplete',
+        });
       await mongoClient
         .db()
         .collection('Participants')

@@ -34,18 +34,21 @@ export const SurveyParsingSection = ({ surveyData, participantData }) => {
         return;
       }
 
-      const { data: secondResponse } = await axios.post('/api/send_survey', {
-        project_id: projectId,
-        survey_id: surveyID,
-        participant_identifier: participantIdentifier,
-        secondary_identifier: participantData.secondary_identifier,
-        survey_name: surveyName,
-        survey_display_name: surveyDisplayName,
-        survey_description: surveyDescription,
-        status: status,
-        due_date: dueDate,
-        content: surveyItems,
-      });
+      const { data: secondResponse } = await axios.post(
+        '/api/surveys/send_survey',
+        {
+          project_id: projectId,
+          survey_id: surveyID,
+          participant_identifier: participantIdentifier,
+          secondary_identifier: participantData.secondary_identifier,
+          survey_name: surveyName,
+          survey_display_name: surveyDisplayName,
+          survey_description: surveyDescription,
+          status: status,
+          due_date: dueDate,
+          content: surveyItems,
+        }
+      );
 
       if (!secondResponse.success) {
         return;
