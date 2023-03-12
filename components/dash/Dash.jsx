@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { Table, Card, Form, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 export const Dash = ({ data }) => {
   const router = useRouter();
@@ -9,15 +9,9 @@ export const Dash = ({ data }) => {
 
   const { access_token: accessToken, project_id: projectId } = data;
 
-  const [clickedSurveyData, setClickedSurveyData] = useState();
-
   const onSignOut = () => {
     localStorage.removeItem('auth_token');
     router.push('/');
-  };
-
-  const onRowClick = (index) => {
-    setClickedSurveyData(surveyTasks[index]);
   };
 
   useEffect(() => {
@@ -28,7 +22,6 @@ export const Dash = ({ data }) => {
       };
       const { data } = await axios.get('/api/mdh/get_surveys', config);
       if (data.success) {
-        console.log(data.surveyTasks);
         setSurveyTasks(data.surveyTasks);
       } else {
         setError(true);
@@ -55,7 +48,12 @@ export const Dash = ({ data }) => {
                 id={k}
                 key={k}
                 onClick={() => {
-                  onRowClick(k);
+                  router.push({
+                    pathname: `/dash/surveys/${s.surveyID}`,
+                    query: {
+                      data: encodeURIComponent(JSON.stringify(s)),
+                    },
+                  });
                 }}
                 style={{ cursor: 'pointer' }}
               >
@@ -68,35 +66,6 @@ export const Dash = ({ data }) => {
           </tbody>
         </Table>
       )}
-      {surveyTasks.length > 0 && clickedSurveyData && (
-        <DetailsCard data={clickedSurveyData} />
-      )}
     </>
-  );
-};
-
-const DetailsCard = ({ data: { surveyName, surveyID, participantID } }) => {
-  return (
-    <Card style={{ width: '' }}>
-      <Card.Body>
-        <Card.Title>{surveyName}</Card.Title>
-        <Card.Subtitle className='mb-2 text-muted'>
-          ID: {surveyID}
-        </Card.Subtitle>
-        <Card.Text>Assigned to: {participantID}</Card.Text>
-        <Form>
-          <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
-            <Form.Label>Example textarea</Form.Label>
-            <Form.Control as='textarea' rows={3} />
-            <Form.Text className='text-muted'>
-              Enter the JSON template of the survey from MyDataHelps
-            </Form.Text>
-          </Form.Group>
-          <Button variant='primary' type='submit'>
-            Submit
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
   );
 };
