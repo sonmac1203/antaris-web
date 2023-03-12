@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Dash } from '../components/dash';
+import { Dash } from '@/components/dash';
 import { DashboardLayout } from '@/components/layouts';
+import { useCredentials } from '@/core/hooks';
 import { getAccessToken } from '@/core/utils/mdh';
 
 const DashPage = () => {
   const router = useRouter();
   const [accountData, setAccountData] = useState();
-  const [timeUntilTokenExpiration, setTimeUntilTokenExpiration] =
-    useState(null);
+  const { setAccessToken, setProjectId } = useCredentials();
 
   useEffect(() => {
     const authToken = localStorage.getItem('auth_token');
@@ -17,6 +17,7 @@ const DashPage = () => {
       router.push('/');
       return;
     }
+
     // Fetch the user's account data and set it in state
     const fetchAccountData = async () => {
       try {
@@ -25,6 +26,10 @@ const DashPage = () => {
         });
         if (data.success) {
           setAccountData(data.accountData);
+          setAccessToken(data.accountData.access_token);
+          setProjectId(data.accountData.project_id);
+          localStorage.setItem('accessToken', data.accountData.access_token);
+          localStorage.setItem('projectId', data.accountData.project_id);
         } else {
           router.push('/');
         }
@@ -43,19 +48,18 @@ const DashPage = () => {
     const timeUntilExpiration = Math.ceil(
       (new Date(token_expires_at).getTime() - Date.now()) / 1000
     );
-    setTimeUntilTokenExpiration(timeUntilExpiration);
+
+    let counter = timeUntilExpiration;
     const intervalId = setInterval(() => {
-      setTimeUntilTokenExpiration((prevTime) => {
-        const newTime = prevTime - 1;
-        if (newTime >= 0) {
-          return newTime;
-        } else {
-          // If the time until expiration reaches 0, get a new access token
-          clearInterval(intervalId);
-          refreshAccessToken();
-          return 0;
-        }
-      });
+      if (counter % 100 === 0) {
+        console.log(counter);
+      }
+      if (counter >= -1) {
+        counter -= 1;
+      } else {
+        clearInterval(intervalId);
+        refreshAccessToken();
+      }
     }, 1000);
 
     return () => {
@@ -74,14 +78,7 @@ const DashPage = () => {
     }
   };
 
-  return (
-    accountData && (
-      <>
-        The token will expire in {timeUntilTokenExpiration} seconds
-        <Dash data={accountData} />
-      </>
-    )
-  );
+  return accountData && <Dash data={accountData} />;
 };
 
 DashPage.Layout = DashboardLayout;
