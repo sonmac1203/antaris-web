@@ -1,0 +1,1 @@
+export { ParticipantInfoSection } from './ParticipantInfoSection';
