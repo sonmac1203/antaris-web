@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       .db()
       .collection('Participants')
       .findOne(
-        { participant_id: participantId, project_id: projectId },
+        { participant_identifier: participantId, project_id: projectId },
         { projection: { _id: 0 } }
       );
     if (existingParticipant) {
