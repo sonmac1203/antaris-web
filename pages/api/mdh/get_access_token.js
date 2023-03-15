@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   const audienceString = `${baseApiUri}/identityserver/connect/token`;
 
   // Get the service account ID and project ID from the request query parameters
-  const { serviceAccountId, projectId } = req.query;
+  const { service_account_id, project_id } = req.query;
 
   try {
     // Find the service account from the database and update the last accessed time
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       .db()
       .collection('ServiceAccounts')
       .findOneAndUpdate(
-        { mdh_id: serviceAccountId, project_id: projectId },
+        { mdh_id: service_account_id, project_id },
         { $set: { last_accessed: new Date() } }
       );
 
@@ -50,8 +50,8 @@ export default async function handler(req, res) {
 
     // Define the assertion object
     const assertion = {
-      iss: serviceAccountId,
-      sub: serviceAccountId,
+      iss: service_account_id,
+      sub: service_account_id,
       aud: audienceString,
       exp: Math.floor(new Date().getTime() / 1000) + 200,
       jti: uuidv4(),
@@ -101,7 +101,7 @@ export default async function handler(req, res) {
         .db()
         .collection('ServiceAccounts')
         .updateOne(
-          { project_id: projectId, mdh_id: serviceAccountId },
+          { project_id: project_id, mdh_id: service_account_id },
           {
             $set: {
               access_token: tokenResponse.access_token,
@@ -111,8 +111,8 @@ export default async function handler(req, res) {
         );
     } else {
       await mongoClient.db().collection('ServiceAccounts').insertOne({
-        project_id: projectId,
-        mdh_id: serviceAccountId,
+        project_id: project_id,
+        mdh_id: service_account_id,
         access_token: tokenResponse.access_token,
         last_accessed: new Date(),
         token_expires_at: tokenExpiresAt,
