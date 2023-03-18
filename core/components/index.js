@@ -1,0 +1,1 @@
+export { LoginWithAmazonButton } from './LoginWithAmazonButton';
