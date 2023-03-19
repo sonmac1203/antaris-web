@@ -4,10 +4,11 @@ import {
   SurveyParsingSection,
   StoredSurveySection,
   ParticipantInfoSection,
+  HistorySection,
 } from './components';
 
 export const SurveyPage = ({ surveyData }) => {
-  const { surveyDisplayName, participantIdentifier } = surveyData;
+  const { surveyDisplayName, participantIdentifier, surveyID } = surveyData;
   const [participantData, setParticipantData] = useState(null);
 
   return (
@@ -25,6 +26,10 @@ export const SurveyPage = ({ surveyData }) => {
         participantIdentifier={participantIdentifier}
         participantData={participantData}
         setParticipantData={setParticipantData}
+      />
+      <HistorySection
+        surveyId={surveyID}
+        participantIdentifier={participantIdentifier}
       />
     </>
   );

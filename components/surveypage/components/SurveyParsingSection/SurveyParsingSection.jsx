@@ -34,6 +34,13 @@ export const SurveyParsingSection = ({ surveyData, participantData }) => {
         return;
       }
 
+      const surveyContent = surveyItems.map((item) => ({
+        ...item,
+        status: 'incomplete',
+      }));
+
+      console.log(surveyContent);
+
       const { data: secondResponse } = await axios.post(
         '/api/surveys/send_survey',
         {
@@ -46,7 +53,7 @@ export const SurveyParsingSection = ({ surveyData, participantData }) => {
           survey_description: surveyDescription,
           status: status,
           due_date: dueDate,
-          content: surveyItems,
+          content: surveyContent,
         }
       );
 
