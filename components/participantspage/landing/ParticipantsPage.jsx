@@ -1,9 +1,9 @@
 import { LoginWithAmazonButton } from '@/core/components';
 
 export const ParticipantsPage = () => {
-    return (
-        <div>
-            <LoginWithAmazonButton />
-        </div>
-    );
+  return (
+    <div>
+      <LoginWithAmazonButton />
+    </div>
+  );
 };
