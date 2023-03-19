@@ -15,4 +15,4 @@ const ParticipantResponse =
   models.ParticipantResponse ||
   model('ParticipantResponse', participantResponseSchema);
 
-export default ParticipantResponse;
+module.exports = ParticipantResponse;

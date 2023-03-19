@@ -25,4 +25,4 @@ const participantSchema = new Schema({
 const Participant =
   models.Participant || model('Participant', participantSchema);
 
-export default Participant;
+module.exports = Participant;

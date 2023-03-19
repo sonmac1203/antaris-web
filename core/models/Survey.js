@@ -19,4 +19,4 @@ const surveySchema = new Schema({
 
 const Survey = models.Survey || model('Survey', surveySchema);
 
-export default Survey;
+module.exports = Survey;
