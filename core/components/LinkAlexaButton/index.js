@@ -1,0 +1,1 @@
+export { LinkAlexaButton } from './LinkAlexaButton';

@@ -1,0 +1,23 @@
+.Style {
+  display: flex;
+  align-items: center;
+  background-color: #00ACED;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+  gap: 10px;
+  border-radius: 8px;
+  color: white;
+}
+.Style > i {
+  font-size: 1.5rem;
+}
+
+.Style:hover {
+  background-color: #33B5E5;
+  color: white;
+}
