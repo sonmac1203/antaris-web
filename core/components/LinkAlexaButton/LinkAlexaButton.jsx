@@ -3,7 +3,7 @@ import styles from './LinkAlexaButton.module.css';
 
 export const LinkAlexaButton = () => {
   const connectEndpoint = '/api/amazon/connect';
-  const buttonText = 'Link Antaris to my Alexa';
+  const buttonText = 'Link and enable Antaris in my Alexa';
 
   return (
     <Link
