@@ -28,13 +28,10 @@ async function connectToDb() {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      bufferCommands: false,
-      bufferMaxEntries: 0,
-      useFindAndModify: true,
-      useCreateIndex: true,
     };
 
     cached.promise = mongoose.connect(mongoURI, opts).then((mongoose) => {
+      mongoose.set('strictQuery', false);
       return mongoose;
     });
   }
