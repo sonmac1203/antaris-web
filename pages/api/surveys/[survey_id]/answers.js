@@ -7,7 +7,6 @@ const handler = async (req, res) => {
     project_id,
     participant_identifier,
     step_identifier: identifier,
-    status,
   } = req.query;
 
   const query = {
@@ -16,50 +15,38 @@ const handler = async (req, res) => {
     participant_identifier,
   };
 
-  const filterConditions = {};
-  if (identifier) {
-    filterConditions['identifier'] = identifier;
-  }
-  if (status) {
-    filterConditions['status'] = status;
-  }
-
   try {
-    if (Object.keys(req.query).length === 3) {
+    if (!identifier) {
       const existingSurvey = await mongoClient
         .db()
         .collection('Surveys')
-        .findOne(query, { projection: { _id: 0, content: 1 } });
+        .findOne(query, { projection: { _id: 0, answers: 1 } });
 
-      if (existingSurvey && existingSurvey.content.length > 0) {
+      if (existingSurvey && existingSurvey.answers.length > 0) {
         return res.status(201).json({
           success: true,
-          message: 'The survey content was found!',
-          data: existingSurvey.content,
+          message: 'The responses have been found.',
+          data: existingSurvey.answers,
         });
       } else {
         return res.status(404).send({
           success: false,
-          message: 'No content found. Please try again!',
+          message: 'No responses found. Please try again!',
         });
       }
     } else {
-      const existingContent = await mongoClient
+      const existingResponses = await mongoClient
         .db()
         .collection('Surveys')
         .aggregate([
           { $match: query },
           {
             $project: {
-              content: {
+              answers: {
                 $filter: {
-                  input: '$content',
+                  input: '$answers',
                   as: 'item',
-                  cond: {
-                    $and: Object.keys(filterConditions).map((key) => ({
-                      $eq: ['$$item.' + key, filterConditions[key]],
-                    })),
-                  },
+                  cond: { $eq: ['$$item.identifier', identifier] },
                 },
               },
               _id: 0,
@@ -69,19 +56,19 @@ const handler = async (req, res) => {
         .toArray();
 
       if (
-        existingContent &&
-        existingContent.length > 0 &&
-        existingContent[0].content.length > 0
+        existingResponses &&
+        existingResponses.length > 0 &&
+        existingResponses[0].answers.length > 0
       ) {
         return res.status(201).json({
           success: true,
-          message: 'The survey content was found!',
-          data: existingContent[0].content,
+          message: 'The responses have been found.',
+          data: existingResponses[0].answers,
         });
       } else {
         return res.status(404).send({
           success: false,
-          message: 'No content found. Please try again!',
+          message: 'No responses found. Please try again!',
         });
       }
     }

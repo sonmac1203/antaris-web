@@ -36,6 +36,7 @@ const handler = async (req, res) => {
         .insertOne({
           ...surveyData,
           assigned_at: new Date(),
+          answers: [],
           alexa_status: 'incomplete',
         });
       await mongoClient
