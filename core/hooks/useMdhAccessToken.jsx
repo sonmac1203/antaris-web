@@ -10,7 +10,7 @@ export function useMdhAccessToken() {
 
   const { setProjectId } = useAppCredentials();
 
-  const { logIn } = useAuth();
+  const { error: authError, logIn } = useAuth();
 
   const getTokenAndDoAuth = useCallback(
     async (serviceAccountId, projectId) => {
@@ -30,7 +30,7 @@ export function useMdhAccessToken() {
 
         await logIn(serviceAccountId);
       } catch (err) {
-        setError(err.response.data);
+        setError(authError || err.response.data);
       } finally {
         setLoading(false);
       }
