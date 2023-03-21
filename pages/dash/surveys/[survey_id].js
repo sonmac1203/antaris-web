@@ -1,28 +1,64 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { DashboardLayout } from '@/components/layouts';
 import { SurveyPage } from '@/components/surveypage';
+import { withSession, groupSurveyById } from '@/core/utils';
+import { fetchMdhSurveys } from '@/core/utils/mdh';
+import jwtUtils from '@/core/utils/jwt-utils';
+import { SurveyContext } from '@/core/context';
 
 const SurveyDetails = ({ surveyData }) => {
-  return <SurveyPage surveyData={surveyData} />;
+  const surveyContextValue = useMemo(
+    () => ({
+      surveyData,
+      participantsData: surveyData.participants,
+    }),
+    [surveyData]
+  );
+
+  return (
+    <SurveyContext.Provider value={surveyContextValue}>
+      <SurveyPage data={surveyData} />
+    </SurveyContext.Provider>
+  );
 };
 
 SurveyDetails.Layout = DashboardLayout;
 
-export async function getServerSideProps(context) {
-  const { survey_id: surveyId } = context.params;
-  const { data: surveyData } = context.query;
-
-  if (surveyData) {
-    // If survey data is provided as a query parameter, parse it from JSON
-    const parsedSurveyData = JSON.parse(decodeURIComponent(surveyData));
-    return { props: { surveyData: parsedSurveyData } };
+export const getServerSideProps = withSession(async ({ req, params }) => {
+  const { researcher_token: token } = req.session;
+  const { survey_id: surveyID } = params;
+  if (!token) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
   }
+  const { accessToken, projectId } = jwtUtils.decode(token);
 
-  // // If survey data is not provided, fetch it from the API
-  // const res = await fetch(`https://example.com/api/surveys/${surveyId}`);
-  // surveyData = await res.json();
+  const query = {
+    accessToken,
+    projectId,
+    params: {
+      surveyID,
+    },
+  };
 
-  return { props: { surveyData } };
-}
+  try {
+    const data = await fetchMdhSurveys(query);
+    const surveyData = groupSurveyById(data.surveyTasks)[0];
+    return {
+      props: { surveyData: { ...surveyData, fromDatabase: false } },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+});
 
 export default SurveyDetails;

@@ -1,36 +1,31 @@
 import React, { useState } from 'react';
-import { Breadcrumb } from 'react-bootstrap';
 import {
   SurveyParsingSection,
   StoredSurveySection,
   ParticipantInfoSection,
   HistorySection,
+  BreadcrumbSection,
 } from './components';
 
-export const SurveyPage = ({ surveyData }) => {
-  const { surveyDisplayName, participantIdentifier, surveyID } = surveyData;
+export const SurveyPage = ({ data }) => {
+  const { participantIdentifier, surveyID, fromDatabase } = data;
   const [participantData, setParticipantData] = useState(null);
 
   return (
     <>
-      <Breadcrumb>
-        <Breadcrumb.Item href='/dash'>Dashboard</Breadcrumb.Item>
-        <Breadcrumb.Item active>{surveyDisplayName}</Breadcrumb.Item>
-      </Breadcrumb>
-      <StoredSurveySection />
+      <BreadcrumbSection />
+      {fromDatabase && <StoredSurveySection />}
       <SurveyParsingSection
-        surveyData={surveyData}
+        surveyData={data}
         participantData={participantData}
       />
-      <ParticipantInfoSection
-        participantIdentifier={participantIdentifier}
-        participantData={participantData}
-        setParticipantData={setParticipantData}
-      />
-      <HistorySection
-        surveyId={surveyID}
-        participantIdentifier={participantIdentifier}
-      />
+      <ParticipantInfoSection />
+      {fromDatabase && (
+        <HistorySection
+          surveyId={surveyID}
+          participantIdentifier={participantIdentifier}
+        />
+      )}
     </>
   );
 };
