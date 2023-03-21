@@ -13,12 +13,15 @@ export const getRedirectUri = (type) => {
   // return process.env.HOST + '/participants';
 };
 
-export const getLoginRoute = (clientId, scope, redirectUri) => {
+export const getLoginRoute = (clientId, scope, redirectUri, state) => {
   const url = new URL(AMAZON_LOGIN_URL);
   url.searchParams.set('client_id', clientId);
   url.searchParams.set('scope', scope);
   url.searchParams.set('response_type', 'code');
   url.searchParams.set('redirect_uri', redirectUri);
+  if (state) {
+    url.searchParams.set('state', state);
+  }
   return url.toString();
 };
 

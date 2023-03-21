@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  getRedirectUri,
   getLoginRoute,
   getAccessTokenRoute,
   getProfileRoute,
@@ -26,8 +27,13 @@ class AmazonService {
     this.skillId = skillId;
   }
 
-  async login(req, scope) {
-    const loginURL = getLoginRoute(this.clientId, scope, this.redirectUri);
+  async login(req, scope, state) {
+    const loginURL = getLoginRoute(
+      this.clientId,
+      scope,
+      this.redirectUri,
+      state
+    );
     req.redirect(loginURL);
   }
 
@@ -89,11 +95,12 @@ class AmazonService {
     const body = {
       stage: 'development',
       accountLinkRequest: {
-        redirectUri: this.redirectUri,
+        redirectUri: getRedirectUri('lwa'),
         authCode: authCode,
         type: 'AUTH_CODE',
       },
     };
+    console.log(body);
     const route = getSkillEnablementRoute(this.skillId);
     const apiResponse = await this.#handleRequest(() =>
       axios.post(route, body, config)
