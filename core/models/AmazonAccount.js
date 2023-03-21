@@ -1,13 +1,13 @@
 import { Schema, models, model } from 'mongoose';
 
 const amazonAccountSchema = new Schema({
-  account_name: String,
-  account_email: String,
+  name: String,
+  email: String,
   lwa_access_token: String,
   lwa_refresh_token: String,
   lwa_token_expires_at: Date,
   alexa_metadata: {
-    skill_id: { type: String, default: '' },
+    skill_id: { type: String, default: process.env.SKILL_ID },
     user_id: { type: String, default: '' },
     account_linked: { type: Boolean, default: false },
     skill_enabled: { type: Boolean, default: false },
