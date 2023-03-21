@@ -5,11 +5,17 @@ export const LoginWithAmazonButton = () => {
   const connectEndpoint = '/api/amazon/connect';
   const buttonText = 'Log in with Amazon';
 
+  const state = {
+    chaining: false,
+  };
+
   return (
     <Link
       href={{
         pathname: connectEndpoint,
-        query: { auth_type: 'lwa' },
+        query: {
+          state: encodeURIComponent(JSON.stringify(state)),
+        },
       }}
       className={styles.Style}
     >
