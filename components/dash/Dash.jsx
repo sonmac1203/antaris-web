@@ -1,58 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import { useCallback, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
+import { Timer } from './components';
+import { useMdh } from '@/core/hooks';
+import { useRouter } from 'next/router';
 
 export const Dash = ({ data }) => {
+  const { surveys, loading, error, fetchAllSurveys } = useMdh();
   const router = useRouter();
-  const [surveyTasks, setSurveyTasks] = useState([]);
 
-  const { access_token: accessToken, project_id: projectId } = data;
-
-  const onSignOut = () => {
-    localStorage.removeItem('auth_token');
-    router.push('/');
-  };
+  const loadSurveysFromMdh = useCallback(async () => {
+    await fetchAllSurveys();
+  }, [fetchAllSurveys]);
 
   useEffect(() => {
-    (async () => {
-      const config = {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        params: { projectId },
-      };
-      const { data } = await axios.get('/api/mdh/get_surveys', config);
-      if (data.success) {
-        setSurveyTasks(data.surveyTasks);
-      } else {
-        setError(true);
-      }
-    })();
+    loadSurveysFromMdh();
   }, []);
+
+  if (error) {
+    return <div>Error</div>;
+  }
+
+  if (loading) {
+    return <div>loading ...</div>;
+  }
 
   return (
     <>
-      <button onClick={onSignOut}>Sign out</button>
-      {surveyTasks.length > 0 && (
+      <Timer data={data} />
+      {surveys.length > 0 && (
         <Table bordered hover>
           <thead>
             <tr>
               <th>#</th>
               <th>Survey ID</th>
               <th>Survey Name</th>
-              <th>Status</th>
+              <th>Partcipants</th>
             </tr>
           </thead>
           <tbody>
-            {surveyTasks.map((s, k) => (
+            {surveys.map((s, k) => (
               <tr
                 id={k}
                 key={k}
                 onClick={() => {
                   router.push({
                     pathname: `/dash/surveys/${s.surveyID}`,
-                    query: {
-                      data: encodeURIComponent(JSON.stringify(s)),
-                    },
                   });
                 }}
                 style={{ cursor: 'pointer' }}
@@ -60,7 +52,7 @@ export const Dash = ({ data }) => {
                 <td>{k}</td>
                 <td>{s.surveyID}</td>
                 <td>{s.surveyName}</td>
-                <td>{s.status}</td>
+                <td>{s.participants.length}</td>
               </tr>
             ))}
           </tbody>
