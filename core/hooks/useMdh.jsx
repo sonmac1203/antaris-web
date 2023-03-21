@@ -3,19 +3,42 @@ import axios from 'axios';
 
 export function useMdh() {
   const [surveys, setSurveys] = useState([]);
+  const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchAllSurveys = useCallback(async (accessToken, projectId) => {
+  const fetchAllSurveys = useCallback(async () => {
     try {
       setLoading(true);
-      const config = {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        params: { projectId },
-      };
-      const { data } = await axios.get('/api/mdh/surveys', config);
-      const groupedSurveys = groupSurveyById(data.surveyTasks);
-      setSurveys(groupedSurveys);
+      const { data: result } = await axios.get('/api/mdh/surveys');
+      setSurveys(result.data);
+    } catch (err) {
+      setError(err.response.data);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchParticipants = useCallback(async (ids) => {
+    try {
+      setLoading(true);
+      if (!ids || ids.length === 0) {
+        const { data: result } = await axios.get('/api/mdh/participants');
+        setParticipants(result.data);
+      } else {
+        const promises = ids.map((id) => {
+          const config = {
+            params: {
+              participantId: id,
+            },
+          };
+          return axios.get('/api/mdh/participants', config);
+        });
+
+        const promiseResult = await Promise.all(promises);
+        const participantsResult = promiseResult.map((p) => p.data.data);
+        setParticipants(participantsResult);
+      }
     } catch (err) {
       setError(err.response.data);
     } finally {
@@ -25,40 +48,10 @@ export function useMdh() {
 
   return {
     surveys,
+    participants,
     loading,
     error,
     fetchAllSurveys,
+    fetchParticipants,
   };
 }
-
-const groupSurveyById = (surveys) => {
-  const groupedSurveys = surveys.reduce((acc, survey) => {
-    const {
-      surveyID,
-      participantID,
-      participantIdentifier,
-      surveyName,
-      surveyDisplayName,
-      surveyDescription,
-    } = survey;
-    const group = acc.find((group) => group.surveyID === surveyID);
-
-    if (group) {
-      group.participants.push({
-        participantID,
-        participantIdentifier,
-      });
-    } else {
-      acc.push({
-        surveyID,
-        surveyName,
-        surveyDisplayName,
-        surveyDescription,
-        participants: [{ participantID, participantIdentifier }],
-      });
-    }
-
-    return acc;
-  }, []);
-  return groupedSurveys;
-};
