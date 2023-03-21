@@ -18,7 +18,6 @@ export function useAuth() {
 
   const verifyAuthentication = useCallback(async () => {
     const authToken = localStorage.getItem('auth_token');
-    console.log('IM here');
     if (authToken) {
       try {
         console.log('try');
@@ -38,35 +37,35 @@ export function useAuth() {
     }
   }, []);
 
-  const logIn = useCallback(async (serviceAccountId) => {
-    try {
-      setLoading(true);
-      const { data: authResult } = await axios.post(
-        '/api/auth/get_auth_token',
-        {
-          key: serviceAccountId,
-        }
-      );
-
-      localStorage.setItem('auth_token', authResult.data.authToken);
-      router.push('/dash');
-    } catch (err) {
-      setError(err.response.data);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const saveToSession = useCallback(
+    async (serviceAccountId, accessToken, projectId, tokenExpiresAt) => {
+      try {
+        setLoading(true);
+        await axios.post('/api/auth/token', {
+          serviceAccountId,
+          accessToken,
+          projectId,
+          tokenExpiresAt,
+        });
+        console.log('IM BACK HERE');
+      } catch (err) {
+        setError(err.response.data);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   const logOut = useCallback(() => {
     resetAuthStates();
-    localStorage.clear();
-    router.push('/');
+    router.push('/api/auth/sign_out');
   }, []);
 
   return {
     loading,
     error,
-    logIn,
+    saveToSession,
     logOut,
     verifyAuthentication,
     isAuthenticated,

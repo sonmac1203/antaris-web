@@ -10,41 +10,40 @@ export function useMdhAccessToken() {
 
   const { setProjectId } = useAppCredentials();
 
-  const { error: authError, logIn } = useAuth();
+  const { error: authError, saveToSession } = useAuth();
 
-  const getTokenAndDoAuth = useCallback(
+  const getTokenAndSaveToSession = useCallback(
     async (serviceAccountId, projectId) => {
       try {
         setLoading(true);
-        const { data: result } = await axios.get('/api/mdh/get_access_token', {
+        const { data: result } = await axios.get('/api/mdh/token', {
           params: {
             service_account_id: serviceAccountId,
             project_id: projectId,
           },
         });
-
-        const { access_token: token } = result.token_data;
-
-        setAccessToken(token);
-        setProjectId(projectId);
-
-        await logIn(serviceAccountId);
+        const { access_token, token_expires_at } = result.token_data;
+        setAccessToken(access_token);
+        await saveToSession(
+          serviceAccountId,
+          access_token,
+          projectId,
+          token_expires_at
+        );
+        console.log('IN HERE');
       } catch (err) {
         setError(authError || err.response.data);
       } finally {
         setLoading(false);
       }
     },
-    [setProjectId]
+    [setAccessToken]
   );
-
-  const refreshToken = useCallback(() => {}, []);
 
   return {
     token: accessToken,
     loading,
     error,
-    getTokenAndDoAuth,
-    refreshToken,
+    getTokenAndSaveToSession,
   };
 }
