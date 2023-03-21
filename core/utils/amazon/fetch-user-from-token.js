@@ -17,16 +17,16 @@ async function updateAmazonAccount(
   expiresIn
 ) {
   const updatedDoc = await AmazonAccount.findOneAndUpdate(
-    { account_email: email },
+    { email: email },
     {
       $set: {
-        account_name: name,
+        name: name,
         lwa_access_token: accessToken,
         lwa_refresh_token: refreshToken,
         lwa_token_expires_at: new Date(new Date().getTime() + expiresIn * 1000),
       },
       $setOnInsert: {
-        account_email: email,
+        email: email,
       },
     },
     { upsert: true, new: true, setDefaultsOnInsert: true }

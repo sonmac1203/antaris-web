@@ -23,6 +23,7 @@ export const getServerSideProps = withSession(async ({ req, res }) => {
   }
 
   const result = await fetchUserFromToken(token);
+
   if (!result.success) {
     return {
       redirect: {
