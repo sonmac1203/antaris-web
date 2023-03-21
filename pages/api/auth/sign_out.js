@@ -1,17 +1,10 @@
-// import mongoClientPromise from '@/core/db/mongoClient';
-// import jwt from 'jwt-simple';
+import { withSessionApiRoute } from '@/core/utils';
 
-// const secret = 'antarissecret';
+const handler = async (req, res) => {
+  req.session.destroy();
+  await req.session.save();
 
-// const handler = async (req, res) => {
-//   try {
+  res.redirect('/participants');
+};
 
-//   } catch (err) {
-//     res.status(500).send({
-//       success: false,
-//       message: 'Internal server error',
-//     });
-//   }
-// };
-
-// export default handler;
+export default withSessionApiRoute(handler);
