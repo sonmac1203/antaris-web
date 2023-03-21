@@ -18,6 +18,11 @@ const participantSchema = new Schema({
       },
     ],
   },
+  demographics: {
+    email: { type: String, default: '' },
+    first_name: { type: String, default: '' },
+    last_name: { type: String, default: '' },
+  },
 });
 
 const Participant =
