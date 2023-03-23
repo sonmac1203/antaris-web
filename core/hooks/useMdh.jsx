@@ -1,13 +1,33 @@
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 export function useMdh() {
+  const router = useRouter();
+
   const [surveys, setSurveys] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [surveyContent, setSurveyContent] = useState(null);
+  const loginToServiceAccount = useCallback(
+    async ({ projectId, serviceAccountId }) => {
+      try {
+        setError(null);
+        setLoading(true);
+        await axios.post('/api/mdh/connect', {
+          projectId,
+          serviceAccountId,
+        });
+        router.push('/dash');
+      } catch (err) {
+        setError(err.response.data);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   const fetchAllSurveys = useCallback(async () => {
     try {
@@ -55,5 +75,6 @@ export function useMdh() {
     error,
     fetchAllSurveys,
     fetchParticipants,
+    loginToServiceAccount,
   };
 }

@@ -8,14 +8,19 @@ const fs = require('fs');
 const privateKeyPath = 'core/utils/mdh/private_key.pem';
 
 const handler = async (req, res) => {
-  const { state: stateString } = req.query;
-  if (!stateString) {
-    return res.redirect('/');
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' });
+    return;
   }
 
-  const { projectId, serviceAccountId } = JSON.parse(
-    decodeURIComponent(stateString)
-  );
+  const { projectId, serviceAccountId } = req.body;
+
+  if (!projectId || !serviceAccountId) {
+    return res.status(404).json({
+      success: false,
+      message: 'Missing body',
+    });
+  }
 
   await connectToDb();
 
@@ -39,7 +44,10 @@ const handler = async (req, res) => {
         const authToken = jwtUtils.encode(itemToEncode);
         req.session.token = authToken;
         await req.session.save();
-        return res.redirect('/dash');
+        return res.status(200).json({
+          success: true,
+          message: 'You have successfully logged in.',
+        });
       }
     }
 
@@ -51,7 +59,10 @@ const handler = async (req, res) => {
     });
     const result = await mdhService.getAccessToken();
     if (!result || !result.access_token) {
-      return res.redirect('/');
+      return res.status(403).json({
+        success: false,
+        message: 'Wrong information. Please try again!',
+      });
     }
 
     // Calculate the token expiration time
@@ -80,9 +91,15 @@ const handler = async (req, res) => {
     const authToken = jwtUtils.encode(itemToEncode);
     req.session.token = authToken;
     await req.session.save();
-    return res.redirect('/dash');
+    return res.status(200).json({
+      success: true,
+      message: 'You have successfully logged in.',
+    });
   } catch (err) {
-    return res.redirect('/');
+    return res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again.',
+    });
   }
 };
 
