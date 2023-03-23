@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Row, Col, Form, Button, Accordion } from 'react-bootstrap';
-import { useCredentials } from '@/core/hooks';
 import { useSurvey } from '@/core/hooks';
 
 export const SurveyParsingSection = () => {
@@ -17,7 +15,6 @@ export const SurveyParsingSection = () => {
   const { surveyID, surveyName, surveyDisplayName, surveyDescription } =
     surveyData;
 
-  const { projectId } = useCredentials();
   const [surveyItems, setSurveyItems] = useState([]);
 
   const selectedParticipants = ['MDH-0224-3069', 'MDH-5747-4140'];

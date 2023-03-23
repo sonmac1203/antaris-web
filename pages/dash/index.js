@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Dash } from '@/components/dash';
 import { DashboardLayout } from '@/components/layouts';
-import { useCredentials } from '@/core/hooks';
 import { getAccessToken } from '@/core/utils/mdh';
 import { withSession } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
@@ -13,7 +12,6 @@ const DashPage = ({ accountData }) => {
   // const DashPage = () => {
   const router = useRouter();
   // const [accountData, setAccountData] = useState();
-  // const { setAccessToken, setProjectId } = useCredentials();
 
   // const [isLoading, setIsLoading] = useState(false);
 
