@@ -19,16 +19,10 @@ export const useSurvey = () => {
       surveyContent,
       surveyData,
     };
-    console.log(requestBody);
     try {
       setLoading(true);
-      const { data: result } = await axios.post(
-        `/api/surveys/${surveyData.surveyID}/send`,
-        requestBody
-      );
-      console.log(result);
+      await axios.post(`/api/surveys/${surveyData.surveyID}/send`, requestBody);
     } catch (err) {
-      console.log(err);
       setError(err.response.data);
     } finally {
       setLoading(false);
