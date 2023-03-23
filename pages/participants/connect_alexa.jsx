@@ -1,6 +1,6 @@
 import { HomeLayout } from '@/components/layouts';
 import { ConnectAlexaPage } from '@/components/participantspage/connect';
-import { withSession } from '@/core/utils';
+import { withSession } from '@/core/utils/session';
 import { fetchUserFromToken } from '@/core/utils/amazon';
 
 const ConnectAlexaIndex = ({ participantData }) => {

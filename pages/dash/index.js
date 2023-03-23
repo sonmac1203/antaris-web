@@ -5,8 +5,9 @@ import { Dash } from '@/components/dash';
 import { DashboardLayout } from '@/components/layouts';
 import { useCredentials } from '@/core/hooks';
 import { getAccessToken } from '@/core/utils/mdh';
-import { withSession } from '@/core/utils';
+import { withSession } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
+import { withSsrAuth } from '@/core/utils/auth';
 
 const DashPage = ({ accountData }) => {
   // const DashPage = () => {
@@ -102,19 +103,9 @@ DashPage.Layout = DashboardLayout;
 
 export default DashPage;
 
-export const getServerSideProps = withSession(async ({ req }) => {
-  const { researcher_token: token } = req.session;
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
+export const getServerSideProps = withSsrAuth(async ({ req }) => {
+  const { token } = req.session;
   const accountData = jwtUtils.decode(token);
-
   return {
     props: { accountData },
   };

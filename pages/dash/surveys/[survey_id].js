@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { DashboardLayout } from '@/components/layouts';
 import { SurveyPage } from '@/components/surveypage';
-import { withSession, groupSurveyById } from '@/core/utils';
 import { fetchMdhSurveys } from '@/core/utils/mdh';
 import jwtUtils from '@/core/utils/jwt-utils';
 import { SurveyContext } from '@/core/context';
+import { withSsrAuth } from '@/core/utils/auth';
 
 const SurveyDetails = ({ surveyData }) => {
   const surveyContextValue = useMemo(
@@ -17,26 +17,17 @@ const SurveyDetails = ({ surveyData }) => {
 
   return (
     <SurveyContext.Provider value={surveyContextValue}>
-      <SurveyPage data={surveyData} />
+      <SurveyPage />
     </SurveyContext.Provider>
   );
 };
 
 SurveyDetails.Layout = DashboardLayout;
 
-export const getServerSideProps = withSession(async ({ req, params }) => {
-  const { researcher_token: token } = req.session;
+export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
+  const { token } = req.session;
   const { survey_id: surveyID } = params;
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      },
-    };
-  }
   const { accessToken, projectId } = jwtUtils.decode(token);
-
   const query = {
     accessToken,
     projectId,
@@ -44,12 +35,10 @@ export const getServerSideProps = withSession(async ({ req, params }) => {
       surveyID,
     },
   };
-
   try {
-    const data = await fetchMdhSurveys(query);
-    const surveyData = groupSurveyById(data.surveyTasks)[0];
+    const surveys = await fetchMdhSurveys(query);
     return {
-      props: { surveyData: { ...surveyData, fromDatabase: false } },
+      props: { surveyData: JSON.parse(JSON.stringify(surveys[0])) },
     };
   } catch (err) {
     return {
