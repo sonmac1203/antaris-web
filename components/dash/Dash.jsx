@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { Timer } from './components';
 import { useMdh } from '@/core/hooks';
 import { useRouter } from 'next/router';
 
@@ -26,7 +25,6 @@ export const Dash = ({ data }) => {
 
   return (
     <>
-      <Timer data={data} />
       {surveys.length > 0 && (
         <Table bordered hover>
           <thead>
