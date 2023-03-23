@@ -19,7 +19,7 @@ export function useMdh() {
           projectId,
           serviceAccountId,
         });
-        router.push('/dash');
+        router.push('/dashboard');
       } catch (err) {
         setError(err.response.data);
       } finally {
