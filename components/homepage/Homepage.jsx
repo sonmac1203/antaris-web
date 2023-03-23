@@ -4,19 +4,26 @@ import {
   ServiceAccountIdInput,
   ConnectButton,
 } from './components';
-import { useMdhAccessToken } from '@/core/hooks';
+import { useRouter } from 'next/router';
 
 export const Homepage = () => {
-  const { loading, error, getTokenAndDoAuth } = useMdhAccessToken();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleConnect = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     const form = event.target;
     const { value: projectId } = form.elements.projectId;
     const { value: serviceAccountId } = form.elements.serviceAccountId;
 
-    await getTokenAndDoAuth(serviceAccountId, projectId);
+    const state = { projectId, serviceAccountId };
+    router.push({
+      pathname: '/api/mdh/connect',
+      query: {
+        state: encodeURIComponent(JSON.stringify(state)),
+      },
+    });
   };
 
   return (
@@ -26,11 +33,11 @@ export const Homepage = () => {
         <ProjectIdInput />
         <ServiceAccountIdInput />
         <ConnectButton loading={loading} />
-        {!loading && error && (
+        {/* {!loading && error && (
           <Alert key='alert' variant='danger' className='mt-3'>
             {error.message}
           </Alert>
-        )}
+        )} */}
       </Form>
     </div>
   );
