@@ -1,6 +1,6 @@
 import { Form } from 'react-bootstrap';
 
-export const ServiceAccountIdInput = () => {
+export const ServiceAccountIdInput = ({ inputRef }) => {
   return (
     <Form.Group className='mb-3' controlId='serviceAccountIdInput'>
       <Form.Label>Service Account ID</Form.Label>
@@ -8,6 +8,7 @@ export const ServiceAccountIdInput = () => {
         type='text'
         placeholder='Enter service account ID (from MyDataHelps)'
         name='serviceAccountId'
+        ref={inputRef}
       />
       <Form.Text className='text-muted'>
         We'll never share your IDs with anyone else.
