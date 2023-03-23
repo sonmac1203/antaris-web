@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import { Row, Col, Form, Button, Accordion } from 'react-bootstrap';
+import { useState } from 'react';
 import { useSurvey } from '@/core/hooks';
+import { Row, Col, Form, Button, Accordion } from 'react-bootstrap';
 
 export const SurveyParsingSection = () => {
   const {
     error,
     loading,
-    surveyData,
     setSurveyContent,
     sendSurvey,
     setSelectedParticipants,
   } = useSurvey();
-
-  const { surveyID, surveyName, surveyDisplayName, surveyDescription } =
-    surveyData;
 
   const [surveyItems, setSurveyItems] = useState([]);
 
@@ -22,7 +18,6 @@ export const SurveyParsingSection = () => {
   const onSurveyTemplateSubmit = (e) => {
     e.preventDefault();
     const { steps } = JSON.parse(e.target[0].value);
-
     const surveyContent = steps.map((question) => {
       return {
         type: question.type,
@@ -31,58 +26,12 @@ export const SurveyParsingSection = () => {
         identifier: question.identifier,
       };
     });
-    console.log(surveyContent);
     setSurveyContent(surveyContent);
     setSurveyItems(steps);
     setSelectedParticipants(selectedParticipants);
   };
 
   const handleSave = async () => await sendSurvey();
-
-  // const handleSave = async () => {
-  //   try {
-  //     const { data: firstResponse } = await axios.post(
-  //       '/api/store_participant',
-  //       participantData
-  //     );
-
-  //     if (!firstResponse.success) {
-  //       return;
-  //     }
-
-  //     const surveyContent = surveyItems.map((item) => ({
-  //       ...item,
-  //       status: 'incomplete',
-  //     }));
-
-  //     console.log(surveyContent);
-
-  //     const { data: secondResponse } = await axios.post(
-  //       '/api/surveys/send_survey',
-  //       {
-  //         project_id: projectId,
-  //         survey_id: surveyID,
-  //         participant_identifier: participantIdentifier,
-  //         secondary_identifier: participantData.secondary_identifier,
-  //         survey_name: surveyName,
-  //         survey_display_name: surveyDisplayName,
-  //         survey_description: surveyDescription,
-  //         status: status,
-  //         due_date: dueDate,
-  //         content: surveyContent,
-  //       }
-  //     );
-
-  //     if (!secondResponse.success) {
-  //       return;
-  //     }
-  //     console.log(firstResponse);
-  //     console.log(secondResponse);
-  //   } catch (err) {
-  //     console.log(err);
-  //     return;
-  //   }
-  // };
 
   return (
     <section>

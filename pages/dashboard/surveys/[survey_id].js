@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
 import { DashboardLayout } from '@/components/layouts';
 import { SurveyPage } from '@/components/surveypage';
-import { fetchMdhSurveys } from '@/core/utils/mdh';
-import jwtUtils from '@/core/utils/jwt-utils';
+import { fetchMdhSurveys, jwtUtils, withSsrAuth } from '@/core/utils';
 import { SurveyContext } from '@/core/context';
-import { withSsrAuth } from '@/core/utils/auth';
 
 const SurveyDetails = ({ surveyData }) => {
   const surveyContextValue = useMemo(

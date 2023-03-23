@@ -7,7 +7,7 @@ export const BreadcrumbSection = () => {
 
   return (
     <Breadcrumb>
-      <Breadcrumb.Item linkAs={Link} href='/dash'>
+      <Breadcrumb.Item linkAs={Link} href='/dashboard'>
         Dashboard
       </Breadcrumb.Item>
       <Breadcrumb.Item active>{data.surveyDisplayName}</Breadcrumb.Item>
