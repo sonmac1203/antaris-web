@@ -1,14 +1,11 @@
 import { useState, useCallback } from 'react';
 import axios from 'axios';
-import { useAppCredentials } from './useAppCredentials';
 import { useAuth } from './useAuth';
 
 export function useMdhAccessToken() {
   const [accessToken, setAccessToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const { setProjectId } = useAppCredentials();
 
   const { error: authError, saveToSession } = useAuth();
 

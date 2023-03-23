@@ -7,6 +7,8 @@ export function useMdh() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [surveyContent, setSurveyContent] = useState(null);
+
   const fetchAllSurveys = useCallback(async () => {
     try {
       setLoading(true);
