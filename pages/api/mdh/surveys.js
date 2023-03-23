@@ -1,10 +1,10 @@
 import { fetchMdhSurveys } from '@/core/utils/mdh';
-import { groupSurveyById, withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
 
 async function handler(req, res) {
   const { projectId: projectIdFromRequest, surveyId: surveyID } = req.query;
-  const sessionToken = req.session?.researcher_token;
+  const sessionToken = req.session?.token;
   const accessTokenFromRequest =
     req.headers?.authorization?.split(' ')[1] ?? null;
 
@@ -33,15 +33,13 @@ async function handler(req, res) {
   };
 
   try {
-    const data = await fetchMdhSurveys(query);
-    const surveys = groupSurveyById(data.surveyTasks);
+    const surveys = await fetchMdhSurveys(query);
     return res.status(200).json({
       success: true,
       message: 'Surveys have been fetched.',
       data: surveys,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: 'There was an error. We cannot fetch survey data.',

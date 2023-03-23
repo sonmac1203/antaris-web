@@ -1,10 +1,10 @@
 import { fetchMdhParticipants } from '@/core/utils/mdh';
-import { groupSurveyById, withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
 
 async function handler(req, res) {
   const { projectId: projectIdFromRequest, participantId } = req.query;
-  const sessionToken = req.session?.researcher_token;
+  const sessionToken = req.session?.token;
   const accessTokenFromRequest =
     req.headers?.authorization?.split(' ')[1] ?? null;
 
