@@ -100,7 +100,6 @@ class AmazonService {
         type: 'AUTH_CODE',
       },
     };
-    console.log(body);
     const route = getSkillEnablementRoute(this.skillId);
     const apiResponse = await this.#handleRequest(() =>
       axios.post(route, body, config)
@@ -180,4 +179,4 @@ class AmazonService {
   }
 }
 
-module.exports = AmazonService;
+export default AmazonService;

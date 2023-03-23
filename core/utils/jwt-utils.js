@@ -11,4 +11,4 @@ const jwtUtils = {
   },
 };
 
-module.exports = jwtUtils;
+export default jwtUtils;

@@ -51,4 +51,4 @@ class MDHService {
   }
 }
 
-module.exports = MDHService;
+export default MDHService;
