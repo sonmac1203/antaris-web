@@ -1,5 +1,5 @@
 import { createAmazonService } from '@/core/utils/amazon';
-import { withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
 
 const handler = async (req, res) => {
@@ -12,6 +12,7 @@ const handler = async (req, res) => {
   // If the login request requires chaining, trigger Alexa login
   if (state.chaining) {
     await triggerAlexaLogin(res, code, state);
+    return;
   }
 
   // If the login request does not require chaining

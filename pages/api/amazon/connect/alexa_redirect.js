@@ -25,8 +25,7 @@ const handler = async (req, res) => {
 
   // If the request failed
   if (result.hasOwnProperty('error')) {
-    res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
-    return;
+    return res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
   }
 
   // Call skill activation API
@@ -37,8 +36,7 @@ const handler = async (req, res) => {
 
   // if failed
   if (enablementResult.hasOwnProperty('message')) {
-    res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
-    return;
+    return res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
   }
 
   // Extract user from enablement result
