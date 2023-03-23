@@ -23,6 +23,6 @@ const amazonAccountSchema = new Schema({
 });
 
 const AmazonAccount =
-  models.AmazonAccount || model('AmazonAccount', amazonAccountSchema);
+  models?.AmazonAccount || model('AmazonAccount', amazonAccountSchema);
 
-module.exports = AmazonAccount;
+export default AmazonAccount;

@@ -9,6 +9,6 @@ const serviceAccountSchema = new Schema({
 });
 
 const ServiceAccount =
-  models.ServiceAccount || model('ServiceAccount', serviceAccountSchema);
+  models?.ServiceAccount || model('ServiceAccount', serviceAccountSchema);
 
-module.exports = ServiceAccount;
+export default ServiceAccount;

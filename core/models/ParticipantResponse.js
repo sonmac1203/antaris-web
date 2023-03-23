@@ -5,14 +5,21 @@ import Survey from './Survey';
 const participantResponseSchema = new Schema({
   responded_by: { type: Schema.Types.ObjectId, ref: 'Participant' },
   responded_to: { type: Schema.Types.ObjectId, ref: 'Survey' },
-  content: { type: [], default: [] },
-  started_at: Date,
+  content: [
+    {
+      text: { type: String, default: '' },
+      identifier: { type: String, default: '' },
+      provided_at: { type: Date, default: Date.now() },
+      _id: false,
+    },
+  ],
+  started_at: { type: Date, default: Date.now() },
   completed_at: Date,
   completed: { type: Boolean, default: false },
 });
 
 const ParticipantResponse =
-  models.ParticipantResponse ||
+  models?.ParticipantResponse ||
   model('ParticipantResponse', participantResponseSchema);
 
-module.exports = ParticipantResponse;
+export default ParticipantResponse;

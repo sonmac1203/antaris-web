@@ -13,8 +13,9 @@ const participantSchema = new Schema({
     assigned_surveys: [
       {
         survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
-        assigned_at: Date,
         completed: { type: Boolean, default: false },
+        assigned_at: { type: Date, default: Date.now() },
+        _id: false,
       },
     ],
   },
@@ -26,6 +27,6 @@ const participantSchema = new Schema({
 });
 
 const Participant =
-  models.Participant || model('Participant', participantSchema);
+  models?.Participant || model('Participant', participantSchema);
 
-module.exports = Participant;
+export default Participant;
