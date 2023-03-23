@@ -1,7 +1,7 @@
 import ServiceAccount from '@/core/models/ServiceAccount';
 import connectToDb from '@/core/db/connectToDb';
 import MDHService from '@/core/utils/mdh/mdh-service';
-import { withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 import jwtUtils from '@/core/utils/jwt-utils';
 
 const fs = require('fs');
@@ -37,7 +37,7 @@ const handler = async (req, res) => {
           tokenExpiresAt: token_expires_at,
         };
         const authToken = jwtUtils.encode(itemToEncode);
-        req.session.researcher_token = authToken;
+        req.session.token = authToken;
         await req.session.save();
         return res.redirect('/dash');
       }
@@ -78,7 +78,7 @@ const handler = async (req, res) => {
       tokenExpiresAt,
     };
     const authToken = jwtUtils.encode(itemToEncode);
-    req.session.researcher_token = authToken;
+    req.session.token = authToken;
     await req.session.save();
     return res.redirect('/dash');
   } catch (err) {

@@ -1,5 +1,5 @@
 import jwtUtils from '@/core/utils/jwt-utils';
-import { withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -11,7 +11,7 @@ const handler = async (req, res) => {
   res.redirect('/participants');
   try {
     const authToken = jwtUtils.encode(itemToEncode);
-    req.session.researcher_token = authToken;
+    req.session.token = authToken;
     await req.session.save();
     console.log('REDIRECTING TO DASH');
     res.redirect('/participants');

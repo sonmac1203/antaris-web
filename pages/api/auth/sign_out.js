@@ -1,4 +1,4 @@
-import { withSessionApiRoute } from '@/core/utils';
+import { withSessionApiRoute } from '@/core/utils/session';
 
 const handler = async (req, res) => {
   req.session.destroy();
