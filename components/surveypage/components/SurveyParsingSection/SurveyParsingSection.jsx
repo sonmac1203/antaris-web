@@ -2,71 +2,90 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Row, Col, Form, Button, Accordion } from 'react-bootstrap';
 import { useCredentials } from '@/core/hooks';
+import { useSurvey } from '@/core/hooks';
 
-export const SurveyParsingSection = ({ surveyData, participantData }) => {
+export const SurveyParsingSection = () => {
   const {
-    surveyID,
-    surveyName,
-    status,
-    surveyDisplayName,
-    participantIdentifier,
-    surveyDescription,
-    dueDate,
-  } = surveyData;
+    error,
+    loading,
+    surveyData,
+    setSurveyContent,
+    sendSurvey,
+    setSelectedParticipants,
+  } = useSurvey();
+
+  const { surveyID, surveyName, surveyDisplayName, surveyDescription } =
+    surveyData;
 
   const { projectId } = useCredentials();
   const [surveyItems, setSurveyItems] = useState([]);
 
+  const selectedParticipants = ['MDH-0224-3069', 'MDH-5747-4140'];
+
   const onSurveyTemplateSubmit = (e) => {
     e.preventDefault();
     const { steps } = JSON.parse(e.target[0].value);
+
+    const surveyContent = steps.map((question) => {
+      return {
+        type: question.type,
+        text: question.text,
+        title: question.title,
+        identifier: question.identifier,
+      };
+    });
+    console.log(surveyContent);
+    setSurveyContent(surveyContent);
     setSurveyItems(steps);
+    setSelectedParticipants(selectedParticipants);
   };
 
-  const handleSave = async () => {
-    try {
-      const { data: firstResponse } = await axios.post(
-        '/api/store_participant',
-        participantData
-      );
+  const handleSave = async () => await sendSurvey();
 
-      if (!firstResponse.success) {
-        return;
-      }
+  // const handleSave = async () => {
+  //   try {
+  //     const { data: firstResponse } = await axios.post(
+  //       '/api/store_participant',
+  //       participantData
+  //     );
 
-      const surveyContent = surveyItems.map((item) => ({
-        ...item,
-        status: 'incomplete',
-      }));
+  //     if (!firstResponse.success) {
+  //       return;
+  //     }
 
-      console.log(surveyContent);
+  //     const surveyContent = surveyItems.map((item) => ({
+  //       ...item,
+  //       status: 'incomplete',
+  //     }));
 
-      const { data: secondResponse } = await axios.post(
-        '/api/surveys/send_survey',
-        {
-          project_id: projectId,
-          survey_id: surveyID,
-          participant_identifier: participantIdentifier,
-          secondary_identifier: participantData.secondary_identifier,
-          survey_name: surveyName,
-          survey_display_name: surveyDisplayName,
-          survey_description: surveyDescription,
-          status: status,
-          due_date: dueDate,
-          content: surveyContent,
-        }
-      );
+  //     console.log(surveyContent);
 
-      if (!secondResponse.success) {
-        return;
-      }
-      console.log(firstResponse);
-      console.log(secondResponse);
-    } catch (err) {
-      console.log(err);
-      return;
-    }
-  };
+  //     const { data: secondResponse } = await axios.post(
+  //       '/api/surveys/send_survey',
+  //       {
+  //         project_id: projectId,
+  //         survey_id: surveyID,
+  //         participant_identifier: participantIdentifier,
+  //         secondary_identifier: participantData.secondary_identifier,
+  //         survey_name: surveyName,
+  //         survey_display_name: surveyDisplayName,
+  //         survey_description: surveyDescription,
+  //         status: status,
+  //         due_date: dueDate,
+  //         content: surveyContent,
+  //       }
+  //     );
+
+  //     if (!secondResponse.success) {
+  //       return;
+  //     }
+  //     console.log(firstResponse);
+  //     console.log(secondResponse);
+  //   } catch (err) {
+  //     console.log(err);
+  //     return;
+  //   }
+  // };
 
   return (
     <section>
@@ -91,8 +110,9 @@ export const SurveyParsingSection = ({ surveyData, participantData }) => {
             </Button>
           </Form>
           <Button className='mt-3' onClick={handleSave}>
-            Send to participant
+            {loading ? 'Sending...' : 'Send to participants'}
           </Button>
+          {error && <div>THERE HAS BEEN AN ERROR</div>}
         </Col>
         <Col>
           <div className='mb-2'>

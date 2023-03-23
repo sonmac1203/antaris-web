@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   SurveyParsingSection,
   StoredSurveySection,
@@ -6,26 +6,28 @@ import {
   HistorySection,
   BreadcrumbSection,
 } from './components';
+import { useSurvey } from '@/core/hooks';
 
-export const SurveyPage = ({ data }) => {
-  const { participantIdentifier, surveyID, fromDatabase } = data;
+export const SurveyPage = () => {
+  const { surveyData } = useSurvey();
+  const { participantIdentifier, surveyID, fromDatabase } = surveyData;
   const [participantData, setParticipantData] = useState(null);
 
   return (
     <>
       <BreadcrumbSection />
-      {fromDatabase && <StoredSurveySection />}
+      <ParticipantInfoSection />
+      <StoredSurveySection />
       <SurveyParsingSection
-        surveyData={data}
+        surveyData={surveyData}
         participantData={participantData}
       />
-      <ParticipantInfoSection />
-      {fromDatabase && (
+      {/* {fromDatabase && (
         <HistorySection
           surveyId={surveyID}
           participantIdentifier={participantIdentifier}
         />
-      )}
+      )} */}
     </>
   );
 };
