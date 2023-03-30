@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { getSessionPayloadAsClient, refreshSession } from '@/core/utils';
+import { useSession } from '@/core/hooks';
 import { useRouter } from 'next/router';
 
 const ONE_SECOND = 1000;
@@ -7,6 +7,7 @@ const ONE_SECOND = 1000;
 export const SessionRefreshTimer = () => {
   const { asPath } = useRouter();
   const intervalIdRef = useRef(null);
+  const { getSessionPayloadAsClient, refreshSessionPayload } = useSession();
 
   const getPayload = async () => {
     const payload = await getSessionPayloadAsClient();
@@ -26,7 +27,7 @@ export const SessionRefreshTimer = () => {
         counter -= 1;
       } else {
         clearInterval(intervalIdRef.current);
-        await refreshSession(asPath);
+        await refreshSessionPayload(asPath);
       }
     }, ONE_SECOND);
   };
