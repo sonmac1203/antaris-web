@@ -1,0 +1,1 @@
+export { ResearcherSignInCard } from './ResearcherSignInCard';
