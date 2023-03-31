@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useCredentials } from '@/core/hooks';
 
 export const HistorySection = ({ surveyId, participantIdentifier }) => {
-  const { projectId } = useCredentials();
+  // const { projectId } = useCredentials();
   const [historyData, setHistoryData] = useState(null);
 
   console.log(projectId);

@@ -6,9 +6,9 @@ export const BreadcrumbSection = () => {
   const { surveyData: data } = useSurvey();
 
   return (
-    <Breadcrumb>
+    <Breadcrumb style={{ fontSize: '1.5rem' }}>
       <Breadcrumb.Item linkAs={Link} href='/dashboard'>
-        Dashboard
+        Dash
       </Breadcrumb.Item>
       <Breadcrumb.Item active>{data.surveyDisplayName}</Breadcrumb.Item>
     </Breadcrumb>

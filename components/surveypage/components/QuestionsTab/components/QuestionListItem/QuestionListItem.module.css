@@ -1,0 +1,24 @@
+.Main {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.Title {
+  font-size: 1.0625rem;
+  font-weight: 500 !important;
+  margin-bottom: 0.3rem;
+}
+.Description {
+  font-size: 1.0625rem;
+  color: #212529;
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Footer {
+  gap: 5px;
+}
+.Footer div{
+  font-size: 12px;
+  opacity: 0.75;
+}
