@@ -1,0 +1,24 @@
+.Modal {
+  max-width: none !important;
+}
+@media (min-width: 1200px) {
+  .Modal {
+    width: 55%;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199.98px){
+  .Modal {
+    width: 80%;
+  }
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .Modal {
+    width: 70%;
+  }
+}
+
+.Title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
