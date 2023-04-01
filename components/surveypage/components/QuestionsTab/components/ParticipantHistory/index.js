@@ -1,1 +1,0 @@
-export { ParticipantHistory } from './ParticipantHistory';
