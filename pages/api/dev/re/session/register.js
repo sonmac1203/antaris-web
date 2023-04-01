@@ -6,6 +6,7 @@ import {
   getMdhAccessToken,
   jwtUtils,
 } from '@/core/utils';
+import connectToDb from '@/core/db/connectToDb';
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -21,6 +22,8 @@ const handler = async (req, res) => {
       message: 'Missing credentials. Please check again!',
     });
   }
+
+  await connectToDb();
 
   try {
     const existingAccount = await ServiceAccount.findOne({
@@ -78,6 +81,7 @@ const handler = async (req, res) => {
       message: 'You are in! Redirecting to dashboard...',
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: 'Server error. Please try again.',
