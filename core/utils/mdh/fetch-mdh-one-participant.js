@@ -14,7 +14,10 @@ export async function fetchMdhOneParticipant(props) {
   const existingParticipant = await Participant.findOne(
     { participant_identifier: participant.participantIdentifier },
     'alexa_metadata'
-  );
+  ).populate({
+    path: 'alexa_metadata.assigned_surveys.survey',
+    select: 'mdh_id',
+  });
 
   if (existingParticipant) {
     return {
