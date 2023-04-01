@@ -1,1 +1,0 @@
-export { ParticipantInfoSection } from './ParticipantInfoSection';
