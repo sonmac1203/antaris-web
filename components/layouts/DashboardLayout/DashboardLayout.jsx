@@ -9,10 +9,8 @@ export const DashboardLayout = ({ children }) => {
       <Head>
         <title>Antaris | Dashboard</title>
       </Head>
-      <main className={styles.Main}>
-        <Header />
-        <div className={styles.Content}>{children}</div>
-      </main>
+      <Header />
+      <main className={styles.Main}>{children}</main>
       <Footer />
     </>
   );
