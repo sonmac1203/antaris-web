@@ -3,6 +3,8 @@ import { Schema, models, model } from 'mongoose';
 const serviceAccountSchema = new Schema({
   project_id: String,
   mdh_id: String,
+  private_key_encoded: String,
+  password_hash: String,
   access_token: String,
   token_expires_at: Date,
   last_accessed: { type: Date, default: Date.now() },

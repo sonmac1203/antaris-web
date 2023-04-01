@@ -1,6 +1,4 @@
 import { Schema, models, model } from 'mongoose';
-import Participant from './Participant';
-import Survey from './Survey';
 
 const participantResponseSchema = new Schema({
   responded_by: { type: Schema.Types.ObjectId, ref: 'Participant' },

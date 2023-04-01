@@ -7,24 +7,29 @@ const surveySchema = new Schema({
   display_name: { type: String, default: '' },
   description: { type: String, default: '' },
   alexa_completed: { type: Boolean, default: false },
-  content: [
-    {
-      type: { type: String, default: '' },
-      text: { type: String, default: '' },
-      title: { type: String, default: '' },
-      identifier: { type: String, default: '' },
-      completed: { type: Boolean, default: false },
-      _id: false,
-    },
-  ],
-  assigned_to: [
-    {
-      participant: { type: Schema.Types.ObjectId, ref: 'Participant' },
-      completed: { type: Boolean, default: false },
-      assigned_at: { type: Date, default: Date.now() },
-      _id: false,
-    },
-  ],
+  content: {
+    imported_at: { type: Date, default: Date.now() },
+    questions: [
+      {
+        type: { type: String, default: '' },
+        text: { type: String, default: '' },
+        title: { type: String, default: '' },
+        identifier: { type: String, default: '' },
+        _id: false,
+      },
+    ],
+  },
+  assigned_to: {
+    type: [
+      {
+        participant: { type: Schema.Types.ObjectId, ref: 'Participant' },
+        completed: { type: Boolean, default: false },
+        assigned_at: { type: Date, default: Date.now() },
+        _id: false,
+      },
+    ],
+    default: [],
+  },
 });
 
 const Survey = models?.Survey || model('Survey', surveySchema);
