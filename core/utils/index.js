@@ -12,6 +12,7 @@ export { refreshSession } from './session';
 
 export { fetchMdhParticipants } from './mdh';
 export { fetchMdhSurveys } from './mdh';
+export { fetchMdhOneParticipant } from './mdh';
 export { getMdhAccessToken } from './mdh';
 
 export { withSsrAuth } from './auth';

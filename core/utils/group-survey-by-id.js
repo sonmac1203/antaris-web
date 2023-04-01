@@ -7,6 +7,7 @@ export const groupSurveyById = (surveys) => {
       surveyName,
       surveyDisplayName,
       surveyDescription,
+      status,
     } = survey;
     const group = acc.find((group) => group.surveyID === surveyID);
 
@@ -17,6 +18,7 @@ export const groupSurveyById = (surveys) => {
       });
     } else {
       acc.push({
+        status,
         surveyID,
         surveyName,
         surveyDisplayName,
