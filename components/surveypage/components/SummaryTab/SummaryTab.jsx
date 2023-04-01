@@ -1,5 +1,5 @@
-import React from 'react';
+import { memo } from 'react';
 
-export const SummaryTab = () => {
+export const SummaryTab = memo(() => {
   return <div>SummaryTab</div>;
-};
+});

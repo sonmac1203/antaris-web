@@ -1,13 +1,25 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import { useSurvey } from '@/core/hooks';
+import { SurveyPageContext } from '../../context';
 import { Button, Modal, Row, Col, Form, Accordion } from 'react-bootstrap';
 import styles from './SurveyImportModal.module.css';
 
 export const SurveyImportModal = () => {
+  const { refreshData } = useContext(SurveyPageContext);
+
   const [show, setShow] = useState(false);
   const [error, setError] = useState(false);
 
   const [surveyItems, setSurveyItems] = useState([]);
   const surveyTemplateRef = useRef(null);
+
+  const {
+    saveSurvey,
+    error: saveError,
+    loading,
+    success,
+    surveyData,
+  } = useSurvey();
 
   const handleTemplatePasted = () => {
     setError(false);
@@ -24,20 +36,50 @@ export const SurveyImportModal = () => {
   };
 
   const handleClose = () => {
-    setShow(false);
     surveyTemplateRef.current.value = '';
     setShow(false);
     setError(false);
     setSurveyItems([]);
   };
 
+  const handleImport = async () => {
+    const surveyQuestions = surveyItems.map((question) => {
+      return {
+        type: question.type,
+        text: question.text,
+        title: question.title,
+        identifier: question.identifier,
+      };
+    });
+    await saveSurvey(surveyQuestions);
+  };
+
+  useEffect(() => {
+    if (success) {
+      const timeoutId = setTimeout(() => {
+        handleClose();
+        refreshData();
+      }, 3000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [success]);
+
   return (
     <>
-      <Button variant='primary' onClick={() => setShow(true)}>
-        <i className='fa-solid fa-plus me-2' />
-        Import
+      <Button
+        variant={surveyData?.content ? 'secondary' : 'primary'}
+        onClick={() => setShow(true)}
+        disabled={surveyData?.content}
+      >
+        {surveyData?.content ? (
+          'Imported'
+        ) : (
+          <>
+            <i className='fa-solid fa-plus me-2' />
+            Import
+          </>
+        )}
       </Button>
-
       <Modal
         show={show}
         onHide={handleClose}
@@ -75,7 +117,7 @@ export const SurveyImportModal = () => {
                   </Form.Label>
                   <Form.Control
                     as='textarea'
-                    rows={20}
+                    rows={16}
                     placeholder='Use survey JSON template from MyDataHelps'
                     onChange={handleTemplatePasted}
                     ref={surveyTemplateRef}
@@ -115,9 +157,27 @@ export const SurveyImportModal = () => {
           <Button variant='secondary' onClick={handleClose}>
             Close
           </Button>
-          <Button variant='primary'>Import</Button>
+          <Button
+            variant='primary'
+            onClick={handleImport}
+            disabled={loading || success}
+          >
+            {saveError
+              ? 'Failed'
+              : loading
+              ? 'Importing...'
+              : success
+              ? 'Imported'
+              : 'Import'}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 };
+
+function closeModalAfterDelay(delayInMs, onSuccess) {
+  setTimeout(() => {
+    onSuccess();
+  }, delayInMs);
+}
