@@ -3,6 +3,7 @@ export { handleRequest } from './handle-request';
 export { groupSurveyById } from './group-survey-by-id';
 export { default as jwtUtils } from './jwt-utils';
 export { getExpirationTimestamp } from './get-expiration-timestamp';
+export { formatDate } from './format-date';
 
 export { getSession } from './session';
 export { withSession } from './session';

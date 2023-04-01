@@ -2,15 +2,8 @@ import { useEffect, useContext } from 'react';
 import { useSurvey } from '@/core/hooks';
 import { SurveyPageContext } from '@/components/surveypage/context';
 import { QuestionListItem } from '../QuestionListItem';
+import { formatDate } from '@/core/utils';
 import { ListGroup, Card } from 'react-bootstrap';
-
-const formatDate = (date) =>
-  date.toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    day: 'numeric',
-    month: 'long',
-  });
 
 export const QuestionsSection = () => {
   const { surveyData } = useSurvey();
