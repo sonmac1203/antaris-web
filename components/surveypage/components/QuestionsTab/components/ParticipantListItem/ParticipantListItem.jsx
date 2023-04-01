@@ -1,12 +1,23 @@
-import { Accordion } from 'react-bootstrap';
-import { ParticipantHistory } from '../ParticipantHistory';
+import { useSurvey } from '@/core/hooks';
+import { Accordion, ListGroup } from 'react-bootstrap';
+import { HistoryItem } from '../HistoryItem';
+import { ActionButtons } from '../ActionButtons';
 import styles from './ParticipantListItem.module.css';
 
-export const ParticipantListItem = ({ data }) => {
-  const { accountEmail, participantIdentifier, demographics } = data;
+export const ParticipantListItem = ({ data, eventKey }) => {
+  const { surveyData } = useSurvey();
+  const { accountEmail, participantIdentifier, demographics, alexa_metadata } =
+    data;
+
+  const thisSurvey =
+    !alexa_metadata || alexa_metadata.assigned_surveys.length === 0
+      ? null
+      : alexa_metadata.assigned_surveys.find(
+          (item) => item.survey.mdh_id === surveyData.surveyID
+        );
 
   return (
-    <Accordion.Item eventKey='0'>
+    <Accordion.Item eventKey={eventKey}>
       <Accordion.Header>
         <div className='overflow-hidden text-nowrap'>
           <div className={styles.Title}>
@@ -25,7 +36,31 @@ export const ParticipantListItem = ({ data }) => {
           </div>
         </div>
       </Accordion.Header>
-      <ParticipantHistory />
+      <Accordion.Body className='px-4 py-0'>
+        <ListGroup variant='flush'>
+          {!alexa_metadata ? (
+            <ListGroup.Item className='py-4 px-0'>
+              <i className='fa-regular fa-face-frown me-2' />
+              This person hasn't signed up with Antaris.
+            </ListGroup.Item>
+          ) : (
+            <>
+              {alexa_metadata.assigned_surveys.length === 0 || !thisSurvey ? (
+                <ListGroup.Item className='py-4 px-0'>
+                  <i className='fa-regular fa-thumbs-up me-2' />
+                  Assignments will show up here.
+                </ListGroup.Item>
+              ) : (
+                <HistoryItem data={thisSurvey} />
+              )}
+              <ActionButtons
+                participantIdentifier={participantIdentifier}
+                surveySent={thisSurvey !== null}
+              />
+            </>
+          )}
+        </ListGroup>
+      </Accordion.Body>
     </Accordion.Item>
   );
 };
