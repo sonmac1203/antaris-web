@@ -1,3 +1,4 @@
+import { fetchMdhOneParticipant } from '../utils';
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -9,6 +10,11 @@ export function useMdh() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [participantLoading, setParticipantLoading] = useState(false);
+  const [participantError, setParticipantError] = useState(null);
+
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
 
   const loginToServiceAccount = useCallback(
     async ({ projectId, serviceAccountId }) => {
@@ -41,26 +47,27 @@ export function useMdh() {
     }
   }, []);
 
-  const fetchParticipants = useCallback(async (ids) => {
+  const fetchAllParticipants = useCallback(async () => {
+    try {
+      setParticipantLoading(true);
+      const { data: result } = await axios.get('/api/dev/re/participants');
+      setParticipants(result.data);
+    } catch (err) {
+      setParticipantError(err.response.data);
+    } finally {
+      setParticipantLoading(false);
+    }
+  }, []);
+
+  const fetchSelectedParticipants = useCallback(async (ids) => {
     try {
       setLoading(true);
-      if (!ids || ids.length === 0) {
-        const { data: result } = await axios.get('/api/mdh/participants');
-        setParticipants(result.data);
-      } else {
-        const promises = ids.map((id) => {
-          const config = {
-            params: {
-              participantId: id,
-            },
-          };
-          return axios.get('/api/mdh/participants', config);
-        });
-
-        const promiseResult = await Promise.all(promises);
-        const participantsResult = promiseResult.map((p) => p.data.data);
-        setParticipants(participantsResult);
-      }
+      const promises = ids.map((id) =>
+        axios.get(`/api/dev/re/participants/${id}`)
+      );
+      const promiseResult = await Promise.all(promises);
+      const participantsResult = promiseResult.map((p) => p.data.data);
+      setSelectedParticipants(participantsResult);
     } catch (err) {
       setError(err.response.data);
     } finally {
@@ -71,10 +78,14 @@ export function useMdh() {
   return {
     surveys,
     participants,
+    selectedParticipants,
     loading,
     error,
+    participantLoading,
+    participantError,
     fetchAllSurveys,
-    fetchParticipants,
+    fetchAllParticipants,
+    fetchSelectedParticipants,
     loginToServiceAccount,
   };
 }

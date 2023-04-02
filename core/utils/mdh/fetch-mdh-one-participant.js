@@ -16,7 +16,7 @@ export async function fetchMdhOneParticipant(props) {
     'alexa_metadata'
   ).populate({
     path: 'alexa_metadata.assigned_surveys.survey',
-    select: 'mdh_id',
+    select: 'mdh_id name display_name alexa_completed content',
   });
 
   if (existingParticipant) {
