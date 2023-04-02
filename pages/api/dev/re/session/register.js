@@ -67,7 +67,6 @@ const handler = async (req, res) => {
     });
 
     const itemToEncode = {
-      role: 'researcher',
       serviceAccountId,
       accessToken: result.access_token,
       projectId,
@@ -75,6 +74,7 @@ const handler = async (req, res) => {
     };
     const authToken = jwtUtils.encode(itemToEncode);
     req.session.token = authToken;
+    req.session.role = 'researcher';
     await req.session.save();
     return res.status(200).json({
       success: true,

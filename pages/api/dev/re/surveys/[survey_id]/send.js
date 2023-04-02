@@ -24,14 +24,15 @@ async function handler(req, res) {
       participant_identifier: { $in: participantIds },
     });
 
-    existingSurvey.assigned_to = participants.map((p) => ({
-      participant: p._id,
-    }));
+    existingSurvey.assigned_to.push(
+      ...participants.map((p) => ({ participant: p._id }))
+    );
 
     const promisesToUpdateParticipants = participants.map(
       async (participant) => {
         participant.alexa_metadata.assigned_surveys.push({
           survey: existingSurvey._id,
+          assigned_at: new Date(),
         });
         await participant.save();
       }

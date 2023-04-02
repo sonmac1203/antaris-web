@@ -18,16 +18,7 @@ const handler = async (req, res) => {
     });
     const survey = await Survey.findOne({ mdh_id: surveyID });
 
-    const questionsCount = survey.content.questions.length;
-    const currentCompletedQuestionsCount = survey.content.questions.filter(
-      (question) => question.completed === true
-    ).length;
-
-    const progress = Math.round(
-      ((currentCompletedQuestionsCount + 1) / questionsCount) * 100
-    );
-
-    await ParticipantResponse.findOneAndUpdate(
+    const response = await ParticipantResponse.findOneAndUpdate(
       {
         responded_by: participant._id,
         responded_to: survey._id,
@@ -37,15 +28,25 @@ const handler = async (req, res) => {
           content: {
             text,
             identifier,
+            provided_at: new Date(),
           },
-        },
-        $set: {
-          completed_at: progress === 100 ? new Date() : undefined,
-          completed: progress === 100,
         },
       },
       { upsert: true, new: true }
     );
+
+    const questionsCount = survey.content.questions.length;
+    const currentCompletedQuestionsCount = response.content.length;
+
+    const progress = Math.round(
+      (currentCompletedQuestionsCount / questionsCount) * 100
+    );
+
+    if (progress === 100) {
+      response.completed = true;
+      response.completed_at = new Date();
+      await response.save();
+    }
 
     participant.alexa_metadata.assigned_surveys.forEach((assignedSurvey) => {
       if (assignedSurvey.survey.toString() === survey._id.toString()) {
@@ -53,12 +54,6 @@ const handler = async (req, res) => {
           assignedSurvey.completed = true;
         }
         assignedSurvey.progress = progress;
-      }
-    });
-
-    survey.content.questions.forEach((item) => {
-      if (item.identifier === identifier) {
-        item.completed = true;
       }
     });
 
