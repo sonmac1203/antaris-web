@@ -9,15 +9,8 @@ import {
 } from '@/core/utils';
 import { ParticipantContext } from '@/core/context';
 
-const ParticipantDetails = ({ participantData, participantResponses }) => {
-  const participantContextValue = useMemo(
-    () => ({
-      participantData,
-      assignedSurveys: participantData.alexa_metadata.assigned_surveys,
-      participantResponses,
-    }),
-    [participantData, participantResponses]
-  );
+const ParticipantDetails = (props) => {
+  const participantContextValue = useMemo(() => props, [props]);
 
   return (
     <ParticipantContext.Provider value={participantContextValue}>
@@ -47,7 +40,10 @@ export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
     return {
       props: {
         participantData: JSON.parse(JSON.stringify(participant)),
-        participantResponses: responses,
+        assignedSurveys: JSON.parse(
+          JSON.stringify(participant.alexa_metadata.assigned_surveys)
+        ),
+        participantResponses: JSON.parse(JSON.stringify(responses)),
       },
     };
   } catch (err) {
