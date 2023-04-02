@@ -5,7 +5,7 @@ import { ListGroup, Button } from 'react-bootstrap';
 
 export const ActionButtons = ({ participantIdentifier, surveySent }) => {
   const { refreshThisSection } = useContext(ParticipantsSectionContext);
-  const { error, loading, success, sendSurvey } = useSurvey();
+  const { error, loading, success, sendSurvey, surveyData } = useSurvey();
 
   const handleSend = async () => {
     await sendSurvey([participantIdentifier]);
@@ -25,7 +25,7 @@ export const ActionButtons = ({ participantIdentifier, surveySent }) => {
       <Button
         variant='primary'
         onClick={handleSend}
-        disabled={loading || success || surveySent}
+        disabled={loading || success || surveySent || !surveyData.content}
       >
         <i className='fa-regular fa-paper-plane me-2' />
         {error

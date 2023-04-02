@@ -98,16 +98,6 @@ export const SurveyImportModal = () => {
           <Row>
             <Col lg='6'>
               <Form>
-                <Form.Group className='mb-3'>
-                  <Form.Label className={styles.Title}>
-                    Use an old version
-                  </Form.Label>
-                  <Form.Select aria-label='Default select example'>
-                    <option value='1'>Version 1</option>
-                    <option value='2'>Version 2</option>
-                    <option value='3'>Version 3</option>
-                  </Form.Select>
-                </Form.Group>
                 <Form.Group
                   className='mb-3'
                   controlId='exampleForm.ControlTextarea1'

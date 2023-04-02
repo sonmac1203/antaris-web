@@ -51,7 +51,10 @@ export const ParticipantListItem = ({ data, eventKey }) => {
                   Assignments will show up here.
                 </ListGroup.Item>
               ) : (
-                <HistoryItem data={thisSurvey} />
+                <HistoryItem
+                  data={thisSurvey}
+                  participantIdentifier={participantIdentifier}
+                />
               )}
               <ActionButtons
                 participantIdentifier={participantIdentifier}

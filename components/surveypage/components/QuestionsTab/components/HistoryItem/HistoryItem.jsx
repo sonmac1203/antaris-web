@@ -1,7 +1,11 @@
-import { formatDate } from '@/core/utils';
 import { ListGroup, Button, ProgressBar } from 'react-bootstrap';
+import { formatDate } from '@/core/utils';
+import Link from 'next/link';
 
-export const HistoryItem = ({ data: { assigned_at, progress } }) => {
+export const HistoryItem = ({
+  data: { assigned_at, progress },
+  participantIdentifier,
+}) => {
   const timeOfAssignement = formatDate(new Date(assigned_at));
 
   return (
@@ -11,9 +15,11 @@ export const HistoryItem = ({ data: { assigned_at, progress } }) => {
           <i className='fa-regular fa-clock me-1' />
           {timeOfAssignement}
         </div>
-        <Button variant='link' className='text-decoration-none'>
-          View details
-        </Button>
+        <Link href={`/dashboard/participants/${participantIdentifier}`}>
+          <Button variant='link' className='text-decoration-none'>
+            View details
+          </Button>
+        </Link>
       </div>
       <ProgressBar striped now={progress} label={`${progress}%`} />
     </ListGroup.Item>
