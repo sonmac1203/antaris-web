@@ -1,11 +1,7 @@
-import { fetchMdhOneParticipant } from '../utils';
 import { useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 export function useMdh() {
-  const router = useRouter();
-
   const [surveys, setSurveys] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,25 +11,6 @@ export function useMdh() {
   const [participantError, setParticipantError] = useState(null);
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
-
-  const loginToServiceAccount = useCallback(
-    async ({ projectId, serviceAccountId }) => {
-      try {
-        setError(null);
-        setLoading(true);
-        await axios.post('/api/mdh/connect', {
-          projectId,
-          serviceAccountId,
-        });
-        router.push('/dashboard');
-      } catch (err) {
-        setError(err.response.data);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
 
   const fetchAllSurveys = useCallback(async () => {
     try {
@@ -86,6 +63,5 @@ export function useMdh() {
     fetchAllSurveys,
     fetchAllParticipants,
     fetchSelectedParticipants,
-    loginToServiceAccount,
   };
 }
