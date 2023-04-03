@@ -5,7 +5,7 @@ import { ActionButtons } from '../ActionButtons';
 import styles from './ParticipantListItem.module.css';
 
 export const ParticipantListItem = ({ data, eventKey }) => {
-  const { surveyData } = useSurvey();
+  const { surveyData: generalSurveyData } = useSurvey();
   const { accountEmail, participantIdentifier, demographics, alexa_metadata } =
     data;
 
@@ -13,7 +13,7 @@ export const ParticipantListItem = ({ data, eventKey }) => {
     !alexa_metadata || alexa_metadata.assigned_surveys.length === 0
       ? null
       : alexa_metadata.assigned_surveys.find(
-          (item) => item.survey.mdh_id === surveyData.surveyID
+          (item) => item.survey.mdh_id === generalSurveyData.surveyID
         );
 
   return (
@@ -59,6 +59,7 @@ export const ParticipantListItem = ({ data, eventKey }) => {
               <ActionButtons
                 participantIdentifier={participantIdentifier}
                 surveySent={thisSurvey !== null}
+                thisSurvey={thisSurvey}
               />
             </>
           )}

@@ -1,14 +1,33 @@
+import Link from 'next/link';
 import { useContext, useEffect } from 'react';
 import { useSurvey } from '@/core/hooks';
 import { ParticipantsSectionContext } from '../ParticipantsSection/context';
-import { ListGroup, Button } from 'react-bootstrap';
+import { ListGroup, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 
-export const ActionButtons = ({ participantIdentifier, surveySent }) => {
+export const ActionButtons = ({ participantIdentifier, thisSurvey }) => {
   const { refreshThisSection } = useContext(ParticipantsSectionContext);
-  const { error, loading, success, sendSurvey, surveyData } = useSurvey();
+  const {
+    error,
+    loading,
+    success,
+    sendSurvey,
+    notifySurvey,
+    sendAndNotifySurvey,
+    surveyData,
+  } = useSurvey();
+
+  const { notified, last_notified } = thisSurvey || {};
 
   const handleSend = async () => {
     await sendSurvey([participantIdentifier]);
+  };
+
+  const handleSendAndNotify = async () => {
+    await sendAndNotifySurvey([participantIdentifier]);
+  };
+
+  const handleNotify = async () => {
+    await notifySurvey([participantIdentifier]);
   };
 
   useEffect(() => {
@@ -20,26 +39,46 @@ export const ActionButtons = ({ participantIdentifier, surveySent }) => {
     }
   }, [success]);
 
+  const sendButtonDisabled =
+    loading || success || thisSurvey || !surveyData.content;
+
+  const timeFromLastNotification = last_notified
+    ? new Date().getTime() - new Date(last_notified).getTime()
+    : 0;
+
+  const notifyButtonDisabled =
+    loading ||
+    !surveyData.content ||
+    !thisSurvey ||
+    (notified && timeFromLastNotification <= 3600000);
+
   return (
     <ListGroup.Item className='py-4 px-0 d-flex gap-2 flex-row-reverse'>
-      <Button
-        variant='primary'
-        onClick={handleSend}
-        disabled={loading || success || surveySent || !surveyData.content}
-      >
-        <i className='fa-regular fa-paper-plane me-2' />
-        {error
-          ? 'Failed'
-          : loading
-          ? 'Sending...'
-          : success || surveySent
-          ? 'Sent'
-          : 'Send'}
-      </Button>
-      {/* <Button disabled>
-        <i className='fa-regular fa-bell me-2' />
-        Notify
-      </Button> */}
+      <DropdownButton id='dropdown-basic-button' title='Actions' align='end'>
+        <Dropdown.Item disabled={sendButtonDisabled} onClick={handleSend}>
+          {error
+            ? 'Failed'
+            : loading
+            ? 'Sending...'
+            : success || thisSurvey
+            ? 'Sent'
+            : 'Send'}
+        </Dropdown.Item>
+        <Dropdown.Item disabled={notifyButtonDisabled} onClick={handleNotify}>
+          Notify
+        </Dropdown.Item>
+        <Dropdown.Item
+          disabled={sendButtonDisabled}
+          onClick={handleSendAndNotify}
+        >
+          Send and notify
+        </Dropdown.Item>
+      </DropdownButton>
+      <Link href={`/dashboard/participants/${participantIdentifier}`}>
+        <Button variant='link' className='text-decoration-none'>
+          View details
+        </Button>
+      </Link>
     </ListGroup.Item>
   );
 };
