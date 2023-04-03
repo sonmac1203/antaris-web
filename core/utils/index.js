@@ -6,6 +6,7 @@ export { getExpirationTimestamp } from './get-expiration-timestamp';
 export { formatDate } from './format-date';
 
 export { fetchParticipantResponses } from './fetch-participant-responses';
+export { sendSurvey } from './send-survey';
 
 export { getSession } from './session';
 export { withSession } from './session';
