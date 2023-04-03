@@ -25,6 +25,8 @@ const surveySchema = new Schema({
         participant: { type: Schema.Types.ObjectId, ref: 'Participant' },
         completed: { type: Boolean, default: false },
         assigned_at: { type: Date, default: Date.now() },
+        notified: { type: Boolean, default: false },
+        last_notified: Date,
         _id: false,
       },
     ],

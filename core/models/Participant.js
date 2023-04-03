@@ -16,6 +16,8 @@ const participantSchema = new Schema({
         completed: { type: Boolean, default: false },
         assigned_at: { type: Date, default: Date.now() },
         progress: { type: Number, default: 0 },
+        notified: { type: Boolean, default: false },
+        last_notified: Date,
         _id: false,
       },
     ],
