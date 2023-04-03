@@ -15,8 +15,19 @@ class AmazonService {
       const response = await request();
       return response.data;
     } catch (error) {
-      console.error(`Error: ${error}`);
       return error.response.data;
+    }
+  };
+
+  #handleSendEventRequest = async (request) => {
+    try {
+      const response = await request();
+      return {
+        status: response.status,
+        message: 'Notification has been sent!',
+      };
+    } catch (error) {
+      return { ...error.response.data, status: error.response.status };
     }
   };
 
@@ -39,7 +50,7 @@ class AmazonService {
 
   async getAccessToken(authCode, grantType) {
     const config = {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: commonHeaders.formUrlEncoded,
     };
 
     const data = {
@@ -129,14 +140,35 @@ class AmazonService {
     return apiResponse;
   }
 
-  async sendProactiveEvent(accessToken, userId) {
+  async getProactiveAccessToken() {
+    const config = {
+      headers: commonHeaders.formUrlEncoded,
+    };
+
+    const data = {
+      grant_type: 'client_credentials',
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      scope: 'alexa::proactive_events',
+    };
+
+    const route = getAccessTokenRoute();
+    const apiResponse = await this.#handleRequest(() =>
+      axios.post(route, new URLSearchParams(data), config)
+    );
+    return apiResponse;
+  }
+
+  async sendProactiveEvent(accessToken, userId, creatorName) {
     const config = {
       headers: commonHeaders.json(accessToken),
     };
 
-    const timestamp = new Date();
-    const expiryTime = new Date();
-    expiryTime.setMinutes(expiryTime.getHours() + 24);
+    const timestamp = new Date().toISOString();
+    const expiryTime = new Date(
+      new Date().setHours(new Date().getHours() + 1)
+    ).toISOString();
+
     const referenceId = 'AntarisNotification' + new Date().getTime();
 
     const bodyData = {
@@ -152,9 +184,9 @@ class AmazonService {
           },
           messageGroup: {
             creator: {
-              name: 'Son Mac',
+              name: creatorName,
             },
-            count: 5,
+            count: 1,
           },
         },
       },
@@ -171,8 +203,9 @@ class AmazonService {
         },
       },
     };
+
     const route = getSendEventRoute();
-    const apiResponse = this.#handleRequest(() =>
+    const apiResponse = await this.#handleSendEventRequest(() =>
       axios.post(route, bodyData, config)
     );
     return apiResponse;
