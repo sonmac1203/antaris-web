@@ -52,7 +52,7 @@ export function useSession() {
   const getSessionPayloadAsClient = useCallback(async () => {
     try {
       const { data: result } = await axios.get('/api/dev/re/session');
-      return result.data;
+      return { payload: result.data, role: result.role };
     } catch (err) {
       return null;
     }

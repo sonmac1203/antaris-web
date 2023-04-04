@@ -10,19 +10,21 @@ export const SessionRefreshTimer = () => {
   const { getSessionPayloadAsClient, refreshSessionPayload } = useSession();
 
   const getPayload = async () => {
-    const payload = await getSessionPayloadAsClient();
+    const { payload, role } = await getSessionPayloadAsClient();
     if (!payload) {
       return;
     }
+
+    if (payload && role === 'participant') {
+      return;
+    }
+
     const { tokenExpiresAt } = payload;
     const timeUntilExpiration = Math.ceil(
       (new Date(tokenExpiresAt).getTime() - Date.now()) / 1000
     );
     let counter = timeUntilExpiration;
     intervalIdRef.current = setInterval(async () => {
-      if (counter % 3 === 0) {
-        console.log(counter); // just for testing
-      }
       if (counter >= -1) {
         counter -= 1;
       } else {
