@@ -1,6 +1,7 @@
 import { Schema, models, model } from 'mongoose';
 
 const participantResponseSchema = new Schema({
+  project_id: { type: String, default: '' },
   responded_by: { type: Schema.Types.ObjectId, ref: 'Participant' },
   responded_to: { type: Schema.Types.ObjectId, ref: 'Survey' },
   content: [
