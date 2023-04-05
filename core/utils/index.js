@@ -4,9 +4,11 @@ export { groupSurveyById } from './group-survey-by-id';
 export { default as jwtUtils } from './jwt-utils';
 export { getExpirationTimestamp } from './get-expiration-timestamp';
 export { formatDate } from './format-date';
+export { dynamicFormatDate } from './dynamic-format-date';
 
 export { fetchParticipantResponses } from './fetch-participant-responses';
 export { sendSurvey } from './send-survey';
+export { fetchResponses } from './fetch-responses';
 
 export { getSession } from './session';
 export { withSession } from './session';
