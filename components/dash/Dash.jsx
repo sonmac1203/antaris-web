@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useMdh } from '@/core/hooks';
 import { SurveyList, ParticipantList } from './components';
-import styles from './Dash.module.css';
 
 export const Dash = () => {
   const {
@@ -26,8 +25,8 @@ export const Dash = () => {
   return (
     <div className='core-container d-flex flex-column gap-5 mb-5'>
       <section>
-        <h1 className={styles.Title}>Active surveys</h1>
-        <h2 className={styles.Subtitle}>
+        <h1 className='fs-2'>Active surveys</h1>
+        <h2 className='fs-6 mb-3 text-secondary fw-normal'>
           Click on each survey to view details
         </h2>
         {error ? (
@@ -39,8 +38,8 @@ export const Dash = () => {
         )}
       </section>
       <section>
-        <h1 className={styles.Title}>Participants</h1>
-        <h2 className={styles.Subtitle}>
+        <h1 className='fs-2'>Participants</h1>
+        <h2 className='fs-6 mb-3 text-secondary fw-normal'>
           Click on each participant to view details
         </h2>
         {participantError ? (

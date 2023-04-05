@@ -15,12 +15,17 @@ export const ParticipantItem = ({ participant }) => {
     <ListGroup.Item
       as='li'
       className={`d-flex justify-content-between align-items-start py-3 ${styles.Wrapper}`}
+      role='button'
       onClick={handleItemClick}
     >
       <div className={styles.Left}>
-        <div className={styles.HeaderContainer}>
-          <div className={styles.Title}>{participantName}</div>
-          <div className={styles.Subtitle}>{participantIdentifier}</div>
+        <div className='d-flex align-items-center gap-2 mb-1'>
+          <div className={`fs-5 fw-semibold ${styles.Title}`}>
+            {participantName}
+          </div>
+          <div className={`${styles.Subtitle} text-secondary`}>
+            {participantIdentifier}
+          </div>
           <Badge bg={alexa_metadata ? 'success' : 'secondary'}>
             {alexa_metadata ? 'registered' : 'not registered'}
           </Badge>
