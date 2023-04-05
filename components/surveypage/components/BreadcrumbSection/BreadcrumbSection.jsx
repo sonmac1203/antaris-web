@@ -1,16 +1,18 @@
 import { Breadcrumb } from 'react-bootstrap';
-import { useSurvey } from '@/core/hooks';
 import Link from 'next/link';
+import styles from './BreadcrumbSection.module.css';
 
-export const BreadcrumbSection = () => {
-  const { surveyData: data } = useSurvey();
-
+export const BreadcrumbSection = ({ title }) => {
   return (
-    <Breadcrumb style={{ fontSize: '1.5rem' }}>
-      <Breadcrumb.Item linkAs={Link} href='/dashboard'>
-        Dash
+    <Breadcrumb>
+      <Breadcrumb.Item
+        linkAs={Link}
+        href='/dashboard'
+        className={styles.ItemStyle}
+      >
+        Dashboard
       </Breadcrumb.Item>
-      <Breadcrumb.Item active>{data.surveyDisplayName}</Breadcrumb.Item>
+      <Breadcrumb.Item active>{title}</Breadcrumb.Item>
     </Breadcrumb>
   );
 };

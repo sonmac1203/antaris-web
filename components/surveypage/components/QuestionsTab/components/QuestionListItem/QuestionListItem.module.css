@@ -8,17 +8,10 @@
   margin-bottom: 0.3rem;
 }
 .Description {
-  font-size: 1.0625rem;
-  color: #212529;
-  margin-bottom: 0.3rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .Footer {
-  gap: 5px;
-}
-.Footer div{
-  font-size: 12px;
-  opacity: 0.75;
+  font-size: 12px !important;
 }
