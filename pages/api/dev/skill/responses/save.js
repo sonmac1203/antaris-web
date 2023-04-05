@@ -9,7 +9,7 @@ const handler = async (req, res) => {
   }
 
   const { text, identifier } = req.body;
-  const { survey_id: surveyID, participant_identifier } = req.query;
+  const { survey_id: surveyID, participant_identifier, project_id } = req.query;
 
   try {
     // find the participant and survey
@@ -20,6 +20,7 @@ const handler = async (req, res) => {
 
     const response = await ParticipantResponse.findOneAndUpdate(
       {
+        project_id,
         responded_by: participant._id,
         responded_to: survey._id,
       },
