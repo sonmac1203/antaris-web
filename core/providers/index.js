@@ -1,0 +1,1 @@
+export { ResponsePageProvider } from './ResponsePageProvider';

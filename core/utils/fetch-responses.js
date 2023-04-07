@@ -49,7 +49,7 @@ export async function fetchResponses(props) {
     }
 
     if (end) {
-      timeQuery['$lte'] = new Date(end);
+      timeQuery['$lte'] = new Date(new Date(end).setUTCHours(23, 59, 59, 999));
     }
 
     if (start || end) {
@@ -95,7 +95,6 @@ export async function fetchResponses(props) {
 
     return result;
   } catch (err) {
-    console.log(err);
     return null;
   }
 }

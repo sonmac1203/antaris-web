@@ -1,58 +1,34 @@
 import { useContext, useState, useCallback } from 'react';
 import { ResponseContext } from '../context/';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 export const useResponse = () => {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const responseContext = useContext(ResponseContext);
 
-  // const sendSurvey = useCallback(
-  //   async (ids) => {
-  //     const requestBody = {
-  //       participantIds: ids,
-  //     };
-  //     try {
-  //       setLoading(true);
-  //       await axios.post(
-  //         `/api/dev/re/surveys/${surveyData.surveyID}/send`,
-  //         requestBody
-  //       );
-  //       setSuccess(true);
-  //     } catch (err) {
-  //       setError(err.response.data);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  //   [surveyData]
-  // );
-
-  // const saveSurvey = useCallback(
-  //   async (surveyQuestions) => {
-  //     const requestBody = {
-  //       surveyQuestions,
-  //       surveyData,
-  //     };
-  //     try {
-  //       setLoading(true);
-  //       await axios.post(
-  //         `/api/dev/re/surveys/${surveyData.surveyID}/save`,
-  //         requestBody
-  //       );
-  //       setSuccess(true);
-  //     } catch (err) {
-  //       setError(err.response.data);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   },
-  //   [surveyData]
-  // );
+  const filterResponses = useCallback((startRefreshing) => {
+    const { selectedSurveys, selectedParticipants, startTime, endTime } =
+      responseContext;
+    const participantIds = selectedParticipants.current
+      .map((p) => p.value)
+      .join(',');
+    const surveyIds = selectedSurveys.current.map((s) => s.value).join(',');
+    router.replace(
+      `/dashboard/responses?participant_ids=${participantIds}&survey_ids=${surveyIds}&start=${startTime.current}&end=${endTime.current}`
+    );
+    startRefreshing();
+  }, []);
 
   return {
+    loading,
+    setLoading,
     ...responseContext,
+    filterResponses,
   };
 };

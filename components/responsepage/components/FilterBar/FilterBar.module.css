@@ -1,0 +1,22 @@
+.Container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1%;
+  margin-bottom: 1.5rem;
+}
+.Col {
+  flex: 0 0 49.5%;
+  display: flex;
+  align-self: center;
+  gap: 2%;
+}
+
+.Select, .Form {
+  flex: 0 0 49%;
+}
+
+.Select {
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+}
