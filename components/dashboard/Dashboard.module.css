@@ -1,0 +1,34 @@
+.Left {
+  flex: 0 0 30%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: calc(100vh - 76px);
+  overflow: auto;
+  gap: 1rem;
+}
+
+.Left:active::-webkit-scrollbar-thumb,
+.Left:focus::-webkit-scrollbar-thumb,
+.Left:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+.Left::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  visibility: hidden;
+}
+.Left::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 4px;
+}
+
+.Right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.Divider {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.1)
+}
