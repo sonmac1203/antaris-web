@@ -36,7 +36,7 @@ export const SurveyImportModal = () => {
   };
 
   const handleClose = () => {
-    surveyTemplateRef.current.value = '';
+    surveyTemplateRef.current = {};
     setShow(false);
     setError(false);
     setSurveyItems([]);
