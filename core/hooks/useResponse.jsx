@@ -8,7 +8,8 @@ export const useResponse = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+
+  const [responses, setResponses] = useState([]);
 
   const responseContext = useContext(ResponseContext);
 
@@ -25,10 +26,27 @@ export const useResponse = () => {
     startRefreshing();
   }, []);
 
+  const fetchResponses = useCallback(async (props) => {
+    try {
+      setLoading(true);
+      const { data: result } = await axios.get('/api/dev/skill/responses', {
+        params: props,
+      });
+      setResponses(result.data);
+    } catch (err) {
+      setError(err.response.data);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
+    error,
     loading,
+    responses,
     setLoading,
     ...responseContext,
     filterResponses,
+    fetchResponses,
   };
 };

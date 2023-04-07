@@ -45,11 +45,16 @@ export async function fetchResponses(props) {
     const timeQuery = {};
 
     if (start) {
-      timeQuery['$gte'] = new Date(start);
+      const startLocal = new Date(start);
+      const startUtc = new Date(startLocal.getTime() + 7 * 60 * 60 * 1000);
+      timeQuery['$gte'] = startUtc;
     }
 
     if (end) {
-      timeQuery['$lte'] = new Date(new Date(end).setUTCHours(23, 59, 59, 999));
+      const endLocal = new Date(end);
+      const endUtc = new Date(endLocal.getTime() + 7 * 60 * 60 * 1000);
+      const endUtcDayEnd = new Date(endUtc.setHours(23, 59, 59, 999));
+      timeQuery['$lte'] = endUtcDayEnd;
     }
 
     if (start || end) {
