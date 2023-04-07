@@ -53,12 +53,56 @@ export const useSurvey = () => {
     [surveyData]
   );
 
+  const notifySurvey = useCallback(
+    async (ids) => {
+      const requestBody = {
+        participantIds: ids,
+      };
+      try {
+        setLoading(true);
+        await axios.post(
+          `/api/dev/re/surveys/${surveyData.surveyID}/notify`,
+          requestBody
+        );
+        setSuccess(true);
+      } catch (err) {
+        setError(err.response.data);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [surveyData]
+  );
+
+  const sendAndNotifySurvey = useCallback(
+    async (ids) => {
+      const requestBody = {
+        participantIds: ids,
+      };
+      try {
+        setLoading(true);
+        await axios.post(
+          `/api/dev/re/surveys/${surveyData.surveyID}/sendandnotify`,
+          requestBody
+        );
+        setSuccess(true);
+      } catch (err) {
+        setError(err.response.data);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [surveyData]
+  );
+
   return {
     error,
     loading,
     success,
     sendSurvey,
     saveSurvey,
+    notifySurvey,
+    sendAndNotifySurvey,
     ...surveyContext,
   };
 };
