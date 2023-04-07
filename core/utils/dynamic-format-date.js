@@ -4,7 +4,14 @@ export function dynamicFormatDate(dateString) {
   const diffInSeconds = Math.floor((now - date) / 1000);
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);
-  const diffInDays = Math.floor(diffInHours / 24);
+  const dateAtMidnight = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+  const diffInDays = Math.floor(
+    (now.getTime() - dateAtMidnight.getTime()) / (1000 * 60 * 60 * 24)
+  );
   if (diffInSeconds < 60) {
     return 'Just now';
   } else if (diffInMinutes < 60) {
