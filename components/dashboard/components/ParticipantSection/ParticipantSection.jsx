@@ -8,22 +8,24 @@ export const ParticipantSection = () => {
   return (
     <PageSectionWrapper title='Participants'>
       <div className='d-flex flex-column gap-3'>
-        {participants.map((p, key) => {
-          const href = `/dashboard/participants/${p.participantIdentifier}`;
-          const label = `${p.demographics.firstName} ${p.demographics.lastName}`;
-          const badge = p.alexa_metadata ? (
-            <Badge bg='success'>linked</Badge>
-          ) : null;
+        {participants
+          ? participants.map((p, key) => {
+              const href = `/dashboard/participants/${p.participantIdentifier}`;
+              const label = `${p.demographics.firstName} ${p.demographics.lastName}`;
+              const badge = p.alexa_metadata ? (
+                <Badge bg='success'>linked</Badge>
+              ) : null;
 
-          return (
-            <SideListItem
-              label={label}
-              decorator={badge}
-              key={key}
-              href={href}
-            />
-          );
-        })}
+              return (
+                <SideListItem
+                  label={label}
+                  decorator={badge}
+                  key={key}
+                  href={href}
+                />
+              );
+            })
+          : 'Could not load participants.'}
       </div>
     </PageSectionWrapper>
   );
