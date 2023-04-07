@@ -1,1 +1,0 @@
-export { ResponsePage } from './ResponsePage';
