@@ -1,6 +1,6 @@
 export { getRegexFromPaths } from './get-regex-from-paths';
 export { handleRequest } from './handle-request';
-export { groupSurveyById } from './group-survey-by-id';
+export { groupSurveyById } from './surveys/group-survey-by-id';
 export { default as jwtUtils } from './jwt-utils';
 export { getExpirationTimestamp } from './get-expiration-timestamp';
 export { formatDate } from './format-date';
@@ -23,3 +23,7 @@ export { fetchMdhOneParticipant } from './mdh';
 export { getMdhAccessToken } from './mdh';
 
 export { withSsrAuth } from './auth';
+
+export { fetchSurveysForDashboard } from './surveys';
+
+export { fetchParticipantsForDashboard } from './participants';

@@ -1,5 +1,5 @@
 import { getServiceSurveyRoute, commonHeaders } from './config';
-import { groupSurveyById } from '../group-survey-by-id';
+import { groupSurveyById } from '../surveys/group-survey-by-id';
 import Survey from '@/core/models/Survey';
 import axios from 'axios';
 
