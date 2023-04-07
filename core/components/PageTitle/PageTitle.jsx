@@ -1,5 +1,5 @@
 import styles from './PageTitle.module.css';
 
-export const PageTitle = ({ children }) => {
-  return <h1 className={styles.Style}>{children}</h1>;
+export const PageTitle = ({ children, className }) => {
+  return <h1 className={styles.Style + ' ' + className}>{children}</h1>;
 };
