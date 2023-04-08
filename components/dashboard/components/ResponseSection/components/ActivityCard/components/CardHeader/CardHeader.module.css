@@ -1,6 +1,27 @@
-.Test {
-  display: inline-flex;
+.Wrapper {
+  overflow: hidden;
   max-width: 100%;
-  overflow: auto;
-  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.Link {
+  text-overflow: 'ellipsis';
+  max-width: 'fit-content';
+  overflow: 'hidden';
+}
+
+.Link > span:hover {
+  text-decoration: underline;
+}
+
+.Timestamp {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (max-width: 450px) {
+  .Timestamp {
+    display: none;
+  }
 }
