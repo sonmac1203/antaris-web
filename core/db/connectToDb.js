@@ -29,7 +29,7 @@ async function connectToDb() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
-
+    mongoose.set('strictQuery', false);
     cached.promise = mongoose.connect(mongoURI, opts).then((mongoose) => {
       mongoose.set('strictQuery', false);
       return mongoose;
