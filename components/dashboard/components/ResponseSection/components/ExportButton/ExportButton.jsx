@@ -67,10 +67,10 @@ const ExportButton = () => {
       data={data}
       headers={headers}
       filename={fileName}
-      className='btn btn-primary d-flex align-items-center gap-2'
+      className='btn-link text-decoration-none d-flex gap-2 align-items-center'
     >
-      <i className='fa-solid fa-download' />
-      Export
+      <i className='fa-solid fa-file-arrow-down' />
+      <span className='link-hover'>Export to CSV</span>
     </CSVLink>
   );
 };

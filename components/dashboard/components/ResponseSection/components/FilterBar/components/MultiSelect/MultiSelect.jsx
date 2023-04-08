@@ -1,27 +1,38 @@
 import { useMemo } from 'react';
 import Select, { components } from 'react-select';
+import styles from './MultiSelect.module.css';
 
-const MultiSelect = ({ options, className, placeholder, type, onChange }) => {
+const MultiSelect = ({
+  optionsOne,
+  optionsTwo,
+  className,
+  placeholder,
+  type,
+  onChange,
+}) => {
   const ValueContainer = ({ children, ...props }) => {
     let [values, input] = children;
+    const { getValue } = props;
+    const selectedOptions = getValue();
+
+    const numSurveys = getAmountOfType(selectedOptions, 'survey');
+    const numParticipants = getAmountOfType(selectedOptions, 'participant');
+
+    let result = '';
+    if (numSurveys > 0) {
+      result += getLabel(numSurveys, 'survey');
+    }
+    if (numParticipants > 0) {
+      if (result) result += ', ';
+      result += getLabel(numParticipants, 'participant');
+    }
+
     if (Array.isArray(values)) {
-      const plural = values.length === 1 ? '' : 's';
-      values = `${values.length} ${type || 'item'}${plural} selected`;
+      values = result;
     }
     return (
       <components.ValueContainer {...props}>
-        <div
-          style={{
-            gridArea: '1/1/2/3',
-            marginLeft: '2px',
-            marginRight: '2px',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-          }}
-        >
-          {values}
-        </div>
+        <div className={styles.ValueContainer}>{values}</div>
         {input}
       </components.ValueContainer>
     );
@@ -46,6 +57,12 @@ const MultiSelect = ({ options, className, placeholder, type, onChange }) => {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
       }),
+      dropdownIndicator: (provided) => ({
+        ...provided,
+        svg: {
+          fill: 'black',
+        },
+      }),
     }),
     []
   );
@@ -53,6 +70,21 @@ const MultiSelect = ({ options, className, placeholder, type, onChange }) => {
   const filterData = getFromSession();
 
   let selectItems = '';
+
+  // const onNewChange = (options) => {
+  //   console.log(options);
+  // };
+
+  const groupedOptions = [
+    {
+      label: 'Surveys',
+      options: optionsOne,
+    },
+    {
+      label: 'Participants',
+      options: optionsTwo,
+    },
+  ];
 
   if (
     type === 'participant' &&
@@ -66,17 +98,17 @@ const MultiSelect = ({ options, className, placeholder, type, onChange }) => {
     selectItems = filterData.survey_ids;
   }
 
-  const defaultValue = options.filter((o) => selectItems.includes(o.value));
+  // const defaultValue = options.filter((o) => selectItems.includes(o.value));
 
   return (
     <Select
       components={{
         ValueContainer,
       }}
-      defaultValue={defaultValue || []}
+      // defaultValue={defaultValue || []}
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
-      options={options}
+      options={groupedOptions}
       className={className}
       isMulti
       placeholder={placeholder || 'Select...'}
@@ -90,6 +122,17 @@ const getFromSession = () => {
   const dataFromSession = sessionStorage.getItem('response_filter');
   const responseQuery = dataFromSession ? JSON.parse(dataFromSession) : {};
   return responseQuery;
+};
+
+const getAmountOfType = (arr, type) => {
+  const amount = arr.filter((obj) => obj.type === type).length;
+  return amount;
+};
+
+const getLabel = (amount, type) => {
+  const plural = amount === 1 ? '' : 's';
+  const label = `${amount} ${type}${plural} selected`;
+  return label;
 };
 
 export default MultiSelect;

@@ -1,0 +1,7 @@
+.ValueContainer {
+  grid-area: 1/1/2/3;
+  margin: 0 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
