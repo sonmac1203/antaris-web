@@ -1,0 +1,48 @@
+.DateRange {
+  border-radius: 0.375rem;
+}
+
+.PickerWrapper {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: none;
+  top: 0;
+  position: absolute;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  z-index: 1996;
+}
+
+.Footer {
+  background-color: rgb(239, 242, 247);
+}
+
+@media (max-width: 600px) {
+  .Top {
+    top: 40vh;
+  }
+  .Bottom {
+    top: 100%;
+  }
+  .PickerWrapper {
+    display: flex;
+    z-index: 4026;
+    justify-content: space-between;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    box-shadow: unset;
+    border-radius: unset;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+    transition: top 0.3s ease-out, visibility 0.3s ease-out;
+  }
+  .CloseButton {
+    width: 100%;
+  }
+  .Footer {
+    background-color: unset;
+  }
+}
