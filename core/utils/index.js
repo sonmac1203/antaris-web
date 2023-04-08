@@ -5,6 +5,7 @@ export { default as jwtUtils } from './jwt-utils';
 export { getExpirationTimestamp } from './get-expiration-timestamp';
 export { formatDate } from './format-date';
 export { dynamicFormatDate } from './dynamic-format-date';
+export { hideWhenClickedOutside } from './hide-when-clicked-outside';
 
 export { fetchParticipantResponses } from './fetch-participant-responses';
 export { sendSurvey } from './send-survey';
@@ -27,3 +28,5 @@ export { withSsrAuth } from './auth';
 export { fetchSurveysForDashboard } from './surveys';
 
 export { fetchParticipantsForDashboard } from './participants';
+
+export { fetchResponsesForDashboard } from './responses';
