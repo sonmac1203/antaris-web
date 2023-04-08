@@ -1,6 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 import { CommonHead } from '../components/layouts/components';
 import Script from 'next/script';
+import { DarkOverlay } from '@/core/components';
 
 export default function Document() {
   return (
@@ -16,6 +17,7 @@ export default function Document() {
           crossOrigin='anonymous'
           strategy='afterInteractive'
         />
+        <DarkOverlay />
       </body>
     </Html>
   );

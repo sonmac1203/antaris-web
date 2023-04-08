@@ -1,0 +1,19 @@
+.Style {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1999;
+  background-color: black;
+  opacity: .75;
+  cursor: pointer;
+  animation: .3s linear fadein;
+  display: none;
+}
+
+@media (min-width: 601px) {
+  .Style {
+    display: none !important;
+  }
+}
