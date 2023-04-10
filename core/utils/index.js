@@ -30,3 +30,4 @@ export { fetchSurveysForDashboard } from './surveys';
 export { fetchParticipantsForDashboard } from './participants';
 
 export { fetchResponsesForDashboard } from './responses';
+export { getResponseFilterFromSession } from './responses';
