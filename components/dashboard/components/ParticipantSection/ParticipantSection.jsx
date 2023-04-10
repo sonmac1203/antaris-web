@@ -2,12 +2,13 @@ import { PageSectionWrapper } from '@/core/components';
 import { useDashboard } from '@/core/hooks';
 import { SideListItem } from '../SideListItem';
 import { Badge } from 'react-bootstrap';
+import styles from './ParticipantSection.module.css';
 
 export const ParticipantSection = () => {
   const { participants } = useDashboard();
   return (
     <PageSectionWrapper title='Participants'>
-      <div className='d-flex flex-column gap-3'>
+      <div className={`d-flex flex-column gap-3 ${styles.Wrapper}`}>
         {participants
           ? participants.map((p, key) => {
               const href = `/dashboard/participants/${p.participantIdentifier}`;

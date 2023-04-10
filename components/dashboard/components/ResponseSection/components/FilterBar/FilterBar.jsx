@@ -5,12 +5,7 @@ import { useFilterBar } from '../../hooks';
 import styles from './FilterBar.module.css';
 
 export const FilterBar = () => {
-  const {
-    setSelectedParticipants,
-    setSelectedSurveys,
-    setStartTime,
-    setEndTime,
-  } = useFilterBar();
+  const { setSelectedItems } = useFilterBar();
 
   const { responseSectionData } = useDashboard();
 
@@ -28,9 +23,6 @@ export const FilterBar = () => {
     type: 'participant',
   }));
 
-  const onChangeFromDatePicker = (e) => setStartTime(e.target.value);
-  const onChangeToDatePicker = (e) => setEndTime(e.target.value);
-
   return (
     <>
       <div className={styles.Container}>
@@ -38,11 +30,9 @@ export const FilterBar = () => {
           <div className={styles.Col}>
             <MultiSelect
               className={styles.Select}
-              optionsOne={surveyOptions}
-              optionsTwo={participantOptions}
-              placeholder='Select surveys...'
-              type='survey'
-              onChange={setSelectedSurveys}
+              surveyOptions={surveyOptions}
+              participantOptions={participantOptions}
+              onChange={setSelectedItems}
             />
           </div>
           <div className={styles.Col}>

@@ -29,23 +29,22 @@ export const ResponseSection = () => {
 
   return (
     <Provider value={{ startRefreshing, responses }}>
-      <PageSectionWrapper title='Responses'>
+      <PageSectionWrapper
+        title='Responses'
+        topRightOptions={[<ExportButton key={1} />]}
+      >
         <FilterBar />
-        <div>
-          <FilterButton />
+        <div className='d-flex gap-4 flex-column mt-3'>
+          {error
+            ? 'Could not load responses.'
+            : loading
+            ? 'Loading responses...'
+            : responses.length === 0
+            ? 'No responses found.'
+            : responses.map((item, key) => (
+                <ActivityCard item={item} key={key} />
+              ))}
         </div>
-        <div className='d-flex'>
-          <ExportButton />
-        </div>
-        {error
-          ? 'Could not load responses.'
-          : loading
-          ? 'Loading responses...'
-          : responses.length === 0
-          ? 'No responses found.'
-          : responses.map((item, key) => (
-              <ActivityCard item={item} key={key} />
-            ))}
       </PageSectionWrapper>
     </Provider>
   );

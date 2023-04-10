@@ -1,18 +1,25 @@
+import { useFilterBar } from '@/components/dashboard/components/ResponseSection/hooks';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { DatePickerContext } from '../../context';
 import { DateRange } from 'react-date-range';
-import styles from './DatePicker.module.css';
+import {
+  hideWhenClickedOutside,
+  getResponseFilterFromSession,
+} from '@/core/utils';
 import { Button } from 'react-bootstrap';
-import { useState, useEffect, useRef } from 'react';
-import { hideWhenClickedOutside } from '@/core/utils';
+import { disableOverlay, getShortDate } from '../../utils';
+import styles from './DatePicker.module.css';
 
-export const DatePicker = ({ isOpen, setIsOpen }) => {
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: null,
-      key: 'selection',
-    },
-  ]);
+export const DatePicker = () => {
+  const { setStartTime, setEndTime } = useFilterBar();
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
+
+  const {
+    isOpen,
+    setIsOpen,
+    dateRange: state,
+    setDateRange: setState,
+  } = useContext(DatePickerContext);
 
   useEffect(() => {
     function handleResize() {
@@ -25,14 +32,22 @@ export const DatePicker = ({ isOpen, setIsOpen }) => {
   const closePicker = () => {
     const windowWidth = window.innerWidth;
     if (windowWidth <= 600) {
-      document.body.classList.remove('no-scroll');
-      document.getElementById('dark-overlay').classList.remove('show');
+      disableOverlay();
     }
     setIsOpen(false);
   };
 
+  const handleRangeChange = ({ selection }) => {
+    const { startDate, endDate } = selection;
+    setState([selection]);
+    setStartTime(startDate.toLocaleDateString('en-CA'));
+    setEndTime(endDate.toLocaleDateString('en-CA'));
+  };
+
   const pickerRef = useRef();
   hideWhenClickedOutside(pickerRef, closePicker);
+
+  const { start, end } = getResponseFilterFromSession();
 
   return (
     <div
@@ -43,8 +58,10 @@ export const DatePicker = ({ isOpen, setIsOpen }) => {
       ref={pickerRef}
     >
       <DateRange
+        startDatePlaceholder={getShortDate(start, 'numeric') || 'Early'}
+        endDatePlaceholder={getShortDate(end, 'numeric') || 'Continuous'}
         className={styles.DateRange}
-        onChange={(item) => setState([item.selection])}
+        onChange={handleRangeChange}
         moveRangeOnFirstSelection={false}
         ranges={state}
       />

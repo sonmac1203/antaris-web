@@ -1,34 +1,47 @@
-import { DatePicker } from './components';
-import { useState } from 'react';
-import styles from './DatePickerActivator.module.css';
+import { useState, useMemo } from 'react';
+import { DatePickerContext } from './context';
+import { DatePicker, Activator } from './components';
+import { enableOverlay, disableOverlay } from './utils';
+import { getResponseFilterFromSession } from '@/core/utils';
 
 const DatePickerActivator = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { start, end } = getResponseFilterFromSession();
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: start ? new Date(start) : null,
+      endDate: end ? new Date(end) : null,
+      key: 'selection',
+    },
+  ]);
 
   const togglePicker = () => {
     const windowWidth = window.innerWidth;
     if (windowWidth <= 600) {
-      if (isOpen) {
-        document.getElementById('dark-overlay').classList.remove('show');
-        document.body.classList.remove('no-scroll');
-      } else {
-        document.getElementById('dark-overlay').classList.add('show');
-        document.body.classList.add('no-scroll');
-      }
+      if (isOpen) disableOverlay();
+      else enableOverlay();
     }
     setIsOpen((oldState) => !oldState);
   };
 
+  const datePickerContextValue = useMemo(
+    () => ({
+      isOpen,
+      setIsOpen,
+      dateRange,
+      setDateRange,
+      togglePicker,
+    }),
+    [dateRange, isOpen]
+  );
+
   return (
-    <div className='d-flex flex-column w-100 position-relative'>
-      <div className={styles.Activator} onClick={togglePicker}>
-        <div>Apr 4, 23 - Apr 5, 23</div>
-        <div>
-          <i className='fa-regular fa-calendar' />
-        </div>
+    <DatePickerContext.Provider value={datePickerContextValue}>
+      <div className='d-flex flex-column w-100 position-relative'>
+        <Activator />
+        <DatePicker />
       </div>
-      <DatePicker isOpen={isOpen} setIsOpen={setIsOpen} />
-    </div>
+    </DatePickerContext.Provider>
   );
 };
 

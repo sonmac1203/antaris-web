@@ -2,42 +2,39 @@ import { useMemo } from 'react';
 import Select, { components } from 'react-select';
 import styles from './MultiSelect.module.css';
 
+const ValueContainer = ({ children, ...props }) => {
+  let [values, input] = children;
+  const { getValue } = props;
+  const selectedOptions = getValue();
+  const numSurveys = getAmountOfType(selectedOptions, 'survey');
+  const numParticipants = getAmountOfType(selectedOptions, 'participant');
+
+  let result = '';
+  if (numSurveys > 0) {
+    result += getLabel(numSurveys, 'survey');
+  }
+  if (numParticipants > 0) {
+    if (result) result += ', ';
+    result += getLabel(numParticipants, 'participant');
+  }
+
+  if (Array.isArray(values)) {
+    values = result;
+  }
+  return (
+    <components.ValueContainer {...props}>
+      <div className={styles.ValueContainer}>{values}</div>
+      {input}
+    </components.ValueContainer>
+  );
+};
+
 const MultiSelect = ({
-  optionsOne,
-  optionsTwo,
+  surveyOptions,
+  participantOptions,
   className,
-  placeholder,
-  type,
   onChange,
 }) => {
-  const ValueContainer = ({ children, ...props }) => {
-    let [values, input] = children;
-    const { getValue } = props;
-    const selectedOptions = getValue();
-
-    const numSurveys = getAmountOfType(selectedOptions, 'survey');
-    const numParticipants = getAmountOfType(selectedOptions, 'participant');
-
-    let result = '';
-    if (numSurveys > 0) {
-      result += getLabel(numSurveys, 'survey');
-    }
-    if (numParticipants > 0) {
-      if (result) result += ', ';
-      result += getLabel(numParticipants, 'participant');
-    }
-
-    if (Array.isArray(values)) {
-      values = result;
-    }
-    return (
-      <components.ValueContainer {...props}>
-        <div className={styles.ValueContainer}>{values}</div>
-        {input}
-      </components.ValueContainer>
-    );
-  };
-
   const customStyles = useMemo(
     () => ({
       control: (provided) => ({
@@ -67,51 +64,40 @@ const MultiSelect = ({
     []
   );
 
-  const filterData = getFromSession();
-
-  let selectItems = '';
-
-  // const onNewChange = (options) => {
-  //   console.log(options);
-  // };
-
   const groupedOptions = [
     {
       label: 'Surveys',
-      options: optionsOne,
+      options: surveyOptions,
     },
     {
       label: 'Participants',
-      options: optionsTwo,
+      options: participantOptions,
     },
   ];
-
-  if (
-    type === 'participant' &&
-    Object.keys(filterData).includes('participant_ids')
-  ) {
-    selectItems = filterData.participant_ids;
-  } else if (
-    type === 'survey' &&
-    Object.keys(filterData).includes('survey_ids')
-  ) {
-    selectItems = filterData.survey_ids;
-  }
-
-  // const defaultValue = options.filter((o) => selectItems.includes(o.value));
+  const { participant_ids, survey_ids } = getFromSession();
+  const defaultValue = groupedOptions.flatMap((group) => {
+    const selectedIds =
+      group.label === 'Surveys' ? survey_ids : participant_ids;
+    if (!selectedIds) {
+      return [];
+    }
+    return group.options
+      .filter((option) => selectedIds.includes(option.value))
+      .map((option) => ({ ...option, group: group.label }));
+  });
 
   return (
     <Select
       components={{
         ValueContainer,
       }}
-      // defaultValue={defaultValue || []}
+      defaultValue={defaultValue || []}
       hideSelectedOptions={false}
       closeMenuOnSelect={false}
       options={groupedOptions}
       className={className}
       isMulti
-      placeholder={placeholder || 'Select...'}
+      placeholder='Select respondents...'
       styles={customStyles}
       onChange={onChange}
     />

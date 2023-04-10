@@ -5,17 +5,18 @@ export const useFilterBar = () => {
   const responseSectionContext = useContext(ResponseSectionContext);
 
   const filterResponses = useCallback(() => {
-    const {
-      selectedSurveys,
-      selectedParticipants,
-      startTime,
-      endTime,
-      startRefreshing,
-    } = responseSectionContext;
-    const participantIds = selectedParticipants.current
-      .map((p) => p.value)
-      .join(',');
-    const surveyIds = selectedSurveys.current.map((s) => s.value).join(',');
+    const { selectedItems, startTime, endTime, startRefreshing } =
+      responseSectionContext;
+
+    const selectedSurveys = selectedItems.current.filter(
+      (i) => i.type === 'survey'
+    );
+    const selectedParticipants = selectedItems.current.filter(
+      (i) => i.type === 'participant'
+    );
+
+    const participantIds = selectedParticipants.map((p) => p.value).join(',');
+    const surveyIds = selectedSurveys.map((s) => s.value).join(',');
     const query = {
       participant_ids: participantIds,
       survey_ids: surveyIds,
