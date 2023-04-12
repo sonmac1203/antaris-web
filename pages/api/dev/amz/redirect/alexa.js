@@ -25,7 +25,6 @@ const handler = async (req, res) => {
 
   // If the request failed
   if (result.hasOwnProperty('error')) {
-    // return res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
     res.redirect('/pa/dashboard');
   }
 
@@ -37,7 +36,6 @@ const handler = async (req, res) => {
 
   // if failed
   if (enablementResult.hasOwnProperty('message')) {
-    // return res.redirect('/participants/connect_alexa'); // Redirect user back to connect page
     res.redirect('/pa/dashboard');
   }
 
@@ -78,11 +76,9 @@ const handler = async (req, res) => {
         },
       }
     );
-    // res.redirect('/participants/connect_alexa');
     res.redirect('/pa/dashboard');
   } catch (err) {
     console.log(err);
-    // res.redirect('/participants/connect_alexa');
     res.redirect('/pa/dashboard');
   }
 };

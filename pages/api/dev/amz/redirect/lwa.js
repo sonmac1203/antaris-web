@@ -32,7 +32,6 @@ const handler = async (req, res) => {
   req.session.role = 'participant';
   await req.session.save();
 
-  // res.redirect('/participants/connect_alexa');
   res.redirect('/pa/dashboard');
 };
 
