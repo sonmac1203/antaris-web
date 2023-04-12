@@ -1,1 +1,0 @@
-export { colorTokens } from './colorTokens';
