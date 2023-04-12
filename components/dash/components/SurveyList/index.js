@@ -1,1 +1,0 @@
-export { SurveyList } from './SurveyList';
