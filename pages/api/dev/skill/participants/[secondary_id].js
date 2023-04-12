@@ -1,9 +1,12 @@
 import Participant from '@/core/models/Participant';
+import connectToDb from '@/core/db/connectToDb';
 
 const handler = async (req, res) => {
-  const { user_id, secondary_identifier } = req.query;
+  const { secondary_id: secondary_identifier, user_id } = req.query;
 
   try {
+    await connectToDb();
+
     const existingParticipant = await Participant.findOne({
       secondary_identifier,
       'alexa_metadata.user_id': user_id,
