@@ -76,7 +76,7 @@ export const ResearcherSignUpCard = () => {
         )}
       </Form>
       <div className={styles.FormFooter}>
-        Already registered? <Link href='/researcher/signin'>Sign in</Link>
+        Already registered? <Link href='/re/signin'>Sign in</Link>
       </div>
     </AuthCardWrapper>
   );

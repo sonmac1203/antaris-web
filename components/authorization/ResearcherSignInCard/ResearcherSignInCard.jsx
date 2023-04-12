@@ -49,7 +49,7 @@ export const ResearcherSignInCard = () => {
         )}
       </Form>
       <div className={styles.FormFooter}>
-        No account? <Link href='/researcher/signup'>Sign up</Link>
+        No account? <Link href='/re/signup'>Sign up</Link>
       </div>
     </AuthCardWrapper>
   );
