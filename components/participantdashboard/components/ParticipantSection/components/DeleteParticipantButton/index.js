@@ -1,0 +1,1 @@
+export { DeleteParticipantButton } from './DeleteParticipantButton';

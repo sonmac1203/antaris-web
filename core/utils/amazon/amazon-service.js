@@ -134,7 +134,7 @@ class AmazonService {
       headers: commonHeaders.json(accessToken),
     };
     const route = getSkillEnablementRoute(this.skillId);
-    const apiResponse = await this.#handleRequest(() =>
+    const apiResponse = await this.#handleSendEventRequest(() =>
       axios.delete(route, config)
     );
     return apiResponse;
