@@ -74,7 +74,7 @@ export const ActionButtons = ({ participantIdentifier, thisSurvey }) => {
           Send and notify
         </Dropdown.Item>
       </DropdownButton>
-      <Link href={`/dashboard/participants/${participantIdentifier}`}>
+      <Link href={`/re/dashboard/participants/${participantIdentifier}`}>
         <Button variant='link' className='text-decoration-none'>
           View details
         </Button>

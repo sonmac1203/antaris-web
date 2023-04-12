@@ -41,7 +41,7 @@ export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
   } catch (err) {
     return {
       redirect: {
-        destination: '/dashboard',
+        destination: '/re/dashboard',
         permanent: false,
       },
     };

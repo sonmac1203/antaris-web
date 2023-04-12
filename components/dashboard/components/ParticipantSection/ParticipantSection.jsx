@@ -11,7 +11,7 @@ export const ParticipantSection = () => {
       <div className={`d-flex flex-column gap-3 ${styles.Wrapper}`}>
         {participants
           ? participants.map((p, key) => {
-              const href = `/dashboard/participants/${p.participantIdentifier}`;
+              const href = `/re/dashboard/participants/${p.participantIdentifier}`;
               const label = `${p.demographics.firstName} ${p.demographics.lastName}`;
               const badge = p.alexa_metadata ? (
                 <Badge bg='success'>linked</Badge>

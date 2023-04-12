@@ -6,8 +6,8 @@ export const CardHeader = ({ participant, survey, timeProvided }) => {
   const name = participant.demographics.first_name;
   const surveyName = survey.display_name;
 
-  const participantHref = `/dashboard/participants/${participant.participant_identifier}`;
-  const surveyHref = `/dashboard/surveys/${survey.mdh_id}`;
+  const participantHref = `/re/dashboard/participants/${participant.participant_identifier}`;
+  const surveyHref = `/re/dashboard/surveys/${survey.mdh_id}`;
 
   return (
     <div className='mb-2 align-items-center gap-1 d-flex w-100'>

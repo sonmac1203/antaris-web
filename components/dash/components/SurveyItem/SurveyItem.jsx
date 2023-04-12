@@ -8,7 +8,7 @@ export const SurveyItem = ({
   const router = useRouter();
 
   const handleItemClick = () => {
-    router.push(`/dashboard/surveys/${surveyID}`);
+    router.push(`/re/dashboard/surveys/${surveyID}`);
   };
 
   return (

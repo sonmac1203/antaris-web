@@ -8,7 +8,7 @@ export const ParticipantItem = ({ participant }) => {
 
   const router = useRouter();
   const handleItemClick = () => {
-    router.push(`/dashboard/participants/${participantIdentifier}`);
+    router.push(`/re/dashboard/participants/${participantIdentifier}`);
   };
 
   return (

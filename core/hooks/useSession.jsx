@@ -18,7 +18,7 @@ export function useSession() {
           password,
           serviceAccountId,
         });
-        router.push('/dashboard');
+        router.push('/re/dashboard');
       } catch (err) {
         setError(err.response.data);
       } finally {
@@ -39,7 +39,7 @@ export function useSession() {
           password,
           privateKey,
         });
-        router.push('/dashboard');
+        router.push('/re/dashboard');
       } catch (err) {
         setError(err.response.data);
       } finally {

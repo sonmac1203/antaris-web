@@ -7,7 +7,7 @@ export const BreadcrumbSection = ({ title }) => {
     <Breadcrumb>
       <Breadcrumb.Item
         linkAs={Link}
-        href='/dashboard'
+        href='/re/dashboard'
         className={styles.ItemStyle}
       >
         Dashboard
