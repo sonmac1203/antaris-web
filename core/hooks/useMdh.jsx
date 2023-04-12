@@ -12,18 +12,6 @@ export function useMdh() {
 
   const [selectedParticipants, setSelectedParticipants] = useState([]);
 
-  const fetchAllSurveys = useCallback(async () => {
-    try {
-      setLoading(true);
-      const { data: result } = await axios.get('/api/mdh/surveys');
-      setSurveys(result.data);
-    } catch (err) {
-      setError(err.response.data);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   const fetchAllParticipants = useCallback(async () => {
     try {
       setParticipantLoading(true);
@@ -53,14 +41,12 @@ export function useMdh() {
   }, []);
 
   return {
-    surveys,
     participants,
     selectedParticipants,
     loading,
     error,
     participantLoading,
     participantError,
-    fetchAllSurveys,
     fetchAllParticipants,
     fetchSelectedParticipants,
   };
