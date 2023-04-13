@@ -1,13 +1,12 @@
-import { Dashboard } from '@/components/dashboard';
 import { DashboardLayout } from '@/components/layouts';
+import { Dashboard } from '@/components/dashboard';
+import { withSsrAuth, jwtUtils, jsonify } from '@/core/utils';
 import {
-  withSsrAuth,
-  jwtUtils,
-  fetchSurveysForDashboard,
-  fetchParticipantsForDashboard,
-  fetchParticipantsAndSurveysWithAssignments,
-} from '@/core/utils';
-import { DashboardProvider } from '@/core/providers';
+  getAllSurveys,
+  getAllParticipants,
+  getRespondentsWithAssignments,
+  DashboardProvider,
+} from '@/lib/re/dashboard';
 
 const DashboardIndex = (props) => {
   return (
@@ -26,28 +25,23 @@ export const getServerSideProps = withSsrAuth(async ({ req }) => {
   const sessionData = jwtUtils.decode(token);
 
   try {
-    const surveysAndParticipantsData = await Promise.all([
-      fetchSurveysForDashboard(sessionData),
-      fetchParticipantsForDashboard(sessionData),
+    const [surveys, participants, responseSectionData] = await Promise.all([
+      getAllSurveys(sessionData),
+      getAllParticipants(sessionData),
+      getRespondentsWithAssignments(),
     ]);
-    const responseSectionData =
-      await fetchParticipantsAndSurveysWithAssignments();
 
     return {
       props: {
-        surveys: surveysAndParticipantsData[0]
-          ? JSON.parse(JSON.stringify(surveysAndParticipantsData[0]))
-          : [],
-        participants: surveysAndParticipantsData[1]
-          ? JSON.parse(JSON.stringify(surveysAndParticipantsData[1]))
-          : [],
+        surveys: surveys ? jsonify(surveys) : [],
+        participants: participants ? jsonify(participants) : [],
         responseSectionData: responseSectionData
-          ? JSON.parse(JSON.stringify(responseSectionData))
+          ? jsonify(responseSectionData)
           : {},
-        user: JSON.parse(JSON.stringify({ isAuthenticated: true, role })),
+        user: jsonify({ isAuthenticated: true, role }),
       },
     };
-  } catch (err) {
+  } catch {
     return {
       redirect: {
         destination: '/re/dashboard',

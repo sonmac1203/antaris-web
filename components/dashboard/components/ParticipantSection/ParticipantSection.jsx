@@ -1,14 +1,13 @@
 import { PageSectionWrapper } from '@/core/components';
-import { useDashboard } from '@/core/hooks';
+import { useDashboard } from '@/lib/re/dashboard';
 import { SideListItem } from '../SideListItem';
-import { Badge } from 'react-bootstrap';
-import styles from './ParticipantSection.module.css';
+import { Badge, Card } from 'react-bootstrap';
 
 export const ParticipantSection = () => {
   const { participants } = useDashboard();
   return (
     <PageSectionWrapper title='Participants'>
-      <div className={`d-flex flex-column gap-3 ${styles.Wrapper}`}>
+      <Card className='d-flex flex-column gap-3 p-3'>
         {participants
           ? participants.map((p, key) => {
               const href = `/re/dashboard/participants/${p.participantIdentifier}`;
@@ -27,7 +26,7 @@ export const ParticipantSection = () => {
               );
             })
           : 'Could not load participants.'}
-      </div>
+      </Card>
     </PageSectionWrapper>
   );
 };

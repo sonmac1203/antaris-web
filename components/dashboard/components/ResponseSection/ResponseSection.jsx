@@ -1,13 +1,7 @@
 import { useResponse } from '@/core/hooks';
 import { PageSectionWrapper } from '@/core/components';
 import { useEffect, useCallback, useState } from 'react';
-import {
-  ActivityCard,
-  Provider,
-  FilterBar,
-  FilterButton,
-  ExportButton,
-} from './components';
+import { ActivityCard, Provider, FilterBar, ExportButton } from './components';
 
 export const ResponseSection = () => {
   const { error, loading, responses, fetchResponses } = useResponse();
