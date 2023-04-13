@@ -1,1 +1,0 @@
-export { ProjectProfile } from './ProjectProfile';
