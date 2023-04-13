@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { useSession } from '@/core/hooks';
 import { useRouter } from 'next/router';
+import { useSession } from '@/lib/re/session';
 
 const ONE_SECOND = 1000;
 

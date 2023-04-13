@@ -1,4 +1,4 @@
-import { dynamicFormatDate } from '@/core/utils';
+import { getRelativeTime } from '@/core/utils';
 import Link from 'next/link';
 import styles from './CardHeader.module.css';
 
@@ -37,7 +37,7 @@ export const CardHeader = ({ participant, survey, timeProvided }) => {
       <div className={styles.Timestamp}>
         ·
         <div className='text-secondary fw-normal'>
-          {dynamicFormatDate(timeProvided)}
+          {getRelativeTime(timeProvided)}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import {
   TextareaField,
   SubmitButton,
 } from '@/core/components';
-import { useSession } from '@/core/hooks';
+import { useSession } from '@/lib/re/session';
 import styles from './ResearcherSignUpCard.module.css';
 
 export const ResearcherSignUpCard = () => {

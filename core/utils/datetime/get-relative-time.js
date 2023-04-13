@@ -1,4 +1,4 @@
-export function dynamicFormatDate(dateString) {
+export function getRelativeTime(dateString) {
   const now = new Date();
   const date = new Date(dateString);
   const diffInSeconds = Math.floor((now - date) / 1000);

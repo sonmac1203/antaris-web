@@ -1,5 +1,5 @@
 import { Card } from 'react-bootstrap';
-import { formatDate } from '@/core/utils';
+import { getFormattedDate } from '@/core/utils';
 import { CardHeader } from './components';
 
 export const ActivityCard = ({ item }) => {
@@ -21,7 +21,7 @@ export const ActivityCard = ({ item }) => {
           style={{ fontSize: '12px' }}
         >
           <i className='fa-regular fa-clock' />
-          {formatDate(new Date(content.provided_at))}
+          {getFormattedDate(new Date(content.provided_at))}
         </Card.Footer>
       </Card>
     </div>

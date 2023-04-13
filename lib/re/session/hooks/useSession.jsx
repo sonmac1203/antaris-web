@@ -1,6 +1,6 @@
+import { refreshSession, getSessionPayload } from '../utils';
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { refreshSession } from '@/core/utils';
 import axios from 'axios';
 
 export function useSession() {
@@ -50,12 +50,8 @@ export function useSession() {
   );
 
   const getSessionPayloadAsClient = useCallback(async () => {
-    try {
-      const { data: result } = await axios.get('/api/dev/re/session');
-      return { payload: result.data, role: result.role };
-    } catch (err) {
-      return null;
-    }
+    const payload = await getSessionPayload();
+    return payload;
   }, []);
 
   const refreshSessionPayload = useCallback(async (redirectPath) => {

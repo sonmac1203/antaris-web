@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Link from 'next/link';
-import { useSession } from '@/core/hooks';
+import { useSession } from '@/lib/re/session';
 import { Form, Alert } from 'react-bootstrap';
 import { AuthCardWrapper, InputField, SubmitButton } from '@/core/components';
 import styles from './ResearcherSignInCard.module.css';
