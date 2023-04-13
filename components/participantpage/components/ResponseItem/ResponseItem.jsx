@@ -1,5 +1,5 @@
 import { ListGroup } from 'react-bootstrap';
-import { formatDate } from '@/core/utils';
+import { getFormattedDate } from '@/core/utils';
 import styles from './ResponseItem.module.css';
 
 export const ResponseItem = ({ item }) => {
@@ -15,7 +15,7 @@ export const ResponseItem = ({ item }) => {
             >
               <div>
                 <i className='fa-regular fa-clock me-1' />
-                {formatDate(new Date(item.answer.provided_at))}
+                {getFormattedDate(new Date(item.answer.provided_at))}
               </div>
             </div>
           </>

@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import { ParticipantSectionContext } from '../../context';
-import { useParticipantDashboard } from '@/core/hooks';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 
 export const SaveParticipantButton = () => {
   const { participantData, loading, error, success, saveNewParticipants } =

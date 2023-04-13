@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { useContext, useState } from 'react';
 import { ParticipantSectionContext } from '../../context';
-import { useParticipantDashboard } from '@/core/hooks';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 import { useRouter } from 'next/router';
 
 export const LinkParticipantButton = () => {

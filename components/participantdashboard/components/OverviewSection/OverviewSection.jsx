@@ -1,5 +1,5 @@
 import { PageSectionWrapper, LinkAlexaButton } from '@/core/components';
-import { useParticipantDashboard } from '@/core/hooks';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 import styles from './OverviewSection.module.css';
 import { Badge } from 'react-bootstrap';
 import { UnlinkButton } from './components';

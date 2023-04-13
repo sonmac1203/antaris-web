@@ -1,4 +1,5 @@
-import { useAmazon, useParticipantDashboard } from '@/core/hooks';
+import { useAmazon } from '@/core/hooks';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 import { useEffect, useCallback, useContext } from 'react';
 import { ParticipantSectionContext } from '../../context';
 import { ParticipantsListItem } from '../ParticipantsListItem';

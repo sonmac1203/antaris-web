@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { ParticipantDashboardContext } from '@/core/context';
+import { ParticipantDashboardContext } from '../../context';
 
 export const ParticipantDashboardProvider = ({ value, children }) => {
-  const participantDashboardContextValue = useMemo(
+  const contextValue = useMemo(
     () => ({
       ...value,
     }),
@@ -10,9 +10,7 @@ export const ParticipantDashboardProvider = ({ value, children }) => {
   );
 
   return (
-    <ParticipantDashboardContext.Provider
-      value={participantDashboardContextValue}
-    >
+    <ParticipantDashboardContext.Provider value={contextValue}>
       {children}
     </ParticipantDashboardContext.Provider>
   );

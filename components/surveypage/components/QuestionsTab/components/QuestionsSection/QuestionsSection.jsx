@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSurvey } from '@/lib/re/surveyoverview';
-import { formatDate } from '@/core/utils';
+import { getFormattedDate } from '@/core/utils';
 import { ListGroup, Card } from 'react-bootstrap';
 import { QuestionListItem } from '../QuestionListItem';
 
@@ -9,7 +9,7 @@ export const QuestionsSection = () => {
   const { content } = surveyData;
 
   const title = content
-    ? `Imported on ${formatDate(new Date(content.imported_at))}`
+    ? `Imported on ${getFormattedDate(new Date(content.imported_at))}`
     : 'You have not imported this survey.';
 
   useEffect(() => {

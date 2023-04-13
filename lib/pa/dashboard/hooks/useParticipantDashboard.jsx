@@ -10,7 +10,6 @@ export const useParticipantDashboard = () => {
   const participantDashboardContext = useContext(ParticipantDashboardContext);
 
   const saveNewParticipants = useCallback(async (requestBody) => {
-    console.log(requestBody);
     try {
       setLoading(true);
       await axios.post('/api/dev/amz/participants/save', requestBody);

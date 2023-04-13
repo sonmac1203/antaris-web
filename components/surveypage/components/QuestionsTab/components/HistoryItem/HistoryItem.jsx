@@ -1,12 +1,13 @@
 import { ListGroup, Button, ProgressBar } from 'react-bootstrap';
-import { formatDate } from '@/core/utils';
+import { getFormattedDate } from '@/core/utils';
 import Link from 'next/link';
 
 export const HistoryItem = ({
   data: { assigned_at, progress, notified, last_notified },
 }) => {
-  const timeOfAssignement = formatDate(new Date(assigned_at));
-  const timeOfNotification = notified && formatDate(new Date(last_notified));
+  const timeOfAssignement = getFormattedDate(new Date(assigned_at));
+  const timeOfNotification =
+    notified && getFormattedDate(new Date(last_notified));
 
   return (
     <ListGroup.Item className='pt-3 px-0 pb-4'>

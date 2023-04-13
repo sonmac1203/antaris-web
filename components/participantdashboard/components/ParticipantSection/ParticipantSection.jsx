@@ -7,7 +7,7 @@ import {
   LinkParticipantButton,
   SaveParticipantButton,
 } from './components';
-import { useParticipantDashboard } from '@/core/hooks';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 import { useState } from 'react';
 
 export const ParticipantSection = () => {
