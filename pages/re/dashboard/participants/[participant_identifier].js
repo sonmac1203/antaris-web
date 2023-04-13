@@ -1,21 +1,17 @@
-import { useMemo } from 'react';
 import { DashboardLayout } from '@/components/layouts';
 import { ParticipantPage } from '@/components/participantpage';
+import { jwtUtils, withSsrAuth, jsonify } from '@/core/utils';
 import {
-  fetchMdhOneParticipant,
-  jwtUtils,
-  withSsrAuth,
-  fetchParticipantResponses,
-} from '@/core/utils';
-import { ParticipantContext } from '@/core/context';
+  getParticipantById,
+  getResponses,
+  ParticipantPageProvider,
+} from '@/lib/re/participantoverview';
 
 const ParticipantDetails = (props) => {
-  const participantContextValue = useMemo(() => props, [props]);
-
   return (
-    <ParticipantContext.Provider value={participantContextValue}>
+    <ParticipantPageProvider value={props}>
       <ParticipantPage />
-    </ParticipantContext.Provider>
+    </ParticipantPageProvider>
   );
 };
 
@@ -27,24 +23,19 @@ export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
   const { token, role } = req.session;
   const { participant_identifier: participantIdentifier } = params;
   const { accessToken, projectId } = jwtUtils.decode(token);
-  const query = {
-    accessToken,
-    projectId,
-    participantIdentifier,
-  };
+  const query = { accessToken, projectId, participantIdentifier };
+
   try {
-    const participant = await fetchMdhOneParticipant(query);
-    const responses = await fetchParticipantResponses({
-      participantIdentifier,
-    });
+    const [participant, responses] = await Promise.all([
+      getParticipantById(query),
+      getResponses({ participantIdentifier }),
+    ]);
     return {
       props: {
-        participantData: JSON.parse(JSON.stringify(participant)),
-        assignedSurveys: JSON.parse(
-          JSON.stringify(participant.alexa_metadata.assigned_surveys)
-        ),
-        participantResponses: JSON.parse(JSON.stringify(responses)),
-        user: JSON.parse(JSON.stringify({ isAuthenticated: true, role })),
+        participantData: jsonify(participant),
+        assignedSurveys: jsonify(participant.alexa_metadata.assigned_surveys),
+        participantResponses: jsonify(responses),
+        user: jsonify({ isAuthenticated: true, role }),
       },
     };
   } catch (err) {

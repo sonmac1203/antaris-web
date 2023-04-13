@@ -3,10 +3,11 @@ import ServiceAccount from '@/core/models/ServiceAccount';
 import {
   withSessionApiRoute,
   getExpirationTimestamp,
-  getMdhAccessToken,
+  // getMdhAccessToken,
   jwtUtils,
 } from '@/core/utils';
 import connectToDb from '@/core/db/connectToDb';
+import { getMyDataHelpsAccessToken } from '@/lib/re/mydatahelps';
 
 const handler = async (req, res) => {
   if (req.method !== 'POST') {
@@ -38,7 +39,7 @@ const handler = async (req, res) => {
       });
     }
 
-    const result = await getMdhAccessToken(
+    const result = await getMyDataHelpsAccessToken(
       serviceAccountId,
       projectId,
       privateKey

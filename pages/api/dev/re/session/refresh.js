@@ -2,9 +2,10 @@ import ServiceAccount from '@/core/models/ServiceAccount';
 import {
   withSessionApiRoute,
   getExpirationTimestamp,
-  getMdhAccessToken,
+  // getMdhAccessToken,
   jwtUtils,
 } from '@/core/utils';
+import { getMyDataHelpsAccessToken } from '@/lib/re/mydatahelps';
 
 const handler = async (req, res) => {
   const { token } = req.session;
@@ -26,7 +27,7 @@ const handler = async (req, res) => {
 
     const { privateKey } = jwtUtils.decode(existingAccount.private_key_encoded);
 
-    const result = await getMdhAccessToken(
+    const result = await getMyDataHelpsAccessToken(
       serviceAccountId,
       projectId,
       privateKey

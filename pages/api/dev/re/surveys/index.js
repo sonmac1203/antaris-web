@@ -1,9 +1,9 @@
-import { jwtUtils, withSessionApiRoute } from '@/core/utils';
-import { getParticipantById } from '@/lib/re/participantoverview';
+import { withSessionApiRoute } from '@/core/utils/session';
+import { getSurveyById } from '@/lib/re/surveyoverview';
+import jwtUtils from '@/core/utils/jwt-utils';
 
 async function handler(req, res) {
-  const { projectId: projectIdFromRequest, participant_identifier } = req.query;
-
+  const { projectId: projectIdFromRequest, surveyId: surveyID } = req.query;
   const sessionToken = req.session?.token;
   const accessTokenFromRequest =
     req.headers?.authorization?.split(' ')[1] ?? null;
@@ -29,20 +29,20 @@ async function handler(req, res) {
   const query = {
     accessToken: accessTokenFromSession || accessTokenFromRequest,
     projectId: projectIdFromSession || projectIdFromRequest,
-    participantIdentifier: participant_identifier,
+    ...(surveyID && { params: { surveyID } }),
   };
 
   try {
-    const data = await getParticipantById(query);
+    const surveys = await getSurveyById(query);
     return res.status(200).json({
       success: true,
-      message: 'Participant has been fetched.',
-      data,
+      message: 'Surveys have been fetched.',
+      data: surveys,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: 'There was an error. We cannot fetch participant data.',
+      message: 'There was an error. We cannot fetch survey data.',
       error: error.message,
     });
   }

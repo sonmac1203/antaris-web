@@ -1,5 +1,6 @@
-import { withSessionApiRoute, fetchResponses } from '@/core/utils';
+import { withSessionApiRoute, jwtUtils } from '@/core/utils';
 import connectToDb from '@/core/db/connectToDb';
+import { getResponsesWithFilter } from '@/lib/re/dashboard';
 
 const authTokenFromInside = process.env.API_SECRET;
 
@@ -23,9 +24,18 @@ async function handler(req, res) {
     });
   }
 
+  let query = {};
+
+  if (token) {
+    const { projectId } = jwtUtils.decode(token);
+    query = { ...req.query, project_id: projectId };
+  } else {
+    query = req.query;
+  }
+
   try {
     await connectToDb();
-    const responses = await fetchResponses(req.query);
+    const responses = await getResponsesWithFilter(query);
     if (!responses) {
       return res.status(500).json({
         success: false,

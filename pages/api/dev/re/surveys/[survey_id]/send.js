@@ -1,5 +1,5 @@
 import { withSessionApiRoute } from '@/core/utils/session';
-import { sendSurvey } from '@/core/utils';
+import { sendSurvey } from '@/lib/re/surveyoverview';
 
 async function handler(req, res) {
   if (req.method !== 'POST') {

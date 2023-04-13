@@ -1,22 +1,13 @@
-import { useMemo } from 'react';
-import { DashboardLayout } from '@/components/layouts';
 import { SurveyPage } from '@/components/surveypage';
-import { fetchMdhSurveys, jwtUtils, withSsrAuth } from '@/core/utils';
-import { SurveyContext } from '@/core/context';
+import { DashboardLayout } from '@/components/layouts';
+import { jwtUtils, withSsrAuth, jsonify } from '@/core/utils';
+import { getSurveyById, SurveyPageProvider } from '@/lib/re/surveyoverview';
 
-const SurveyDetails = ({ surveyData }) => {
-  const surveyContextValue = useMemo(
-    () => ({
-      surveyData,
-      participantsData: surveyData.participants,
-    }),
-    [surveyData]
-  );
-
+const SurveyDetails = (props) => {
   return (
-    <SurveyContext.Provider value={surveyContextValue}>
+    <SurveyPageProvider value={props}>
       <SurveyPage />
-    </SurveyContext.Provider>
+    </SurveyPageProvider>
   );
 };
 
@@ -34,9 +25,9 @@ export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
     },
   };
   try {
-    const surveys = await fetchMdhSurveys(query);
+    const surveys = await getSurveyById(query);
     return {
-      props: { surveyData: JSON.parse(JSON.stringify(surveys[0])) },
+      props: { surveyData: jsonify(surveys[0]) },
     };
   } catch (err) {
     return {

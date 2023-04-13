@@ -1,8 +1,5 @@
-import {
-  jwtUtils,
-  withSessionApiRoute,
-  fetchMdhParticipants,
-} from '@/core/utils';
+import { jwtUtils, withSessionApiRoute } from '@/core/utils';
+import { getAllParticipants } from '@/lib/re/dashboard';
 
 async function handler(req, res) {
   const { projectId: projectIdFromRequest } = req.query;
@@ -34,7 +31,7 @@ async function handler(req, res) {
   };
 
   try {
-    const data = await fetchMdhParticipants(query);
+    const data = await getAllParticipants(query);
 
     return res.status(200).json({
       success: true,
