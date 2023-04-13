@@ -32,9 +32,9 @@ export const useSurvey = () => {
   }, []);
 
   const sendSurvey = useCallback(
-    async (ids) => {
+    async (data) => {
       const requestBody = {
-        participantIds: ids,
+        participants: data,
       };
       try {
         setLoading(true);
@@ -75,9 +75,9 @@ export const useSurvey = () => {
   );
 
   const notifySurvey = useCallback(
-    async (ids) => {
+    async (data) => {
       const requestBody = {
-        participantIds: ids,
+        participants: data,
       };
       try {
         setLoading(true);
@@ -96,9 +96,9 @@ export const useSurvey = () => {
   );
 
   const sendAndNotifySurvey = useCallback(
-    async (ids) => {
+    async (data) => {
       const requestBody = {
-        participantIds: ids,
+        participants: data,
       };
       try {
         setLoading(true);

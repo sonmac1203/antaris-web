@@ -30,13 +30,15 @@ async function handler(req, res) {
   }
 
   const { survey_id } = req.query;
-  const { participantIds, creatorName: name } = req.body;
+  const { participants: participantsData, creatorName: name } = req.body;
   const creatorName = name || 'Antaris';
+
+  const participantIds = participantsData.map((p) => p.participantIdentifier);
 
   try {
     const sendSurveyResult = await sendSurvey({
       surveyId: survey_id,
-      participantIds,
+      participants: participantsData,
     });
 
     if (!sendSurveyResult.success) {

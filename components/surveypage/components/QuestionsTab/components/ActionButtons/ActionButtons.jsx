@@ -4,7 +4,13 @@ import { useSurvey } from '@/lib/re/surveyoverview';
 import { ParticipantsSectionContext } from '../ParticipantsSection/context';
 import { ListGroup, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 
-export const ActionButtons = ({ participantIdentifier, thisSurvey }) => {
+export const ActionButtons = ({
+  participantIdentifier,
+  secondaryIdentifier,
+  participantFirstName,
+  participantLastName,
+  thisSurvey,
+}) => {
   const { refreshThisSection } = useContext(ParticipantsSectionContext);
   const {
     error,
@@ -16,18 +22,25 @@ export const ActionButtons = ({ participantIdentifier, thisSurvey }) => {
     surveyData,
   } = useSurvey();
 
+  const participantData = {
+    participantIdentifier,
+    secondaryIdentifier,
+    participantFirstName,
+    participantLastName,
+  };
+
   const { notified, last_notified } = thisSurvey || {};
 
   const handleSend = async () => {
-    await sendSurvey([participantIdentifier]);
+    await sendSurvey([participantData]);
   };
 
   const handleSendAndNotify = async () => {
-    await sendAndNotifySurvey([participantIdentifier]);
+    await sendAndNotifySurvey([participantData]);
   };
 
   const handleNotify = async () => {
-    await notifySurvey([participantIdentifier]);
+    await notifySurvey([participantData]);
   };
 
   useEffect(() => {

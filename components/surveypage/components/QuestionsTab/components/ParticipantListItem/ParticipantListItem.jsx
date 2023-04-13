@@ -6,8 +6,13 @@ import styles from './ParticipantListItem.module.css';
 
 export const ParticipantListItem = ({ data, eventKey }) => {
   const { surveyData: generalSurveyData } = useSurvey();
-  const { accountEmail, participantIdentifier, demographics, alexa_metadata } =
-    data;
+  const {
+    accountEmail,
+    participantIdentifier,
+    secondaryIdentifier,
+    demographics,
+    alexa_metadata,
+  } = data;
 
   const thisSurvey =
     !alexa_metadata || alexa_metadata.assigned_surveys.length === 0
@@ -58,6 +63,9 @@ export const ParticipantListItem = ({ data, eventKey }) => {
               )}
               <ActionButtons
                 participantIdentifier={participantIdentifier}
+                secondaryIdentifier={secondaryIdentifier}
+                participantFirstName={demographics.firstName}
+                participantLastName={demographics.lastName}
                 surveySent={thisSurvey !== null}
                 thisSurvey={thisSurvey}
               />

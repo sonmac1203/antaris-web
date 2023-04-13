@@ -15,11 +15,11 @@ async function handler(req, res) {
   }
 
   const { survey_id } = req.query;
-  const { participantIds } = req.body;
+  const { participants } = req.body;
 
   const sendSurveyResult = await sendSurvey({
     surveyId: survey_id,
-    participantIds,
+    participants,
   });
 
   if (!sendSurveyResult.success) {
