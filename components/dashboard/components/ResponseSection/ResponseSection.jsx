@@ -1,4 +1,4 @@
-import { useResponse } from '@/core/hooks';
+import { useResponse } from '@/lib/re/dashboard';
 import { PageSectionWrapper } from '@/core/components';
 import { useEffect, useCallback, useState } from 'react';
 import { ActivityCard, Provider, FilterBar, ExportButton } from './components';
