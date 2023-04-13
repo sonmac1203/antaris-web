@@ -1,5 +1,6 @@
 import { useParticipant } from '@/lib/re/participantoverview';
 import { PageTitle } from '@/core/components';
+import { BreadcrumbSection } from '../BreadcrumbSection';
 
 export const Header = () => {
   const {
@@ -9,6 +10,7 @@ export const Header = () => {
 
   return (
     <>
+      <BreadcrumbSection title={participantName} />
       <PageTitle>{participantName}</PageTitle>
       <div className='d-flex align-items-center gap-2'>
         <div className='d-flex align-items-center gap-1'>
