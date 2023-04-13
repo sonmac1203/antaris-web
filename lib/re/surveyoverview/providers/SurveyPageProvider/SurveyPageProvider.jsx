@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { SurveyContext } from '@/core/context';
+import { SurveyContext } from '../../context';
 import { useRouter } from 'next/router';
 
 export const SurveyPageProvider = ({ children, value }) => {

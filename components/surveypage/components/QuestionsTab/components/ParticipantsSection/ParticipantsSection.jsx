@@ -1,5 +1,5 @@
 import { memo, useEffect, useCallback, useState } from 'react';
-import { useSurvey, useMdh } from '@/core/hooks';
+import { useSurvey } from '@/lib/re/surveyoverview';
 import { Accordion } from 'react-bootstrap';
 import { ParticipantListItem } from '../ParticipantListItem';
 import { ParticipantsSectionContext } from './context';
@@ -8,15 +8,21 @@ export const ParticipantsSection = memo(() => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const refreshThisSection = () => setIsRefreshing(!isRefreshing);
 
-  const { participantsData } = useSurvey();
+  const {
+    participantsData: participantReferences,
+    loadingParticipants: loading,
+    errorParticipants: error,
+    selectedParticipants: participants,
+    fetchSelectedParticipants,
+  } = useSurvey();
 
-  const participantIds = participantsData.map((p) => p.participantIdentifier);
-  const { selectedParticipants, loading, error, fetchSelectedParticipants } =
-    useMdh();
+  const participantIds = participantReferences.map(
+    (p) => p.participantIdentifier
+  );
 
   const loadParticipantsFromMdh = useCallback(async () => {
     await fetchSelectedParticipants(participantIds);
-  }, [selectedParticipants]);
+  }, [participantReferences]);
 
   useEffect(() => {
     loadParticipantsFromMdh();
@@ -28,11 +34,11 @@ export const ParticipantsSection = memo(() => {
       <ParticipantsSectionContext.Provider value={{ refreshThisSection }}>
         {error ? (
           <div>There has been an error</div>
-        ) : loading || selectedParticipants.length === 0 ? (
+        ) : loading || participants.length === 0 ? (
           <div>Loading participants...</div>
         ) : (
           <Accordion>
-            {selectedParticipants.map((participantData, k) => (
+            {participants.map((participantData, k) => (
               <ParticipantListItem
                 data={participantData}
                 eventKey={k}

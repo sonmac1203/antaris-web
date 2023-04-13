@@ -7,8 +7,29 @@ export const useSurvey = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  const [loadingParticipants, setLoadingParticipants] = useState(false);
+  const [errorParticipants, setErrorParticipants] = useState(null);
+
   const surveyContext = useContext(SurveyContext);
   const { surveyData } = surveyContext;
+
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
+
+  const fetchSelectedParticipants = useCallback(async (ids) => {
+    try {
+      setLoadingParticipants(true);
+      const promises = ids.map((id) =>
+        axios.get(`/api/dev/re/participants/${id}`)
+      );
+      const promiseResult = await Promise.all(promises);
+      const participantsResult = promiseResult.map((p) => p.data.data);
+      setSelectedParticipants(participantsResult);
+    } catch (err) {
+      setErrorParticipants(err.response.data);
+    } finally {
+      setLoadingParticipants(false);
+    }
+  }, []);
 
   const sendSurvey = useCallback(
     async (ids) => {
@@ -104,5 +125,9 @@ export const useSurvey = () => {
     notifySurvey,
     sendAndNotifySurvey,
     ...surveyContext,
+    errorParticipants,
+    loadingParticipants,
+    selectedParticipants,
+    fetchSelectedParticipants,
   };
 };
