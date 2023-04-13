@@ -1,8 +1,8 @@
-import { PageSectionWrapper, LinkAlexaButton } from '@/core/components';
 import { useParticipantDashboard } from '@/lib/pa/dashboard';
-import styles from './OverviewSection.module.css';
-import { Badge } from 'react-bootstrap';
+import { PageSectionWrapper } from '@/core/components';
 import { UnlinkButton } from './components';
+import { Badge } from 'react-bootstrap';
+import styles from './OverviewSection.module.css';
 
 export const OverviewSection = () => {
   const {
@@ -47,7 +47,7 @@ export const OverviewSection = () => {
             {getBadge(skillEnabled)}
           </div>
         </div>
-        <div>{!skillIsReady ? <LinkAlexaButton /> : <UnlinkButton />}</div>
+        <div>{skillIsReady && <UnlinkButton />}</div>
       </div>
     </PageSectionWrapper>
   );
