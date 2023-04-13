@@ -1,4 +1,4 @@
-import { useSurvey } from '@/core/hooks';
+import { useSurvey } from '@/lib/re/surveyoverview';
 import { Accordion, ListGroup } from 'react-bootstrap';
 import { HistoryItem } from '../HistoryItem';
 import { ActionButtons } from '../ActionButtons';

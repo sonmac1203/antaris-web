@@ -1,22 +1,19 @@
-import { useEffect, useContext } from 'react';
-import { useSurvey } from '@/core/hooks';
-import { SurveyPageContext } from '@/components/surveypage/context';
-import { QuestionListItem } from '../QuestionListItem';
+import { useEffect } from 'react';
+import { useSurvey } from '@/lib/re/surveyoverview';
 import { formatDate } from '@/core/utils';
 import { ListGroup, Card } from 'react-bootstrap';
+import { QuestionListItem } from '../QuestionListItem';
 
 export const QuestionsSection = () => {
-  const { surveyData } = useSurvey();
+  const { surveyData, stopRefreshing, isRefreshing } = useSurvey();
   const { content } = surveyData;
-
-  const { setIsRefreshing, isRefreshing } = useContext(SurveyPageContext);
 
   const title = content
     ? `Imported on ${formatDate(new Date(content.imported_at))}`
     : 'You have not imported this survey.';
 
   useEffect(() => {
-    setIsRefreshing(false);
+    stopRefreshing();
   }, [surveyData]);
 
   return (

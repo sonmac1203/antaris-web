@@ -1,7 +1,7 @@
 import { PageTitle } from '@/core/components';
 import { SurveyImportModal } from '../SurveyImportModal';
 import { BreadcrumbSection } from '../BreadcrumbSection';
-import { useSurvey } from '@/core/hooks';
+import { useSurvey } from '@/lib/re/surveyoverview';
 export const Header = () => {
   const {
     surveyData: { surveyDisplayName },

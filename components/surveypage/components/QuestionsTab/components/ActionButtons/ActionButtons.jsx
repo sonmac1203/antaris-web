@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import { useSurvey } from '@/core/hooks';
+import { useSurvey } from '@/lib/re/surveyoverview';
 import { ParticipantsSectionContext } from '../ParticipantsSection/context';
 import { ListGroup, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 

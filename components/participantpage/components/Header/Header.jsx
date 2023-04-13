@@ -1,4 +1,4 @@
-import { useParticipant } from '@/core/hooks';
+import { useParticipant } from '@/lib/re/participantoverview';
 import { PageTitle } from '@/core/components';
 
 export const Header = () => {

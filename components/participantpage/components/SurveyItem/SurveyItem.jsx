@@ -1,5 +1,5 @@
 import { Accordion, ListGroup, Badge } from 'react-bootstrap';
-import { useParticipant } from '@/core/hooks';
+import { useParticipant } from '@/lib/re/participantoverview';
 import { ResponseItem } from '../ResponseItem';
 import styles from './SurveyItem.module.css';
 

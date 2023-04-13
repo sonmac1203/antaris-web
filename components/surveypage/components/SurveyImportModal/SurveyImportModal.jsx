@@ -1,12 +1,9 @@
-import { useState, useRef, useEffect, useContext } from 'react';
-import { useSurvey } from '@/core/hooks';
-import { SurveyPageContext } from '../../context';
+import { useState, useRef, useEffect } from 'react';
+import { useSurvey } from '@/lib/re/surveyoverview';
 import { Button, Modal, Row, Col, Form, Accordion } from 'react-bootstrap';
 import styles from './SurveyImportModal.module.css';
 
 export const SurveyImportModal = () => {
-  const { refreshData } = useContext(SurveyPageContext);
-
   const [show, setShow] = useState(false);
   const [error, setError] = useState(false);
 
@@ -15,6 +12,7 @@ export const SurveyImportModal = () => {
 
   const {
     saveSurvey,
+    refreshData,
     error: saveError,
     loading,
     success,
@@ -59,7 +57,7 @@ export const SurveyImportModal = () => {
       const timeoutId = setTimeout(() => {
         handleClose();
         refreshData();
-      }, 3000);
+      }, 1500);
       return () => clearTimeout(timeoutId);
     }
   }, [success]);

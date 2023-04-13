@@ -1,4 +1,4 @@
-import { useParticipant } from '@/core/hooks';
+import { useParticipant } from '@/lib/re/participantoverview';
 import { Accordion } from 'react-bootstrap';
 import { SurveyItem } from '../SurveyItem';
 
