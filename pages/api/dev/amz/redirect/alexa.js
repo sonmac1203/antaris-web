@@ -1,7 +1,7 @@
 import connectToDb from '@/core/db/connectToDb';
 import AmazonAccount from '@/core/models/AmazonAccount';
 import Participant from '@/core/models/Participant';
-import { createAmazonService } from '@/core/utils/amazon';
+import { createAmazonService } from '@/lib/pa/amazon';
 import { Types } from 'mongoose';
 
 const handler = async (req, res) => {

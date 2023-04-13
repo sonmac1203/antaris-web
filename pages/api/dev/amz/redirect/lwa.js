@@ -1,4 +1,4 @@
-import { createAmazonService } from '@/core/utils/amazon';
+import { createAmazonService } from '@/lib/pa/amazon';
 import { withSessionApiRoute, jwtUtils } from '@/core/utils';
 
 const handler = async (req, res) => {

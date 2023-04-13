@@ -1,5 +1,5 @@
 import { jwtUtils, withSessionApiRoute } from '@/core/utils';
-import { deleteSkill } from '@/core/utils/amazon';
+import { deleteSkill } from '@/lib/pa/amazon';
 
 const authTokenFromInside = process.env.API_SECRET;
 

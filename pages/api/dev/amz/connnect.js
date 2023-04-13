@@ -1,4 +1,4 @@
-import { createAmazonService } from '@/core/utils/amazon';
+import { createAmazonService } from '@/lib/pa/amazon';
 
 const handler = async (req, res) => {
   const { state } = req.query;

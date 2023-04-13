@@ -1,5 +1,5 @@
 import { withSessionApiRoute } from '@/core/utils';
-import { fetchLinkedParticipants } from '@/core/utils/amazon';
+import { fetchLinkedParticipants } from '@/lib/pa/dashboard';
 
 async function handler(req, res) {
   const { token } = req.session;

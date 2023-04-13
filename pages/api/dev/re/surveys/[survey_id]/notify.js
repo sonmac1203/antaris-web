@@ -1,4 +1,4 @@
-import { createAmazonService } from '@/core/utils/amazon';
+import { createAmazonService } from '@/lib/pa/amazon';
 import { withSessionApiRoute } from '@/core/utils';
 import Survey from '@/core/models/Survey';
 import Participant from '@/core/models/Participant';

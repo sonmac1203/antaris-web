@@ -1,7 +1,7 @@
 import { DashboardLayout } from '@/components/layouts';
 import { ParticipantDashboard } from '@/components/participantdashboard';
 import { withSession } from '@/core/utils';
-import { fetchUserFromToken } from '@/core/utils/amazon';
+import { fetchUserFromToken } from '@/lib/pa/dashboard';
 import { ParticipantDashboardProvider } from '@/lib/pa/dashboard';
 
 const ParticipantDashboardIndex = (props) => {
