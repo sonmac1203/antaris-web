@@ -11,7 +11,7 @@ export const LinkParticipantButton = () => {
 
   const { email } = participantData;
 
-  const connectEndpoint = '/api/amazon/connect';
+  const connectEndpoint = '/api/dev/amz/connect';
 
   const router = useRouter();
 
