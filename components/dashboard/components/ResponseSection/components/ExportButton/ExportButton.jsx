@@ -1,14 +1,18 @@
 import { CSVLink } from 'react-csv';
-import { useFilterBar } from '../../hooks';
 import { Button } from 'react-bootstrap';
+import { useFilterBar } from '../../hooks';
 
 const ExportButton = () => {
   const { startTime, endTime, responses } = useFilterBar();
 
   if (!responses || responses.length === 0) {
     return (
-      <Button disabled className='d-flex align-items-center gap-2'>
-        <i className='fa-solid fa-download' />
+      <Button
+        disabled
+        variant='link'
+        className='text-decoration-none d-flex gap-2 align-items-center'
+      >
+        <i className='fa-solid fa-file-arrow-down' />
         Export
       </Button>
     );

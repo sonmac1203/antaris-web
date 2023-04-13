@@ -1,14 +1,12 @@
-import { MultiSelect, DatePicker, DatePickerActivator } from './components';
+import { MultiSelect, DatePickerActivator } from './components';
 import { FilterButton } from '../FilterButton';
-import { useDashboard } from '@/core/hooks';
+import { useDashboard } from '@/lib/re/dashboard';
 import { useFilterBar } from '../../hooks';
 import styles from './FilterBar.module.css';
 
 export const FilterBar = () => {
   const { setSelectedItems } = useFilterBar();
-
   const { responseSectionData } = useDashboard();
-
   const { participants, surveys } = responseSectionData;
 
   const surveyOptions = surveys.map((s) => ({

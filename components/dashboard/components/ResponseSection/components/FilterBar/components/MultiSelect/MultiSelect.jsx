@@ -1,6 +1,6 @@
+import styles from './MultiSelect.module.css';
 import { useMemo } from 'react';
 import Select, { components } from 'react-select';
-import styles from './MultiSelect.module.css';
 
 const ValueContainer = ({ children, ...props }) => {
   let [values, input] = children;
