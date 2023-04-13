@@ -32,9 +32,9 @@ const ExportButton = () => {
     const time = r.content.provided_at;
     const participantName = `${r.responded_by.demographics.first_name} ${r.responded_by.demographics.last_name}`;
     const participantId = r.responded_by.participant_identifier;
-    const answer = r.content.text;
-    const question = r.content.identifier;
-    const questionId = r.content.identifier;
+    const answer = r.content.answer_text;
+    const question = r.content.question_text;
+    const questionId = r.content.question_identifier;
     const surveyName = r.responded_to.name;
     const surveyId = r.responded_to.mdh_id;
     return {

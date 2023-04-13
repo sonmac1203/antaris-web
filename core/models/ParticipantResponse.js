@@ -6,8 +6,9 @@ const participantResponseSchema = new Schema({
   responded_to: { type: Schema.Types.ObjectId, ref: 'Survey' },
   content: [
     {
-      text: { type: String, default: '' },
-      identifier: { type: String, default: '' },
+      question_text: { type: String, default: '' },
+      question_identifier: { type: String, default: '' },
+      answer_text: { type: String, default: '' },
       provided_at: { type: Date, default: Date.now() },
       _id: false,
     },

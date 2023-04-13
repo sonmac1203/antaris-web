@@ -13,8 +13,8 @@ export const ActivityCard = ({ item }) => {
       />
       <Card>
         <Card.Body className='pb-2'>
-          <Card.Title>{content.identifier}</Card.Title>
-          <Card.Text>{content.text}</Card.Text>
+          <Card.Title>{content.question_text}</Card.Title>
+          <Card.Text>{content.answer_text}</Card.Text>
         </Card.Body>
         <Card.Footer
           className='text-muted bg-white pt-0 d-flex align-items-center gap-1 border-top-0'

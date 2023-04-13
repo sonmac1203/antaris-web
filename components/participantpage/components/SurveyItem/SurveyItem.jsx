@@ -3,16 +3,18 @@ import { useParticipant } from '@/lib/re/participantoverview';
 import { ResponseItem } from '../ResponseItem';
 import styles from './SurveyItem.module.css';
 
-export const SurveyItem = ({ survey, eventKey }) => {
+export const SurveyItem = ({ survey: surveyData, eventKey }) => {
   const { participantResponses } = useParticipant();
 
+  const { survey } = surveyData;
+
   const response = participantResponses.find(
-    (res) => res.responded_to.mdh_id === survey.survey.mdh_id
+    (res) => res.responded_to.mdh_id === survey.mdh_id
   );
 
-  const questionsAndResponse = survey.survey.content.questions.map((q) => {
+  const questionsAndResponse = survey.content.questions.map((q) => {
     const answer = response?.content.find(
-      (item) => item.identifier === q.identifier
+      (item) => item.question_identifier === q.identifier
     );
     return {
       answer: answer || null,
@@ -25,13 +27,13 @@ export const SurveyItem = ({ survey, eventKey }) => {
       <Accordion.Header>
         <div className='overflow-hidden text-nowrap'>
           <div className='d-flex gap-2 mb-2'>
-            <div className={styles.Title}>{survey.survey.display_name}</div>
+            <div className={styles.Title}>{survey.display_name}</div>
             <Badge bg={survey.completed ? 'success' : 'secondary'}>
               {survey.completed ? 'complete' : 'incomplete'}
             </Badge>
           </div>
           <div className={`d-flex align-items-center ${styles.Footer}`}>
-            {survey.survey.mdh_id}
+            {survey.mdh_id}
           </div>
         </div>
       </Accordion.Header>

@@ -8,7 +8,7 @@ const handler = async (req, res) => {
     return;
   }
 
-  const { text, identifier } = req.body;
+  const { question_text, answer_text, question_identifier } = req.body;
   const { survey_id: surveyID, participant_identifier, project_id } = req.query;
 
   try {
@@ -27,8 +27,9 @@ const handler = async (req, res) => {
       {
         $push: {
           content: {
-            text,
-            identifier,
+            question_text,
+            question_identifier,
+            answer_text,
             provided_at: new Date(),
           },
         },
