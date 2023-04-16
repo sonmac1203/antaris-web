@@ -1,14 +1,32 @@
 import React from 'react';
 import styles from './LegendItem.module.css';
 
-export const LegendItem = () => {
+export const LegendItem = ({
+  text,
+  percentage,
+  backgroundColor,
+  borderColor,
+}) => {
+  if (percentage === 0) return;
+
+  const bulletStyle = {
+    backgroundColor,
+    borderColor,
+  };
+
+  const textStyle = {
+    fontWeight: '500',
+  };
+
   return (
     <div className='d-flex align-items-center mb-2'>
-      <div className={`${styles.Bullet} me-2 bg-primary`} />
-      <h6 className='text-900 fw-semi-bold mb-0' style={{ flex: '1' }}>
-        Pending
+      <div className={`${styles.Bullet} me-2`} style={bulletStyle} />
+      <h6 className='fs-6 mb-0 flex-fill' style={textStyle}>
+        {text}
       </h6>
-      <h6 className='text-900 fw-semi-bold mb-0'>52%</h6>
+      <h6 className='fs-6 mb-0 text-muted' style={textStyle}>
+        {percentage}%
+      </h6>
     </div>
   );
 };

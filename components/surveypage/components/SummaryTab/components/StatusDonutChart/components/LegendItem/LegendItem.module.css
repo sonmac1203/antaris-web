@@ -1,5 +1,6 @@
 .Bullet {
   height: .5rem;
   width: 1rem;
-  border-radius: 2px
+  border-radius: 2px;
+  border: 1px solid black;
 }
