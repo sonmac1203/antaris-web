@@ -6,7 +6,6 @@ export const FilterButton = () => {
   const { filterResponses } = useFilterBar();
 
   const handleClick = (e) => {
-    console.log('NOW CLICK');
     e.preventDefault();
     filterResponses();
   };
