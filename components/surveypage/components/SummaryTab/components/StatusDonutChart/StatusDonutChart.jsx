@@ -85,7 +85,7 @@ export const StatusDonutChart = () => {
       <div className={styles.ChartContainer}>
         <Doughnut data={data} options={options} />
       </div>
-      <div className='d-flex flex-column gap-1'>
+      <div className='d-flex flex-column gap-2'>
         {chartData.map((d, key) => (
           <LegendItem
             key={key}

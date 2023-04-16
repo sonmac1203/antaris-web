@@ -1,4 +1,14 @@
 .Container {
-  flex-grow: 1;
-  background-color: white;
+  flex: 1;
+  max-height: 240px;
+  overflow: auto;
+}
+
+.Container::-webkit-scrollbar {
+  display: none;
+}
+
+.Container {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
