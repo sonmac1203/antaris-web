@@ -59,16 +59,20 @@ const handler = async (req, res) => {
       }
     });
 
-    if (progress === 100) {
-      survey.alexa_completed = true;
-      survey.assigned_to.forEach((assignedParticipant) => {
-        if (
-          assignedParticipant.participant.toString() ===
-          participant._id.toString()
-        ) {
+    survey.assigned_to.forEach((assignedParticipant) => {
+      if (
+        assignedParticipant.participant.toString() ===
+        participant._id.toString()
+      ) {
+        assignedParticipant.progress = progress;
+        if (progress === 100) {
           assignedParticipant.completed = true;
         }
-      });
+      }
+    });
+
+    if (progress === 100) {
+      survey.alexa_completed = true;
     }
 
     await participant.save();
