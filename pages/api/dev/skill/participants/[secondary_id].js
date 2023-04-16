@@ -7,10 +7,13 @@ const handler = async (req, res) => {
   try {
     await connectToDb();
 
-    const existingParticipant = await Participant.findOne({
-      secondary_identifier,
-      'alexa_metadata.user_id': user_id,
-    }).populate({
+    const existingParticipant = await Participant.findOne(
+      {
+        secondary_identifier,
+        'alexa_metadata.user_id': user_id,
+      },
+      'participant_identifier demographics project_id'
+    ).populate({
       path: 'alexa_metadata.assigned_surveys.survey',
       select: 'mdh_id name content',
     });
@@ -38,7 +41,9 @@ const handler = async (req, res) => {
       message: 'A list of participants has been found',
       data: {
         participant_identifier: existingParticipant.participant_identifier,
+        demographics: existingParticipant.demographics,
         secondary_identifier,
+        project_id: existingParticipant.project_id,
         assigned_surveys: assignedSurveys,
       },
     });
