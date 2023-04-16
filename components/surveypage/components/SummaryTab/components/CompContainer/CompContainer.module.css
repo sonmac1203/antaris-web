@@ -1,0 +1,13 @@
+.Container {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+@media (max-width: 850px) {
+  .Container {
+    flex: 0 0 100%;
+  }
+}
