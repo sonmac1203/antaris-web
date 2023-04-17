@@ -13,6 +13,9 @@ export function withSsrAuth(gssp) {
       };
     }
     const gsspData = await gssp(context); // Run `getServerSideProps` to get page-specific data
+    if (gsspData.hasOwnProperty('redirect')) {
+      return gsspData;
+    }
     const isAuthenticated = !!token;
 
     // Pass page-specific props along with user data from `withAuth` to component
