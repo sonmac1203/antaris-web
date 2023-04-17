@@ -1,8 +1,9 @@
 import { withSession } from '../session/with-session';
+import { jsonify } from '../tools';
 
-export const withSsrAuth = (gssp) =>
-  withSession(async function (context) {
-    const { token } = context.req.session;
+export function withSsrAuth(gssp) {
+  return withSession(async (context) => {
+    const { token, role } = context.req.session;
     if (!token) {
       return {
         redirect: {
@@ -11,6 +12,15 @@ export const withSsrAuth = (gssp) =>
         },
       };
     }
+    const gsspData = await gssp(context); // Run `getServerSideProps` to get page-specific data
+    const isAuthenticated = !!token;
 
-    return await gssp(context);
+    // Pass page-specific props along with user data from `withAuth` to component
+    return {
+      props: {
+        ...gsspData.props,
+        user: isAuthenticated ? jsonify({ isAuthenticated, role }) : null,
+      },
+    };
   });
+}

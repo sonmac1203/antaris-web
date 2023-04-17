@@ -3,7 +3,6 @@ import ServiceAccount from '@/core/models/ServiceAccount';
 import {
   withSessionApiRoute,
   getExpirationTimestamp,
-  // getMdhAccessToken,
   jwtUtils,
 } from '@/core/utils';
 import connectToDb from '@/core/db/connectToDb';

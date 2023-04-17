@@ -3,7 +3,6 @@ import ServiceAccount from '@/core/models/ServiceAccount';
 import {
   withSessionApiRoute,
   getExpirationTimestamp,
-  // getMdhAccessToken,
   jwtUtils,
 } from '@/core/utils';
 import connectToDb from '@/core/db/connectToDb';
@@ -58,6 +57,7 @@ const handler = async (req, res) => {
       };
       const authToken = jwtUtils.encode(itemToEncode);
       req.session.token = authToken;
+      req.session.role = 'researcher';
       await req.session.save();
       return res.status(200).json({
         success: true,
@@ -95,6 +95,7 @@ const handler = async (req, res) => {
     };
     const authToken = jwtUtils.encode(itemToEncode);
     req.session.token = authToken;
+    req.session.role = 'researcher';
     await req.session.save();
     return res.status(200).json({
       success: true,

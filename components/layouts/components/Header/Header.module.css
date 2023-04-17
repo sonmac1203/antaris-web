@@ -1,6 +1,32 @@
-.Header {
+.OutterWrapper {
+  border-bottom: 1px solid #cbd0dd;
+  position: sticky;
+  top: 0;
+  z-index: 1968;
+}
+
+.Wrapper {
   display: flex;
+  flex-wrap: inherit;
+  align-items: center;
   justify-content: space-between;
-  background-color: lightgrey;
-  padding: 20px 40px 20px 40px;
+}
+
+.LogoContainer {
+  height: 60px;
+  position: relative;
+  aspect-ratio: 3/2;
+}
+
+.Logo {
+  object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  .LogoContainer {
+    height: 50px;
+  }
+  .Button {
+    margin: 0.5rem 0;
+  }
 }
