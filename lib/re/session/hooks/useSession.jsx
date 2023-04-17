@@ -20,9 +20,8 @@ export function useSession() {
         });
         router.push('/re/dashboard');
       } catch (err) {
-        setError(err.response.data);
-      } finally {
         setLoading(false);
+        setError(err.response.data);
       }
     },
     []
@@ -41,9 +40,8 @@ export function useSession() {
         });
         router.push('/re/dashboard');
       } catch (err) {
-        setError(err.response.data);
-      } finally {
         setLoading(false);
+        setError(err.response.data);
       }
     },
     []
