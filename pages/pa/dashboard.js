@@ -1,6 +1,6 @@
 import { DashboardLayout } from '@/components/layouts';
 import { ParticipantDashboard } from '@/components/participantdashboard';
-import { withSession } from '@/core/utils';
+import { jsonify, withSsrAuth } from '@/core/utils';
 import { fetchUserFromToken } from '@/lib/pa/dashboard';
 import { ParticipantDashboardProvider } from '@/lib/pa/dashboard';
 
@@ -16,9 +16,11 @@ ParticipantDashboardIndex.Layout = DashboardLayout;
 
 export default ParticipantDashboardIndex;
 
-export const getServerSideProps = withSession(async ({ req, res }) => {
+export const getServerSideProps = withSsrAuth(async ({ req }) => {
   const { token } = req.session;
-  if (!token) {
+  const result = await fetchUserFromToken(token);
+
+  if (!result.success) {
     return {
       redirect: {
         destination: '/',
@@ -26,19 +28,7 @@ export const getServerSideProps = withSession(async ({ req, res }) => {
       },
     };
   }
-
-  const result = await fetchUserFromToken(token);
-
-  if (!result.success) {
-    return {
-      redirect: {
-        destination: '/participants',
-        permanent: false,
-      },
-    };
-  }
-
   return {
-    props: { participantData: JSON.parse(JSON.stringify(result.data)) },
+    props: { participantData: jsonify(result.data) },
   };
 });

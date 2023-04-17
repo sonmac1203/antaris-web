@@ -1,10 +1,9 @@
-import React from 'react';
-import styles from './Footer.module.css';
-
-export const Footer = () => {
+export const Footer = ({ className }) => {
   return (
-    <footer className={styles.Footer}>
-      Created by Capstone 23062 team - 2022
+    <footer className={`text-center py-4 mt-auto ${className}`}>
+      <span className='text-muted'>
+        Designed and developed by 23062 team &#10084;&#65039;
+      </span>
     </footer>
   );
 };

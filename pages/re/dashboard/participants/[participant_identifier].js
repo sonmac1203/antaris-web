@@ -1,4 +1,4 @@
-import { DashboardLayout } from '@/components/layouts';
+import { ParticipantOverviewLayout } from '@/components/layouts';
 import { ParticipantPage } from '@/components/participantpage';
 import { jwtUtils, withSsrAuth, jsonify } from '@/core/utils';
 import {
@@ -15,7 +15,7 @@ const ParticipantDetails = (props) => {
   );
 };
 
-ParticipantDetails.Layout = DashboardLayout;
+ParticipantDetails.Layout = ParticipantOverviewLayout;
 
 export default ParticipantDetails;
 

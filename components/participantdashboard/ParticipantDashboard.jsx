@@ -1,4 +1,5 @@
 import { OverviewSection, ParticipantSection } from './components';
+import { Footer } from '../layouts/components';
 import styles from './ParticipantDashboard.module.css';
 
 export const ParticipantDashboard = () => {
@@ -8,9 +9,13 @@ export const ParticipantDashboard = () => {
         <section>
           <OverviewSection />
         </section>
+        <Footer className={styles.HideAtSmall} />
       </div>
       <div className={styles.Right}>
-        <ParticipantSection />
+        <section>
+          <ParticipantSection />
+        </section>
+        <Footer className={styles.ShowAtSmall} />
       </div>
     </div>
   );

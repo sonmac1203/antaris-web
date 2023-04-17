@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { Footer, Header } from '../components';
+import { Header } from '../components';
 import styles from './DashboardLayout.module.css';
 
 export const DashboardLayout = ({ children, user }) => {
@@ -11,7 +11,6 @@ export const DashboardLayout = ({ children, user }) => {
       </Head>
       <Header user={user} />
       <main className={styles.Main}>{children}</main>
-      <Footer />
     </>
   );
 };

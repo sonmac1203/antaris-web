@@ -6,6 +6,7 @@
 
 html,
 body {
+  font-size: 15px;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -16,7 +17,7 @@ body > #__next {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /* justify-content: space-between; */
+  background-color: #f6f8fa;
 }
 
 a {
@@ -28,13 +29,72 @@ a {
   box-sizing: border-box;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-} */
+.core-container {
+  width: 100%;
+  max-width: 75rem;
+  padding-left: 45px;
+  padding-right: 45px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+@media only screen and (max-width: 600px) {
+  .core-container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+.nav-link {
+  color: black !important;
+}
+
+.nav-tabs .nav-link.active {
+  font-weight: 500;
+  background-color: transparent !important;
+  border: none;
+  border-bottom: 2px solid red;
+  border-color: red !important;
+}
+
+.accordion-button {
+  box-shadow: none !important;
+}
+:focus-visible {
+  outline: none !important;
+}
+.accordion-button:not(.collapsed) {
+  color: unset !important;
+  background-color: transparent !important;
+  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+.list-group-flush>.list-group-item:first-child {
+  border-top: var(--bs-list-group-border-width) solid var(--bs-list-group-border-color);
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.link-hover:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .rdrMonth {
+    width: 100% !important;
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+.show {
+  display: block !important;
+}
+.modal-backdrop {
+  z-index: 3000 !important;
+}
+.modal {
+  z-index: 3005 !important;
+}

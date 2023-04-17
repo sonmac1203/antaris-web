@@ -3,6 +3,7 @@ import {
   ParticipantSection,
   ResponseSection,
 } from './components';
+import { Footer } from '../layouts/components';
 import styles from './Dashboard.module.css';
 
 export const Dashboard = () => {
@@ -15,9 +16,13 @@ export const Dashboard = () => {
         <section>
           <ParticipantSection />
         </section>
+        <Footer className={styles.HideAtSmall} />
       </div>
       <div className={styles.Right}>
-        <ResponseSection />
+        <section>
+          <ResponseSection />
+        </section>
+        <Footer className={styles.ShowAtSmall} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { SurveyPage } from '@/components/surveypage';
-import { DashboardLayout } from '@/components/layouts';
+import { SurveyOverviewLayout } from '@/components/layouts';
 import { jwtUtils, withSsrAuth, jsonify } from '@/core/utils';
 import { getSurveyById, SurveyPageProvider } from '@/lib/re/surveyoverview';
 
@@ -11,7 +11,7 @@ const SurveyDetails = (props) => {
   );
 };
 
-SurveyDetails.Layout = DashboardLayout;
+SurveyDetails.Layout = SurveyOverviewLayout;
 
 export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
   const { token } = req.session;
