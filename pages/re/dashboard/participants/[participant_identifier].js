@@ -20,7 +20,7 @@ ParticipantDetails.Layout = DashboardLayout;
 export default ParticipantDetails;
 
 export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
-  const { token, role } = req.session;
+  const { token } = req.session;
   const { participant_identifier: participantIdentifier } = params;
   const { accessToken, projectId } = jwtUtils.decode(token);
   const query = { accessToken, projectId, participantIdentifier };
@@ -35,7 +35,6 @@ export const getServerSideProps = withSsrAuth(async ({ req, params }) => {
         participantData: jsonify(participant),
         assignedSurveys: jsonify(participant.alexa_metadata.assigned_surveys),
         participantResponses: jsonify(responses),
-        user: jsonify({ isAuthenticated: true, role }),
       },
     };
   } catch (err) {
