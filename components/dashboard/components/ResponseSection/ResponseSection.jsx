@@ -28,7 +28,7 @@ export const ResponseSection = () => {
         topRightOptions={[<ExportButton key={1} />]}
       >
         <FilterBar />
-        <div className='d-flex gap-4 flex-column mt-3'>
+        <div className='d-flex flex-column mt-3' style={{ gap: '2rem' }}>
           {error
             ? 'Could not load responses.'
             : loading

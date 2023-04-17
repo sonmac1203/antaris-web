@@ -13,7 +13,9 @@ export const ActivityCard = ({ item }) => {
       />
       <Card>
         <Card.Body className='pb-2'>
-          <Card.Title>{content.question_text}</Card.Title>
+          <Card.Title className='fs-6 fw-semibold'>
+            {content.question_text}
+          </Card.Title>
           <Card.Text>{content.answer_text}</Card.Text>
         </Card.Body>
         <Card.Footer
