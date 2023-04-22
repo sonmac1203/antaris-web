@@ -1,0 +1,1 @@
+export { useSWRAxios } from './useSWRAxios';
