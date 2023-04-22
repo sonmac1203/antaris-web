@@ -26,59 +26,57 @@ export const ParticipantListItem = ({
     thisSurvey?.last_notified && getFormattedDate(thisSurvey.last_notified);
 
   return (
-    <ListGroup.Item className='d-flex py-3 gap-2'>
-      <div className='flex-grow-1'>
-        <div className='d-flex align-items-center mb-2'>
-          <div className='fs-6' style={{ fontWeight: '500' }}>
-            {participantName}
-          </div>
-          {!alexa_metadata && (
-            <Badge bg='secondary' pill className='ms-1'>
-              not linked
-            </Badge>
-          )}
-
-          {thisSurvey && (
-            <Badge bg='success' pill className='ms-1'>
-              assigned
-            </Badge>
-          )}
-
-          {thisSurvey && thisSurvey.notified && (
-            <Badge bg='info' pill className='ms-1'>
-              notified
-            </Badge>
-          )}
-          <ActionButtons
-            participantIdentifier={participantIdentifier}
-            secondaryIdentifier={secondaryIdentifier}
-            participantFirstName={demographics.firstName}
-            participantLastName={demographics.lastName}
-            hasLinked={!!alexa_metadata}
-            thisSurvey={thisSurvey}
-          />
+    <ListGroup.Item className='d-flex py-3 gap-2 flex-column'>
+      <div className='d-flex align-items-center'>
+        <div className='fs-6' style={{ fontWeight: '500' }}>
+          {participantName}
         </div>
-        <div
-          className='d-flex align-items-center gap-2 text-secondary'
-          style={{ fontSize: '12px' }}
-        >
-          {!thisSurvey ? (
-            <span>{participantIdentifier}</span>
-          ) : (
-            <>
+        {!alexa_metadata && (
+          <Badge bg='secondary' pill className='ms-1'>
+            not linked
+          </Badge>
+        )}
+
+        {thisSurvey && (
+          <Badge bg='success' pill className='ms-1'>
+            assigned
+          </Badge>
+        )}
+
+        {thisSurvey && thisSurvey.notified && (
+          <Badge bg='info' pill className='ms-1'>
+            notified
+          </Badge>
+        )}
+        <ActionButtons
+          participantIdentifier={participantIdentifier}
+          secondaryIdentifier={secondaryIdentifier}
+          participantFirstName={demographics.firstName}
+          participantLastName={demographics.lastName}
+          hasLinked={!!alexa_metadata}
+          thisSurvey={thisSurvey}
+        />
+      </div>
+      <div
+        className='d-flex align-items-center gap-2 text-secondary'
+        style={{ fontSize: '12px' }}
+      >
+        {!thisSurvey ? (
+          <span>{participantIdentifier}</span>
+        ) : (
+          <>
+            <div>
+              <i className='fa-regular fa-paper-plane me-1' />
+              {timeOfAssignement}
+            </div>
+            {timeOfNotification && (
               <div>
-                <i className='fa-regular fa-paper-plane me-1' />
-                {timeOfAssignement}
+                <i className='fa-regular fa-bell me-1' />
+                {timeOfNotification}
               </div>
-              {timeOfNotification && (
-                <div>
-                  <i className='fa-regular fa-bell me-1' />
-                  {timeOfNotification}
-                </div>
-              )}
-            </>
-          )}
-        </div>
+            )}
+          </>
+        )}
       </div>
     </ListGroup.Item>
   );

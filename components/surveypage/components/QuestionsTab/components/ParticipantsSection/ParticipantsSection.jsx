@@ -3,6 +3,7 @@ import { useSurvey } from '@/lib/re/surveyoverview';
 import { ListGroup } from 'react-bootstrap';
 import { PageSectionWrapper } from '@/core/components';
 import { ParticipantListItem } from '../ParticipantListItem';
+import { ParticipantListSkeleton } from '../ParticipantListSkeleton';
 import { ParticipantsSectionContext } from './context';
 
 export const ParticipantsSection = memo(() => {
@@ -25,15 +26,17 @@ export const ParticipantsSection = memo(() => {
           {error ? (
             <div>There has been an error</div>
           ) : loading ? (
-            <div>Loading participants...</div>
+            <ParticipantListSkeleton />
           ) : participants.length === 0 ? (
             'No participants found.'
           ) : (
-            <ListGroup>
-              {participants.map((participantData, k) => (
-                <ParticipantListItem data={participantData} key={k} />
-              ))}
-            </ListGroup>
+            <>
+              <ListGroup>
+                {participants.map((participantData, k) => (
+                  <ParticipantListItem data={participantData} key={k} />
+                ))}
+              </ListGroup>
+            </>
           )}
         </ParticipantsSectionContext.Provider>
       </PageSectionWrapper>
