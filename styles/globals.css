@@ -89,7 +89,7 @@ a {
 .no-scroll {
   overflow: hidden;
 }
-.show {
+.display {
   display: block !important;
 }
 .modal-backdrop {
@@ -97,4 +97,16 @@ a {
 }
 .modal {
   z-index: 3005 !important;
+}
+.dropdown-menu {
+  border: none !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#action-dropdown.dropdown-toggle {
+  display: flex !important;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  padding: 3px 12px !important;
 }
