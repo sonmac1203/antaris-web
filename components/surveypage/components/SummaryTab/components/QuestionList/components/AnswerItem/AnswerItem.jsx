@@ -43,7 +43,7 @@ export const AnswerItem = ({ responseData }) => {
 
 const getLink = (text, id) => (
   <Link
-    href={`re/dashboard/participants/${id}`}
+    href={`/re/dashboard/participants/${id}`}
     className='text-secondary text-decoration-none fw-semibold'
   >
     {text}
