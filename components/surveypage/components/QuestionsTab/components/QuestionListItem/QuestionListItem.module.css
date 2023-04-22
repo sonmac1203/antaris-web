@@ -1,11 +1,9 @@
 .Main {
   flex-grow: 1;
   overflow: hidden;
-}
-.Title {
-  font-size: 1.0625rem;
-  font-weight: 500 !important;
-  margin-bottom: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .Description {
   overflow: hidden;

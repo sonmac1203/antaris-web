@@ -3,6 +3,8 @@ import { useSurvey } from '@/lib/re/surveyoverview';
 import { getFormattedDate } from '@/core/utils';
 import { ListGroup, Card } from 'react-bootstrap';
 import { QuestionListItem } from '../QuestionListItem';
+import { QuestionsSectionSkeleton } from './components';
+import { PageSectionWrapper } from '@/core/components';
 
 export const QuestionsSection = () => {
   const { surveyData, stopRefreshing, isRefreshing } = useSurvey();
@@ -19,8 +21,7 @@ export const QuestionsSection = () => {
   return (
     <section className='mb-4'>
       {!isRefreshing ? (
-        <>
-          <h5 className='mb-2'>{title}</h5>
+        <PageSectionWrapper title={title}>
           {content ? (
             <ListGroup as='ol' numbered>
               {content.questions.map((q, k) => (
@@ -28,8 +29,7 @@ export const QuestionsSection = () => {
                   key={k}
                   title={q.title}
                   description={q.text}
-                  footerOne={q.identifier}
-                  footerTwo={q.type}
+                  type={q.type}
                 />
               ))}
             </ListGroup>
@@ -38,9 +38,9 @@ export const QuestionsSection = () => {
               <Card.Body>Your survey will show up here.</Card.Body>
             </Card>
           )}
-        </>
+        </PageSectionWrapper>
       ) : (
-        <>Fetching survey questions...</>
+        <QuestionsSectionSkeleton />
       )}
     </section>
   );
