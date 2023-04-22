@@ -1,78 +1,85 @@
 import { useSurvey } from '@/lib/re/surveyoverview';
-import { Accordion, ListGroup } from 'react-bootstrap';
-import { HistoryItem } from '../HistoryItem';
+import { ListGroup, Badge } from 'react-bootstrap';
 import { ActionButtons } from '../ActionButtons';
-import styles from './ParticipantListItem.module.css';
+import { getFormattedDate } from '@/core/utils';
 
-export const ParticipantListItem = ({ data, eventKey }) => {
-  const { surveyData: generalSurveyData } = useSurvey();
-  const {
-    accountEmail,
+const getSurvey = (surveys, surveyId) => {
+  if (!surveys || surveys.length === 0) return null;
+  return surveys.find((item) => item.survey.mdh_id === surveyId);
+};
+
+export const ParticipantListItem = ({
+  data: {
     participantIdentifier,
     secondaryIdentifier,
     demographics,
     alexa_metadata,
-  } = data;
-
-  const thisSurvey =
-    !alexa_metadata || alexa_metadata.assigned_surveys.length === 0
-      ? null
-      : alexa_metadata.assigned_surveys.find(
-          (item) => item.survey.mdh_id === generalSurveyData.surveyID
-        );
+  },
+}) => {
+  const { surveyData: generalSurveyData } = useSurvey();
+  const { assigned_surveys: surveys } = alexa_metadata || {};
+  const thisSurvey = getSurvey(surveys, generalSurveyData.surveyID);
+  const participantName = `${demographics.firstName} ${demographics.lastName}`;
+  const timeOfAssignement =
+    thisSurvey?.assigned_at && getFormattedDate(thisSurvey.assigned_at);
+  const timeOfNotification =
+    thisSurvey?.last_notified && getFormattedDate(thisSurvey.last_notified);
 
   return (
-    <Accordion.Item eventKey={eventKey}>
-      <Accordion.Header>
-        <div className='overflow-hidden text-nowrap'>
-          <div className={styles.Title}>
-            {demographics.firstName} {demographics.lastName}
+    <ListGroup.Item className='d-flex py-3 gap-2'>
+      <div className='flex-grow-1'>
+        <div className='d-flex align-items-center mb-2'>
+          <div className='fs-6' style={{ fontWeight: '500' }}>
+            {participantName}
           </div>
-          <div className={`d-flex align-items-center ${styles.Footer}`}>
-            <div>
-              <i className='fa-regular fa-envelope me-1' />
-              {accountEmail}
-            </div>
-            ·
-            <div className='d-flex align-items-center gap-1'>
-              <i className='fa-regular fa-address-card' />
-              {participantIdentifier}
-            </div>
-          </div>
+          {!alexa_metadata && (
+            <Badge bg='secondary' pill className='ms-1'>
+              not linked
+            </Badge>
+          )}
+
+          {thisSurvey && (
+            <Badge bg='success' pill className='ms-1'>
+              assigned
+            </Badge>
+          )}
+
+          {thisSurvey && thisSurvey.notified && (
+            <Badge bg='info' pill className='ms-1'>
+              notified
+            </Badge>
+          )}
+          <ActionButtons
+            participantIdentifier={participantIdentifier}
+            secondaryIdentifier={secondaryIdentifier}
+            participantFirstName={demographics.firstName}
+            participantLastName={demographics.lastName}
+            hasLinked={!!alexa_metadata}
+            thisSurvey={thisSurvey}
+          />
         </div>
-      </Accordion.Header>
-      <Accordion.Body className='px-4 py-0'>
-        <ListGroup variant='flush'>
-          {!alexa_metadata ? (
-            <ListGroup.Item className='py-4 px-0'>
-              <i className='fa-regular fa-face-frown me-2' />
-              This person hasn't signed up with Antaris.
-            </ListGroup.Item>
+        <div
+          className='d-flex align-items-center gap-2 text-secondary'
+          style={{ fontSize: '12px' }}
+        >
+          {!thisSurvey ? (
+            <span>{participantIdentifier}</span>
           ) : (
             <>
-              {alexa_metadata.assigned_surveys.length === 0 || !thisSurvey ? (
-                <ListGroup.Item className='py-4 px-0'>
-                  <i className='fa-regular fa-thumbs-up me-2' />
-                  Assignments will show up here.
-                </ListGroup.Item>
-              ) : (
-                <HistoryItem
-                  data={thisSurvey}
-                  participantIdentifier={participantIdentifier}
-                />
+              <div>
+                <i className='fa-regular fa-paper-plane me-1' />
+                {timeOfAssignement}
+              </div>
+              {timeOfNotification && (
+                <div>
+                  <i className='fa-regular fa-bell me-1' />
+                  {timeOfNotification}
+                </div>
               )}
-              <ActionButtons
-                participantIdentifier={participantIdentifier}
-                secondaryIdentifier={secondaryIdentifier}
-                participantFirstName={demographics.firstName}
-                participantLastName={demographics.lastName}
-                surveySent={thisSurvey !== null}
-                thisSurvey={thisSurvey}
-              />
             </>
           )}
-        </ListGroup>
-      </Accordion.Body>
-    </Accordion.Item>
+        </div>
+      </div>
+    </ListGroup.Item>
   );
 };

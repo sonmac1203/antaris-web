@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { useSurvey } from '@/lib/re/surveyoverview';
-import { Accordion } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
+import { PageSectionWrapper } from '@/core/components';
 import { ParticipantListItem } from '../ParticipantListItem';
 import { ParticipantsSectionContext } from './context';
-import { PageSectionWrapper } from '@/core/components';
 
 export const ParticipantsSection = memo(() => {
   const { participantsData: references, useSelectedParticipants } = useSurvey();
@@ -29,15 +29,11 @@ export const ParticipantsSection = memo(() => {
           ) : participants.length === 0 ? (
             'No participants found.'
           ) : (
-            <Accordion>
+            <ListGroup>
               {participants.map((participantData, k) => (
-                <ParticipantListItem
-                  data={participantData}
-                  eventKey={k}
-                  key={k}
-                />
+                <ParticipantListItem data={participantData} key={k} />
               ))}
-            </Accordion>
+            </ListGroup>
           )}
         </ParticipantsSectionContext.Provider>
       </PageSectionWrapper>

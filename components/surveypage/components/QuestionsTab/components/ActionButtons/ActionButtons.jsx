@@ -2,7 +2,13 @@ import Link from 'next/link';
 import { useContext, useEffect } from 'react';
 import { useSurvey } from '@/lib/re/surveyoverview';
 import { ParticipantsSectionContext } from '../ParticipantsSection/context';
-import { ListGroup, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownItemButton } from './components';
+
+const getTimeFromLastNotification = (timestamp) => {
+  if (!timestamp) return 0;
+  return new Date().getTime() - new Date(timestamp).getTime();
+};
 
 export const ActionButtons = ({
   participantIdentifier,
@@ -10,6 +16,7 @@ export const ActionButtons = ({
   participantFirstName,
   participantLastName,
   thisSurvey,
+  hasLinked,
 }) => {
   const { refreshThisSection } = useContext(ParticipantsSectionContext);
   const {
@@ -29,19 +36,14 @@ export const ActionButtons = ({
     participantLastName,
   };
 
-  const { notified, last_notified } = thisSurvey || {};
+  const participantUrl = `/re/dashboard/participants/${participantIdentifier}`;
 
-  const handleSend = async () => {
-    await sendSurvey([participantData]);
-  };
+  const { notified, last_notified, assigned_at } = thisSurvey || {};
 
-  const handleSendAndNotify = async () => {
+  const handleSend = async () => await sendSurvey([participantData]);
+  const handleSendAndNotify = async () =>
     await sendAndNotifySurvey([participantData]);
-  };
-
-  const handleNotify = async () => {
-    await notifySurvey([participantData]);
-  };
+  const handleNotify = async () => await notifySurvey([participantData]);
 
   useEffect(() => {
     if (success) {
@@ -53,45 +55,70 @@ export const ActionButtons = ({
   }, [success]);
 
   const sendButtonDisabled =
-    loading || success || thisSurvey || !surveyData.content;
+    !hasLinked || !surveyData.content || assigned_at || loading || success;
 
-  const timeFromLastNotification = last_notified
-    ? new Date().getTime() - new Date(last_notified).getTime()
-    : 0;
+  const timeFromLastNotification = getTimeFromLastNotification(last_notified);
 
   const notifyButtonDisabled =
-    loading ||
-    !surveyData.content ||
+    !hasLinked ||
     !thisSurvey ||
+    !surveyData.content ||
+    loading ||
     (notified && timeFromLastNotification <= 3600000);
 
   return (
-    <ListGroup.Item className='py-4 px-0 d-flex gap-2 flex-row-reverse'>
-      <DropdownButton id='dropdown-basic-button' title='Actions' align='end'>
-        <Dropdown.Item disabled={sendButtonDisabled} onClick={handleSend}>
-          {error
-            ? 'Failed'
-            : loading
-            ? 'Sending...'
-            : success || thisSurvey
-            ? 'Sent'
-            : 'Send'}
-        </Dropdown.Item>
-        <Dropdown.Item disabled={notifyButtonDisabled} onClick={handleNotify}>
-          Notify
-        </Dropdown.Item>
-        <Dropdown.Item
+    <DropdownButton
+      id='action-dropdown'
+      variant='primary'
+      title='Actions'
+      className='ms-auto'
+      align='end'
+    >
+      <DropdownItemButton
+        error={error}
+        errorText='Failed'
+        loading={loading}
+        loadingText='Assigning...'
+        success={success || assigned_at}
+        successText='Assigned'
+        disabled={sendButtonDisabled}
+        onClick={handleSend}
+        icon='fa-regular fa-paper-plane'
+      >
+        Assign to this participant
+      </DropdownItemButton>
+      <DropdownItemButton
+        error={error}
+        errorText='Failed'
+        loading={loading}
+        loadingText='Notifying...'
+        success={success || (notified && timeFromLastNotification <= 3600000)}
+        successText='Notified'
+        disabled={notifyButtonDisabled}
+        onClick={handleNotify}
+        icon='fa-regular fa-bell'
+      >
+        Notify this participant
+      </DropdownItemButton>
+      {!assigned_at && (
+        <DropdownItemButton
+          error={error}
+          errorText='Failed'
+          loading={loading}
+          loadingText='Assigning...'
+          success={success || assigned_at}
+          successText='Assigned'
           disabled={sendButtonDisabled}
           onClick={handleSendAndNotify}
+          icon='fa-regular fa-paper-plane'
         >
-          Send and notify
-        </Dropdown.Item>
-      </DropdownButton>
-      <Link href={`/re/dashboard/participants/${participantIdentifier}`}>
-        <Button variant='link' className='text-decoration-none'>
-          View details
-        </Button>
-      </Link>
-    </ListGroup.Item>
+          Assign and notify
+        </DropdownItemButton>
+      )}
+      <Dropdown.Item className='py-2' as={Link} href={participantUrl}>
+        <i className='fa-regular fa-user me-2' />
+        View details
+      </Dropdown.Item>
+    </DropdownButton>
   );
 };
