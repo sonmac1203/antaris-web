@@ -26,8 +26,6 @@
   flex: 0 0 100%;
 }
 
-
-
 @media (max-width: 600px) {
   .Container {
     flex-direction: column;
@@ -36,11 +34,6 @@
   .FilterOptions {
     width: 100%;
   }
-  .SkeletonButton {
-    width: 100%;
-    justify-content: center; 
-  }
-
 }
 
 @media (max-width: 450px) {

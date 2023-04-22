@@ -10,7 +10,7 @@ const ExportButton = () => {
       <Button
         disabled
         variant='link'
-        className='text-decoration-none d-flex gap-2 align-items-center'
+        className='text-decoration-none d-flex gap-2 align-items-center p-0'
       >
         <i className='fa-solid fa-file-arrow-down' />
         Export

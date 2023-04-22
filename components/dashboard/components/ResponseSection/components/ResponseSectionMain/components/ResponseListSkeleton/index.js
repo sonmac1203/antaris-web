@@ -1,0 +1,1 @@
+export { ResponseListSkeleton } from './ResponseListSkeleton';
