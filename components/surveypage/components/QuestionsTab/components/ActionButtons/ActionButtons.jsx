@@ -110,7 +110,7 @@ export const ActionButtons = ({
           successText='Assigned'
           disabled={sendButtonDisabled}
           onClick={handleSendAndNotify}
-          icon='fa-regular fa-paper-plane'
+          icon='fa-solid fa-bullhorn'
         >
           Assign and notify
         </DropdownItemButton>

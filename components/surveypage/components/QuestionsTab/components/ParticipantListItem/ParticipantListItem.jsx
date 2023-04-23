@@ -31,20 +31,24 @@ export const ParticipantListItem = ({
         <div className='fs-6' style={{ fontWeight: '500' }}>
           {participantName}
         </div>
-        {!alexa_metadata && (
+        {!alexa_metadata ? (
           <Badge bg='secondary' pill className='ms-1'>
             not linked
           </Badge>
+        ) : (
+          <span className='p-1 bg-success border border-light rounded-circle ms-1'>
+            <span className='visually-hidden'>New alerts</span>
+          </span>
         )}
 
         {thisSurvey && (
-          <Badge bg='success' pill className='ms-1'>
+          <Badge bg='primary' pill className='ms-1'>
             assigned
           </Badge>
         )}
 
         {thisSurvey && thisSurvey.notified && (
-          <Badge bg='info' pill className='ms-1'>
+          <Badge bg='warning' pill className='ms-1 text-dark'>
             notified
           </Badge>
         )}
