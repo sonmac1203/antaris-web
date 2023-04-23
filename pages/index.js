@@ -1,14 +1,23 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import { jsonify } from '@/core/utils';
 import { Homepage } from '@/components/homepage';
 import { HomeLayout } from '@/components/layouts';
+import { withSession } from '@/core/utils';
 
-const Home = ({ data }) => {
-  console.log(data);
+const HomeIndex = () => {
   return <Homepage />;
 };
 
-Home.Layout = HomeLayout;
+HomeIndex.Layout = HomeLayout;
 
-export default Home;
+export default HomeIndex;
+
+export const getServerSideProps = withSession(async ({ req }) => {
+  const { token, role } = req.session;
+  const isAuthenticated = !!token;
+
+  return {
+    props: {
+      user: isAuthenticated ? jsonify({ isAuthenticated, role }) : null,
+    },
+  };
+});
