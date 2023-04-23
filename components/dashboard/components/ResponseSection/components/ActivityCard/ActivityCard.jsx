@@ -4,6 +4,11 @@ import { CardHeader } from './components';
 
 export const ActivityCard = ({ item }) => {
   const { responded_by: participant, responded_to: survey, content } = item;
+
+  const boldStyle = {
+    fontWeight: '500',
+  };
+
   return (
     <div className='d-flex flex-column gap-1'>
       <CardHeader
@@ -13,7 +18,7 @@ export const ActivityCard = ({ item }) => {
       />
       <Card>
         <Card.Body className='pb-2'>
-          <Card.Title className='fs-6 fw-semibold'>
+          <Card.Title className='fs-6' style={boldStyle}>
             {content.question_text}
           </Card.Title>
           <Card.Text>{content.answer_text}</Card.Text>

@@ -10,7 +10,9 @@ export const CardHeader = ({ participant, survey, timeProvided }) => {
   const surveyHref = `/re/dashboard/surveys/${survey.mdh_id}`;
   const relativeTime = getRelativeTime(timeProvided);
   const recentlyResponded =
-    relativeTime === 'Just now' || relativeTime.endsWith('m ago');
+    relativeTime === 'Just now' ||
+    (relativeTime.endsWith('m ago') &&
+      parseInt(relativeTime.split('m ago')[0]) <= 10);
 
   return (
     <div className='mb-2 align-items-center gap-1 d-flex w-100'>
