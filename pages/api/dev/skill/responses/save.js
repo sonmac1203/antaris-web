@@ -52,6 +52,9 @@ const handler = async (req, res) => {
 
     participant.alexa_metadata.assigned_surveys.forEach((assignedSurvey) => {
       if (assignedSurvey.survey.toString() === survey._id.toString()) {
+        if (!assignedSurvey?.responses) {
+          assignedSurvey.responses = response._id;
+        }
         if (progress === 100) {
           assignedSurvey.completed = true;
         }

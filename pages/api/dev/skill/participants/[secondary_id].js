@@ -12,11 +12,17 @@ const handler = async (req, res) => {
         secondary_identifier,
         'alexa_metadata.user_id': user_id,
       },
-      'participant_identifier demographics project_id'
-    ).populate({
-      path: 'alexa_metadata.assigned_surveys.survey',
-      select: 'mdh_id name content',
-    });
+      'participant_identifier demographics project_id alexa_metadata'
+    ).populate([
+      {
+        path: 'alexa_metadata.assigned_surveys.survey',
+        select: 'mdh_id name content',
+      },
+      {
+        path: 'alexa_metadata.assigned_surveys.responses',
+        select: 'content',
+      },
+    ]);
 
     if (!existingParticipant) {
       return res.status(404).json({
@@ -24,17 +30,32 @@ const handler = async (req, res) => {
         message: 'Participant not found',
       });
     }
-    const assignedSurveys =
-      existingParticipant.alexa_metadata.assigned_surveys.map(
-        (assignedSurvey) => {
-          const { survey } = assignedSurvey;
+    const assignedSurveys = existingParticipant.alexa_metadata.assigned_surveys
+      .filter((assignedSurvey) => !assignedSurvey.completed)
+      .map((assignedSurvey) => {
+        const { survey } = assignedSurvey;
+        const { content } = survey;
+        const { responses } = assignedSurvey || {
+          responses: { content: [] },
+        };
+        const numberOfAnsweredQuestions = responses.content.length;
+        const updatedQuestions = content.questions.map((question, index) => {
+          const { type, text, title, identifier } = question;
           return {
-            surveyID: survey.mdh_id,
-            name: survey.name,
-            content: survey.content,
+            type,
+            text,
+            title,
+            identifier,
+            answered: index < numberOfAnsweredQuestions,
           };
-        }
-      );
+        });
+        const updatedContent = { ...content, questions: updatedQuestions };
+        return {
+          surveyID: survey.mdh_id,
+          name: survey.name,
+          content: updatedContent,
+        };
+      });
 
     res.status(201).json({
       success: true,
