@@ -1,33 +1,7 @@
-import styles from './MultiSelect.module.css';
+import { getResponseFilterFromSession } from '@/core/utils';
+import { ValueContainer } from './components';
 import { useMemo } from 'react';
-import Select, { components } from 'react-select';
-
-const ValueContainer = ({ children, ...props }) => {
-  let [values, input] = children;
-  const { getValue } = props;
-  const selectedOptions = getValue();
-  const numSurveys = getAmountOfType(selectedOptions, 'survey');
-  const numParticipants = getAmountOfType(selectedOptions, 'participant');
-
-  let result = '';
-  if (numSurveys > 0) {
-    result += getLabel(numSurveys, 'survey');
-  }
-  if (numParticipants > 0) {
-    if (result) result += ', ';
-    result += getLabel(numParticipants, 'participant');
-  }
-
-  if (Array.isArray(values)) {
-    values = result;
-  }
-  return (
-    <components.ValueContainer {...props}>
-      <div className={styles.ValueContainer}>{values}</div>
-      {input}
-    </components.ValueContainer>
-  );
-};
+import Select from 'react-select';
 
 const MultiSelect = ({
   surveyOptions,
@@ -74,7 +48,7 @@ const MultiSelect = ({
       options: participantOptions,
     },
   ];
-  const { participant_ids, survey_ids } = getFromSession();
+  const { participant_ids, survey_ids } = getResponseFilterFromSession();
   const defaultValue = groupedOptions.flatMap((group) => {
     const selectedIds =
       group.label === 'Surveys' ? survey_ids : participant_ids;
@@ -102,23 +76,6 @@ const MultiSelect = ({
       onChange={onChange}
     />
   );
-};
-
-const getFromSession = () => {
-  const dataFromSession = sessionStorage.getItem('response_filter');
-  const responseQuery = dataFromSession ? JSON.parse(dataFromSession) : {};
-  return responseQuery;
-};
-
-const getAmountOfType = (arr, type) => {
-  const amount = arr.filter((obj) => obj.type === type).length;
-  return amount;
-};
-
-const getLabel = (amount, type) => {
-  const plural = amount === 1 ? '' : 's';
-  const label = `${amount} ${type}${plural} selected`;
-  return label;
 };
 
 export default MultiSelect;

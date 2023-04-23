@@ -16,7 +16,7 @@ export const FilterButton = () => {
       className={`btn btn-primary d-flex align-items-center gap-2 ${styles.Style}`}
     >
       <i className='fa-solid fa-filter' />
-      Filter
+      Apply
     </Button>
   );
 };
