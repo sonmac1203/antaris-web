@@ -49,7 +49,7 @@ export const StatusDonutChart = () => {
 
   let accumulatePercentage = 0;
   chartData.forEach((type, index) => {
-    if (index === totalAssignments - 1) {
+    if (index === 2) {
       type.percentage = 100 - accumulatePercentage;
     } else {
       type.percentage = Math.round((type.value / totalAssignments) * 100);
