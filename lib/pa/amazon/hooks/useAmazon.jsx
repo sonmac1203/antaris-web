@@ -14,25 +14,11 @@ export const useAmazon = () => {
     setSuccess(false);
   };
 
-  const unlinkAndDeleteSkill = useCallback(async () => {
+  const unlinkAndDeleteSkill = useCallback(async (email) => {
     try {
       setLoading(true);
-      await axios.post('/api/dev/amz/delete');
+      await axios.post('/api/dev/amz/delete', {}, { params: { email } });
       setSuccess(true);
-    } catch (err) {
-      setError(err.response.data);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const fetchParticipants = useCallback(async (email) => {
-    try {
-      setLoading(true);
-      const { data: result } = await axios.get('/api/dev/amz/participants', {
-        params: { email },
-      });
-      setParticipants(result.data);
     } catch (err) {
       setError(err.response.data);
     } finally {
@@ -47,6 +33,5 @@ export const useAmazon = () => {
     participants,
     unlinkAndDeleteSkill,
     resetStates,
-    fetchParticipants,
   };
 };

@@ -8,21 +8,32 @@ import {
   SaveParticipantButton,
 } from './components';
 import { useParticipantDashboard } from '@/lib/pa/dashboard';
-import { useState } from 'react';
+import { useSWRAxios } from '@/core/hooks';
 
 export const ParticipantSection = () => {
-  const [refreshKey, setRefreshKey] = useState(0);
-  const startRefreshing = () => setRefreshKey((oldKey) => oldKey + 1);
-
   const {
-    participantData: { accountLinked, skillEnabled },
+    participantData: { accountLinked, skillEnabled, email },
   } = useParticipantDashboard();
 
   const skillIsReady = accountLinked && skillEnabled;
 
+  const {
+    data: result,
+    loading,
+    error,
+    mutate,
+  } = useSWRAxios(['/api/dev/amz/participants', { email }]);
+
   return (
     <PageSectionWrapper title='Added participants'>
-      <Provider value={{ startRefreshing, refreshKey }}>
+      <Provider
+        value={{
+          startRefreshing: mutate,
+          currentParticipants: result?.data || [],
+          loading,
+          error,
+        }}
+      >
         <CurrentParticipantsList />
         <div className='d-flex gap-3 align-items-center'>
           <AddParticipantButton />

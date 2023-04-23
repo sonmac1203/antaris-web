@@ -12,6 +12,9 @@ const amazonAccountSchema = new Schema({
     account_linked: { type: Boolean, default: false },
     skill_enabled: { type: Boolean, default: false },
     project_id: { type: String, default: '' },
+    alexa_access_token: { type: String, default: '' },
+    alexa_refresh_token: { type: String, default: '' },
+    alexa_token_expires_at: Date,
     participants: [
       {
         type: Schema.Types.ObjectId,

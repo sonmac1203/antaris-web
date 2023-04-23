@@ -2,12 +2,17 @@ import { Modal, Button, Alert, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useAmazon } from '@/lib/pa/amazon';
 import { useRouter } from 'next/router';
+import { useParticipantDashboard } from '@/lib/pa/dashboard';
 
 const STATEMENT = 'I want to unlink and delete Antaris';
 
 export const UnlinkModal = ({ show, onHide }) => {
   const router = useRouter();
   const [confirmation, setConfirmation] = useState('');
+
+  const {
+    participantData: { email },
+  } = useParticipantDashboard();
 
   const notAllowed = !confirmation || confirmation !== STATEMENT;
 
@@ -31,7 +36,7 @@ export const UnlinkModal = ({ show, onHide }) => {
   };
 
   const handleDelete = async () => {
-    await unlinkAndDeleteSkill();
+    await unlinkAndDeleteSkill(email);
   };
 
   const refreshPage = () => router.replace(router.asPath);

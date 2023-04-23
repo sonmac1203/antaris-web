@@ -2,6 +2,7 @@ import connectToDb from '@/core/db/connectToDb';
 import AmazonAccount from '@/core/models/AmazonAccount';
 import Participant from '@/core/models/Participant';
 import { createAmazonService } from '@/lib/pa/amazon';
+import { getExpirationTimestamp } from '@/core/utils';
 import { Types } from 'mongoose';
 
 const handler = async (req, res) => {
@@ -25,7 +26,7 @@ const handler = async (req, res) => {
 
   // If the request failed
   if (result.hasOwnProperty('error')) {
-    res.redirect('/pa/dashboard');
+    return res.status(307).redirect('/pa/dashboard');
   }
 
   // Call skill activation API
@@ -36,7 +37,7 @@ const handler = async (req, res) => {
 
   // if failed
   if (enablementResult.hasOwnProperty('message')) {
-    res.redirect('/pa/dashboard');
+    return res.status(307).redirect('/pa/dashboard');
   }
 
   // Extract user from enablement result
@@ -58,6 +59,7 @@ const handler = async (req, res) => {
       });
       participantDocs.push(newParticipant);
     }
+
     await AmazonAccount.findOneAndUpdate(
       { email: email },
       {
@@ -66,6 +68,11 @@ const handler = async (req, res) => {
           'alexa_metadata.project_id': project_id,
           'alexa_metadata.account_linked': true,
           'alexa_metadata.skill_enabled': true,
+          'alexa_metadata.alexa_access_token': result.access_token,
+          'alexa_metadata.alexa_refresh_token': result.refresh_token,
+          'alexa_metadata.alexa_token_expires_at': getExpirationTimestamp(
+            result.expires_in
+          ),
         },
         $addToSet: {
           'alexa_metadata.participants': {
@@ -76,10 +83,10 @@ const handler = async (req, res) => {
         },
       }
     );
-    res.redirect('/pa/dashboard');
+    return res.status(307).redirect('/pa/dashboard');
   } catch (err) {
     console.log(err);
-    res.redirect('/pa/dashboard');
+    return res.status(307).redirect('/pa/dashboard');
   }
 };
 
