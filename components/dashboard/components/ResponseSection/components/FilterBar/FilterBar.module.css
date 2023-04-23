@@ -1,19 +1,18 @@
 .Container {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   column-gap: 2%;
-  /* margin-bottom: 1.5rem; */
 }
 
 .FilterOptions {
-  display: flex;
+  display: flex;  
   flex-grow: 1;
-  column-gap: 2%
+  column-gap: 2%;
 }
 
 .Col {
-  flex: 0 0 49%;
+  flex: 0 0 auto;
+  width: 49%;
   display: flex;
   align-self: center;
 }
@@ -23,9 +22,8 @@
 }
 
 .Select {
-  flex: 0 0 100%;
+  width: 100%;
 }
-
 
 
 @media (max-width: 600px) {
@@ -40,7 +38,6 @@
     width: 100%;
     justify-content: center; 
   }
-
 }
 
 @media (max-width: 450px) {
