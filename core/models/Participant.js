@@ -14,6 +14,7 @@ const participantSchema = new Schema({
       {
         survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
         completed: { type: Boolean, default: false },
+        responses: { type: Schema.Types.ObjectId, ref: 'ParticipantResponse' },
         assigned_at: { type: Date, default: Date.now() },
         progress: { type: Number, default: 0 },
         notified: { type: Boolean, default: false },
