@@ -26,12 +26,12 @@ export const DropdownItemButton = ({
           className='me-2'
         />
       )}
-      {error
+      {success
+        ? successText
+        : error
         ? errorText
         : loading
         ? loadingText
-        : success
-        ? successText
         : children}
     </Dropdown.Item>
   );

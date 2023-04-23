@@ -30,8 +30,9 @@ async function handler(req, res) {
   }
 
   const { survey_id } = req.query;
-  const { participantIds, creatorName: name } = req.body;
+  const { participants: participantsData, creatorName: name } = req.body;
   const creatorName = name || 'Antaris';
+  const participantIds = participantsData.map((p) => p.participantIdentifier);
 
   await connectToDb();
 
@@ -77,6 +78,14 @@ async function handler(req, res) {
       return !failedIndices.includes(index);
     });
 
+    if (successfulParticipantsIds.length === 0) {
+      return res.status(500).json({
+        success: false,
+        message: 'There was an error. Try again!',
+        error: error.message,
+      });
+    }
+
     await Participant.updateMany(
       {
         participant_identifier: { $in: successfulParticipantsIds },
@@ -105,6 +114,8 @@ async function handler(req, res) {
         arrayFilters: [
           {
             'elem.participant': { $in: participants.map((p) => p._id) },
+            'elem.completed': false,
+            'elem.notified': false,
           },
         ],
       }
@@ -115,7 +126,6 @@ async function handler(req, res) {
       message: 'Notifications have been sent!',
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: 'There was an error. Try again!',

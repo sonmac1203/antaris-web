@@ -88,6 +88,14 @@ async function handler(req, res) {
       return !failedIndices.includes(index);
     });
 
+    if (successfulParticipantsIds.length === 0) {
+      return res.status(500).json({
+        success: false,
+        message: 'There was an error. Try again!',
+        error: error.message,
+      });
+    }
+
     await Participant.updateMany(
       {
         participant_identifier: { $in: successfulParticipantsIds },
