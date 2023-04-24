@@ -1,5 +1,4 @@
 .OutterWrapper {
-  border-bottom: 1px solid #cbd0dd;
   position: sticky;
   top: 0;
   z-index: 1968;
@@ -13,9 +12,9 @@
 }
 
 .LogoContainer {
-  height: 60px;
+  height: 55px;
   position: relative;
-  aspect-ratio: 3/2;
+  aspect-ratio: 2/1;
 }
 
 .Logo {
@@ -28,5 +27,9 @@
   }
   .Button {
     margin: 0.5rem 0;
+  }
+  .Nav {
+    margin-left: unset !important;
+    gap: unset !important;
   }
 }

@@ -10,10 +10,10 @@ export const HomeLayout = ({ children, user }) => {
         <title>Antaris | Home</title>
       </Head>
       <main className={styles.Main}>
-        <Header user={user} />
+        <Header user={user} noBorder />
         <div className={styles.Content}>{children}</div>
       </main>
-      <Footer />
+      <Footer className='bg-white' />
     </>
   );
 };

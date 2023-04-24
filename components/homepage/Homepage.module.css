@@ -1,16 +1,110 @@
 .Container {
-  flex: 1 0 auto;
+}
+
+
+.LeftCol, .RightCol {
+  position: relative;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
 }
 
-.Header {
-  text-align: center;
+.LeftCol {
+  width: 45%;
+  margin-top: 6rem;
+  padding-right: 1.5rem;
 }
 
-.InputAreaContainer {
-  width: 100%;
-  flex: 1 0 auto;
-  display: grid;
-  place-items: center;
+.RightCol {
+  width: 55%;
+}
+
+.HeroText {
+  letter-spacing: 0.5px;
+  margin-bottom: 2rem;
+  font-size: 70px;
+  font-weight: 600 !important;
+}
+
+.HeroParagraph {
+  letter-spacing: 0.5px;
+  font-size: 19px;
+  margin-bottom: 2rem;
+  max-width: 515px;
+}
+
+.HeroImage {
+  top: 3.5rem;
+  position: absolute;
+  height: 550px;
+}
+
+@media (max-width: 1300px) {
+  .HeroText {
+    font-size: 55px;
+  }
+  .HeroParagraph {
+    font-size: 18px;
+  }
+  .HeroImage {
+    top: 4.5rem;
+    position: absolute;
+    height: 475px;
+  }
+}
+
+@media (max-width: 1020px) {
+  .HideAtSmall {
+    display: none;
+  }
+  .LeftCol, .RightCol {
+    width: 100%;
+  }
+  .LeftCol {
+    margin-top: 3rem;
+    padding-right: 0;
+    align-items: center;
+  }
+  .RightCol {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  .HeroText {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .HeroParagraph {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    max-width: 600px;
+  }
+  .HeroImage {
+    position: unset;
+    height: unset;
+  }
+}
+
+@media (max-width: 800px) {
+  .LeftCol {
+    margin-top: 2rem;
+  }
+  .HeroText {
+    font-size: 50px;
+  }
+  .HeroParagraph {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .LeftCol {
+    margin-top: 1rem;
+  }
+  .HeroText {
+    font-size: 40px;
+  }
+  .HeroParagraph {
+    font-size: 15px;
+    max-width: 400px;
+  }
 }

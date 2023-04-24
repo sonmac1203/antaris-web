@@ -5,7 +5,7 @@ import styles from './Header.module.css';
 import { useRouter } from 'next/router';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
-export const Header = ({ user }) => {
+export const Header = ({ user, noBorder }) => {
   const { isAuthenticated, role } = user || {};
   const router = useRouter();
 
@@ -21,8 +21,18 @@ export const Header = ({ user }) => {
     router.push('/api/auth/sign_out');
   };
 
+  const borderStyle = {
+    ...(!noBorder && {
+      borderBottom: '1px solid #cbd0dd',
+    }),
+  };
+
   return (
-    <Navbar expand='md' className={`bg-white ${styles.OutterWrapper}`}>
+    <Navbar
+      expand='md'
+      className={`bg-white ${styles.OutterWrapper}`}
+      style={borderStyle}
+    >
       <div className={`core-container ${styles.Wrapper}`}>
         <Navbar.Brand href='/' as={Link} className={styles.LogoContainer}>
           <Image
@@ -37,15 +47,15 @@ export const Header = ({ user }) => {
           className='border border-0'
         />
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='me-auto'>
+          <Nav className={`me-auto gap-2 ms-2 ${styles.Nav}`}>
             <Nav.Link href='/' as={Link}>
-              Docs
+              Documentation
             </Nav.Link>
             <Nav.Link href='/' as={Link}>
               Tutorials
             </Nav.Link>
           </Nav>
-          <Nav>
+          <Nav className={`gap-2 ${styles.Nav}`}>
             {isAuthenticated ? (
               <>
                 <Nav.Link as={Link} href={dashboardPath}>
