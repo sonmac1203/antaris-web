@@ -22,7 +22,8 @@ export const getServerSideProps = withSsrAuth(async ({ req }) => {
   const { role } = req.session;
 
   try {
-    const responseSectionData = await getRespondentsWithAssignments();
+    // const responseSectionData = await getRespondentsWithAssignments();
+    const responseSectionData = {};
     return {
       props: {
         responseSectionData: responseSectionData
