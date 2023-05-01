@@ -1,1 +1,4 @@
-export { Dashboard } from './Dashboard';
+import dynamic from 'next/dynamic';
+export const Dashboard = dynamic(import('./Dashboard'), {
+  ssr: true,
+});
