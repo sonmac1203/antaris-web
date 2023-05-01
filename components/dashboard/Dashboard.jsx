@@ -6,7 +6,7 @@ import {
 import { Footer } from '../layouts/components';
 import styles from './Dashboard.module.css';
 
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <div className={`core-container flex-nowrap gap-4 ${styles.Container}`}>
       <div className={styles.Left}>
@@ -27,5 +27,3 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
