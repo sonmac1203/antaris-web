@@ -1,6 +1,5 @@
-import { withSessionApiRoute } from '@/core/utils/session';
+import { withSessionApiRoute, jwtUtils } from '@/core/utils';
 import { getSurveyById } from '@/lib/re/surveyoverview';
-import jwtUtils from '@/core/utils/jwt-utils';
 
 async function handler(req, res) {
   const { projectId: projectIdFromRequest, surveyId: surveyID } = req.query;
