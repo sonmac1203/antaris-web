@@ -1,9 +1,7 @@
 import { DashboardLayout } from '@/components/layouts';
 import { Dashboard } from '@/components/dashboard';
-import { withSsrAuth, jwtUtils, jsonify } from '@/core/utils';
+import { withSsrAuth, jsonify } from '@/core/utils';
 import {
-  getAllSurveys,
-  getAllParticipants,
   getRespondentsWithAssignments,
   DashboardProvider,
 } from '@/lib/re/dashboard';
@@ -21,20 +19,12 @@ DashboardIndex.Layout = DashboardLayout;
 export default DashboardIndex;
 
 export const getServerSideProps = withSsrAuth(async ({ req }) => {
-  const { token, role } = req.session;
-  const sessionData = jwtUtils.decode(token);
+  const { role } = req.session;
 
   try {
-    const [surveys, participants, responseSectionData] = await Promise.all([
-      getAllSurveys(sessionData),
-      getAllParticipants(sessionData),
-      getRespondentsWithAssignments(),
-    ]);
-
+    const responseSectionData = await getRespondentsWithAssignments();
     return {
       props: {
-        surveys: surveys ? jsonify(surveys) : [],
-        participants: participants ? jsonify(participants) : [],
         responseSectionData: responseSectionData
           ? jsonify(responseSectionData)
           : {},

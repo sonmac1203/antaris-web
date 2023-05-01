@@ -1,8 +1,8 @@
 import { withSessionApiRoute, jwtUtils } from '@/core/utils';
-import { getAllSurveys } from '@/lib/re/dashboard';
+import { getSurveyById } from '@/lib/re/surveyoverview';
 
 async function handler(req, res) {
-  const { projectId: projectIdFromRequest } = req.query;
+  const { projectId: projectIdFromRequest, survey_id: surveyID } = req.query;
   const sessionToken = req.session?.token;
   const accessTokenFromRequest =
     req.headers?.authorization?.split(' ')[1] ?? null;
@@ -28,10 +28,11 @@ async function handler(req, res) {
   const query = {
     accessToken: accessTokenFromSession || accessTokenFromRequest,
     projectId: projectIdFromSession || projectIdFromRequest,
+    ...(surveyID && { params: { surveyID } }),
   };
 
   try {
-    const surveys = await getAllSurveys(query);
+    const surveys = await getSurveyById(query);
     return res.status(200).json({
       success: true,
       message: 'Surveys have been fetched.',

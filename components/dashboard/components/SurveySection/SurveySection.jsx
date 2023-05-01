@@ -2,15 +2,20 @@ import { Badge, Card } from 'react-bootstrap';
 import { SideListItem } from '../SideListItem';
 import { useDashboard } from '@/lib/re/dashboard';
 import { PageSectionWrapper } from '@/core/components';
-import styles from './SurveySection.module.css';
 
 export const SurveySection = () => {
-  const { surveys } = useDashboard();
+  const { useSurveysData } = useDashboard();
+  const { data: result, loading, error } = useSurveysData();
+
   return (
     <PageSectionWrapper title='Surveys'>
       <Card className='d-flex flex-column gap-3 p-3'>
-        {surveys
-          ? surveys.map((s, key) => {
+        {error
+          ? 'Could not load surveys'
+          : loading
+          ? 'Please wait...'
+          : result
+          ? result.data.map((s, key) => {
               const href = `/re/dashboard/surveys/${s.surveyID}`;
               const label = s.surveyDisplayName;
               const badge = s.content ? (
@@ -27,7 +32,7 @@ export const SurveySection = () => {
                 />
               );
             })
-          : 'Could not load surveys.'}
+          : 'No surveys found.'}
       </Card>
     </PageSectionWrapper>
   );
