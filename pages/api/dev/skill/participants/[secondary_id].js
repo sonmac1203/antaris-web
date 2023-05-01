@@ -38,7 +38,9 @@ const handler = async (req, res) => {
         const { responses } = assignedSurvey || {
           responses: { content: [] },
         };
-        const numberOfAnsweredQuestions = responses.content.length;
+        const numberOfAnsweredQuestions = responses
+          ? responses.content.length
+          : 0;
         const updatedQuestions = content.questions.map((question, index) => {
           const { type, text, title, identifier } = question;
           return {

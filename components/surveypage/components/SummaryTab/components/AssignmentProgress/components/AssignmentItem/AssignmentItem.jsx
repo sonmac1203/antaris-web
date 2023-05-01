@@ -7,7 +7,7 @@ export const AssignmentItem = ({ fullname, progress }) => {
         <h5 className='fs-6'>{fullname}</h5>
         <h5 className='fs-6 text-muted'>{progress}%</h5>
       </div>
-      <ProgressBar now={progress} style={{ height: '8px' }} />
+      <ProgressBar now={progress} style={{ height: '8px' }} striped />
     </div>
   );
 };

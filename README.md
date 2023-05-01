@@ -254,7 +254,7 @@ Antaris data storage is categorized into 5 collections: `amazonaccounts`, `parti
 └── .gitignore
 ```
 
-```
+```tree
 core
  ┣ auth
  ┃ ┣ index.js

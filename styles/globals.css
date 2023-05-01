@@ -2,6 +2,16 @@
   --pastel-blue: #B4D5F9;
   --pastel-pink: #EDC4BC;
   --pastel-green: #B7E5D5;
+  /* --primary-color: #377dff;    
+  --warning-bg-color: #ffefca;
+  --warning-color: #bc3803;
+  --warning-border-color: #ffcc85;
+  --success-bg-color: #d9fbd0;
+  --success-color: #1c6c09;
+  --success-border-color: #bee8b4;
+  --secondary-bg-color: #e3e6ed;
+  --secondary-color: #141824;
+  --secondary-border-color: #cbd0dd; */
 }
 
 html,
@@ -31,12 +41,19 @@ a {
 
 .core-container {
   width: 100%;
-  max-width: 75rem;
+  max-width: 85rem;
   padding-left: 45px;
   padding-right: 45px;
   margin-left: auto;
   margin-right: auto;
 }
+
+@media only screen and (max-width: 1500px) {
+  .core-container {
+    max-width: 80rem;
+  }
+}
+
 
 @media only screen and (max-width: 600px) {
   .core-container {
@@ -44,6 +61,7 @@ a {
     padding-right: 18px;
   }
 }
+
 
 .nav-link {
   color: black !important;
@@ -98,9 +116,10 @@ a {
 .modal {
   z-index: 3005 !important;
 }
+
 .dropdown-menu {
-  border: none !important;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: 1px solid #d8e2ef !important;
+  box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 }
 
 #action-dropdown.dropdown-toggle {
@@ -109,4 +128,9 @@ a {
   gap: 5px;
   font-size: 12px;
   padding: 3px 12px !important;
+}
+
+.badge {
+  font-weight: 600 !important;
+  padding: 2px 8px !important;
 }

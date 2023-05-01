@@ -11,7 +11,8 @@ export function useSWRAxios(props) {
     props,
     fetcher,
     {
-      refreshInterval: 300000,
+      // 3s polling.
+      refreshInterval: 60000,
     }
   );
   return {

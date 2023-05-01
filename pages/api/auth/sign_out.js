@@ -4,7 +4,7 @@ const handler = async (req, res) => {
   req.session.destroy();
   await req.session.save();
 
-  res.redirect('/participants');
+  res.redirect('/');
 };
 
 export default withSessionApiRoute(handler);
