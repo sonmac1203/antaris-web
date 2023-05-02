@@ -5,44 +5,19 @@ Antaris is a project from ENGR 498 Capstone class at the University of Arizona d
 ---
 _Table of contents:_
 
-- [Software concept and explanation](#installation)
-  - Researcher domain
-  - Participant domain
-- [Packages and dependencies](#nextjs-usage)
-- [Database schemas]()
-- [Project structure](#nextjs-middlewares-usage)
-- [Components](#advanced-usage)
-  - [Researcher dashboard](#coding-best-practices)
-      - UI components
-      - Utilities
-  - [Researcher survey overview](#session-wrappers)
-      - UI components
-      - Utilities
-  - [Researcher participant overview]
-      - UI components
-      - Utilities
-  - [Participant dashboard](#express)
-      - UI components
-      - Utilities
+- [Software concept and explanation](#software-concept-and-explanation)
+  - [Researcher domain](#researcher-domain)
+  - [Participant domain](#participant-domain)
+- [Packages and dependencies](#packages-and-dependencies)
+- [Database schemas](#database-schemas)
+- [Database connection](#database-connection)
+- [Project structure](#project-structure)
 - [API](#api)
-  - [ironOptions](#ironoptions)
-  - [Next.js: withIronSessionApiRoute(handler, ironOptions | (req: NextApiRequest, res: NextApiResponse) => IronOptions | Promise\<IronOptions\>)](#nextjs-withironsessionapiroutehandler-ironoptions--req-nextapirequest-res-nextapiresponse--ironoptions--promiseironoptions)
-  - [Next.js: withIronSessionSsr(handler, ironOptions | (req: IncomingMessage, res: ServerResponse) => IronOptions | Promise\<IronOptions\>)](#nextjs-withironsessionssrhandler-ironoptions--req-incomingmessage-res-serverresponse--ironoptions--promiseironoptions)
-  - [Express: ironSession(ironOptions)](#express-ironsessionironoptions)
-  - [session.save()](#sessionsave)
-  - [session.destroy()](#sessiondestroy)
-- [FAQ](#faq)
-  - [Why use pure cookies for sessions?](#why-use-pure-cookies-for-sessions)
-  - [What are the drawbacks?](#what-are-the-drawbacks)
-  - [How is this different from JWT?](#how-is-this-different-from-jwt)
-- [Project status](#project-status)
-- [Credits](#credits)
-- [References](#references)
-- [Contributors](#contributors)
+
 
 
 ## Software concept and explanation
----
+
 ### Researcher domain
 
 Antaris-web is created with Next.js framework which allows the application to operate the backend and frontend in a single repository. The frontend delivers a graphical user interface (GUI) to the researcher with information fetched through the backend. Antaris-web makes use of MyDataHelps API to populate up-to-date data about surveys and participants within a MyDataHelps project and leverages MongoDB for data storage.
@@ -67,8 +42,6 @@ As an Antaris-registered participant starts to interact with their Alexa devices
 Write something here
 
 ## Packages and dependencies
-
----
 
 Details about all packages and dependencies can be found in `package.json` in the root directory.
 
@@ -103,7 +76,6 @@ Details about all packages and dependencies can be found in `package.json` in th
 | **mongoose** | A MongoDB object modeling tool designed to work in an asynchronous environment. | Define schemas and simplify querying and processing data. |
 
 ## Database schemas
----
 
 Antaris data storage is categorized into 5 collections: `amazonaccounts`, `participantresponses`, `serviceaccounts`, `participants`, and `surveys`. The code implementation for these 5 schemas/models can be found in `@/core/models`.
 - amazonaccounts: stores accounts of participants who sign up with Antaris using Amazon credentials
@@ -121,6 +93,9 @@ Antaris data storage is categorized into 5 collections: `amazonaccounts`, `parti
     account_linked: { type: Boolean, default: false },
     skill_enabled: { type: Boolean, default: false },
     project_id: { type: String, default: '' },
+    alexa_access_token: { type: String, default: '' },
+    alexa_refresh_token: { type: String, default: '' },
+    alexa_token_expires_at: Date,
     participants: [
       {
         type: Schema.Types.ObjectId,
@@ -160,6 +135,7 @@ Antaris data storage is categorized into 5 collections: `amazonaccounts`, `parti
       {
         survey: { type: Schema.Types.ObjectId, ref: 'Survey' },
         completed: { type: Boolean, default: false },
+        responses: { type: Schema.Types.ObjectId, ref: 'ParticipantResponse' },
         assigned_at: { type: Date, default: Date.now() },
         progress: { type: Number, default: 0 },
         notified: { type: Boolean, default: false },
@@ -232,19 +208,9 @@ Antaris data storage is categorized into 5 collections: `amazonaccounts`, `parti
 }
 ```
 
-## Project structure
----
-The structure of the project is largely based on the common structure of a Next.js app with the following folders under the root directory:
-- /components: contains all user-interface (UI) components of all scales. Each sub folders under /components are named based on the page that it corresponds to and also contains all the UI elements of that page.
-- /core: contains basic components, utils, hooks, database driver, and definitions of database schemas that are used across the entire application.
-- /lib: contains page-specific utilities, hooks, definitions of context, and context providers.
-- /pages: this is the native /pages directory of a normal Next.js app which contains the entry points of all the pages for the whole application, where a file's path represents the route leading to that page. For instance, the file at `/pages/a/b/c.jsx` will be the entry point for the page at `/pages/a/b/c`. Additionally, all files declared under `/pages/api` are the definitions all all serverless functions handling Antaris API endpoints. For instance, the file at `/pages/api/a/b/c.jsx` represents the endpoint `/api/a/b/c`.
-- /public: contains public properties such as landing page and logo images.
-- /styles: contains global css files.
-
 ## Database connection
----
-Antaris connects to a MongoDB Atlas account through a driver declared at `/core/db/connectToDb.js`. A connection to a new MongoDB Atlas account can be established by changing the MongoDB credentials defined in the environment file under the root directory.
+
+Antaris connects to a MongoDB Atlas account through a driver declared at `@/core/db/connectToDb.js`. A connection to a new MongoDB Atlas account can be established by changing the MongoDB credentials defined in the environment file under the root directory.
 
 ```
 ...
@@ -253,6 +219,21 @@ const password = process.env.MONGO_PASSWORD;
 const databaseName = process.env.MONGO_DBNAME_V2;
 ...
 ```
+
+## Project structure
+
+The structure of the project is largely based on the common structure of a Next.js app with the following folders under the root directory:
+- @/components: contains all user-interface (UI) components of all scales. Each sub folders under /components are named based on the page that it corresponds to and also contains all the UI elements of that page.
+- @/core: contains basic components, utils, hooks, database driver, and definitions of database schemas that are used across the entire application.
+- @/lib: contains page-specific utilities, hooks, definitions of context, and context providers.
+- @/pages: this is the native /pages directory of a normal Next.js app which contains the entry points of all the pages for the whole application, where a file's path represents the route leading to that page. For instance, the file at `/pages/a/b/c.jsx` will be the entry point for the page at `/pages/a/b/c`. Additionally, all files declared under `/pages/api` are the definitions all all serverless functions handling Antaris API endpoints. For instance, the file at `/pages/api/a/b/c.jsx` represents the endpoint `/api/a/b/c`.
+- @/public: contains public properties such as landing page and logo images.
+- @/styles: contains global css files.
+
+## API
+As mentioned above, all api endpoints are defined under `@/pages/api` where a file's path corresponds to the serverless endpoint handled by the code inside that file. Please refer to the POSTMAN collection to see all available internal and external API endpoints of Antaris with sample calls and responses.
+
+
 
 
 
