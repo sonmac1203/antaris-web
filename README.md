@@ -103,6 +103,7 @@ Details about all packages and dependencies can be found in `package.json` in th
 | **mongoose** | A MongoDB object modeling tool designed to work in an asynchronous environment. | Define schemas and simplify querying and processing data. |
 
 ## Database schemas
+---
 
 Antaris data storage is categorized into 5 collections: `amazonaccounts`, `participantresponses`, `serviceaccounts`, `participants`, and `surveys`. The code implementation for these 5 schemas/models can be found in `@/core/models`.
 - amazonaccounts: stores accounts of participants who sign up with Antaris using Amazon credentials
@@ -233,99 +234,31 @@ Antaris data storage is categorized into 5 collections: `amazonaccounts`, `parti
 
 ## Project structure
 ---
+The structure of the project is largely based on the common structure of a Next.js app with the following folders under the root directory:
+- /components: contains all user-interface (UI) components of all scales. Each sub folders under /components are named based on the page that it corresponds to and also contains all the UI elements of that page.
+- /core: contains basic components, utils, hooks, database driver, and definitions of database schemas that are used across the entire application.
+- /lib: contains page-specific utilities, hooks, definitions of context, and context providers.
+- /pages: this is the native /pages directory of a normal Next.js app which contains the entry points of all the pages for the whole application, where a file's path represents the route leading to that page. For instance, the file at `/pages/a/b/c.jsx` will be the entry point for the page at `/pages/a/b/c`. Additionally, all files declared under `/pages/api` are the definitions all all serverless functions handling Antaris API endpoints. For instance, the file at `/pages/api/a/b/c.jsx` represents the endpoint `/api/a/b/c`.
+- /public: contains public properties such as landing page and logo images.
+- /styles: contains global css files.
+
+## Database connection
+---
+Antaris connects to a MongoDB Atlas account through a driver declared at `/core/db/connectToDb.js`. A connection to a new MongoDB Atlas account can be established by changing the MongoDB credentials defined in the environment file under the root directory.
 
 ```
-├── src
-│   ├── controller
-│   │   ├── **/*.css
-│   ├── views
-│   ├── model
-│   ├── index.js
-├── public
-│   ├── css
-│   │   ├── **/*.css
-│   ├── images
-│   ├── js
-│   ├── index.html
-├── dist (or build
-├── node_modules
-├── package.json
-├── package-lock.json 
-└── .gitignore
+...
+const username = process.env.MONGO_USERNAME;
+const password = process.env.MONGO_PASSWORD;
+const databaseName = process.env.MONGO_DBNAME_V2;
+...
 ```
 
-```tree
-core
- ┣ auth
- ┃ ┣ index.js
- ┃ ┗ sessionCookie.js
- ┣ components
- ┃ ┣ AuthCardWrapper
- ┃ ┃ ┣ AuthCardWrapper.jsx
- ┃ ┃ ┣ AuthCardWrapper.module.css
- ┃ ┃ ┗ index.js
- ┃ ┣ DarkOverlay
- ┃ ┃ ┣ DarkOverlay.jsx
- ┃ ┃ ┣ DarkOverlay.module.css
- ┃ ┃ ┗ index.js
- ┃ ┣ InputField
- ┃ ┃ ┣ InputField.jsx
- ┃ ┃ ┗ index.js
- ┃ ┣ LinkAlexaButton
- ┃ ┃ ┣ LinkAlexaButton.jsx
- ┃ ┃ ┣ LinkAlexaButton.module.css
- ┃ ┃ ┗ index.js
- ┃ ┣ LoginWithAmazonButton
- ┃ ┃ ┣ LoginWithAmazonButton.jsx
- ┃ ┃ ┣ LoginWithAmazonButton.module.css
- ┃ ┃ ┗ index.js
- ┃ ┣ PageSectionWrapper
- ┃ ┃ ┣ PageSectionWrapper.jsx
- ┃ ┃ ┗ index.js
- ┃ ┣ PageTitle
- ┃ ┃ ┣ PageTitle.jsx
- ┃ ┃ ┣ PageTitle.module.css
- ┃ ┃ ┗ index.js
- ┃ ┣ SubmitButton
- ┃ ┃ ┣ SubmitButton.jsx
- ┃ ┃ ┗ index.js
- ┃ ┣ TextareaField
- ┃ ┃ ┣ TextareaField.jsx
- ┃ ┃ ┗ index.js
- ┃ ┗ index.js
- ┣ db
- ┃ ┗ connectToDb.js
- ┣ models
- ┃ ┣ AmazonAccount.js
- ┃ ┣ Participant.js
- ┃ ┣ ParticipantResponse.js
- ┃ ┣ ServiceAccount.js
- ┃ ┣ Survey.js
- ┃ ┗ index.js
- ┗ utils
- ┃ ┣ auth
- ┃ ┃ ┣ index.js
- ┃ ┃ ┗ with-ssr-auth.js
- ┃ ┣ datetime
- ┃ ┃ ┣ get-expiration-timestamp.js
- ┃ ┃ ┣ get-formatted-date.js
- ┃ ┃ ┣ get-relative-time.js
- ┃ ┃ ┗ index.js
- ┃ ┣ response
- ┃ ┃ ┣ get-response-filter-from-session.js
- ┃ ┃ ┗ index.js
- ┃ ┣ session
- ┃ ┃ ┣ index.js
- ┃ ┃ ┣ with-session-api-route.js
- ┃ ┃ ┗ with-session.js
- ┃ ┣ survey
- ┃ ┃ ┣ group-survey-by-id.js
- ┃ ┃ ┗ index.js
- ┃ ┣ tools
- ┃ ┃ ┣ hide-when-clicked-outside.js
- ┃ ┃ ┣ index.js
- ┃ ┃ ┣ jsonify.js
- ┃ ┃ ┗ jwt-utils.js
- ┃ ┗ index.js
-```
+
+
+
+
+
+
+
 
