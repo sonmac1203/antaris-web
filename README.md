@@ -39,7 +39,7 @@ As an Antaris-registered participant starts to interact with their Alexa devices
 
 ### Participant domain
 
-Write something here
+Participants who have been assigned to a MyDataHelps project through a researcher and have owned an Alexa device with an Amazon account are eligible to sign up with Antaris. As a participant accesses the sign up page at `/pa/signup` and clicks on the action button, they will be directed to Amazon's website and will be asked to log in with their Amazon account. If authorized, the participant will be redirected to Antaris at `/pa/dashboard` where they will be allowed to add at least one participant associating with the MyDataHelps project using the participant id and project id (provided by the researcher before hand). Then, they can start linking Antaris skill with their Alexa by clicking on the "Link and enable Antaris in my Alexa" button from which they will be directed to Amazon's website again to fill in the Amazon credentials for account linking. At the end, the participant will be lead back to `/pa/dashboard` and will have the option to unlink the Antaris skill and delete themselves from the database when the project is complete.
 
 ## Packages and dependencies
 
